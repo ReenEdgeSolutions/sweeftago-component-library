@@ -13,5 +13,3 @@ export * from "./AppFullPageModal";
 export * from "./AppPopover";
 export * from "./AppModal";
 export * from "./TextField";
-export * from "./AppHeader";
-export * from "./AppFooter";
