@@ -1,27 +1,10 @@
 import { RecursivePartial } from "../../../common";
 
-type NavbarType = {
-  navlinks: string;
-  closeBtn: string;
-  notificationBg: string;
-};
-
-type DashboardType = {
-  dashBg: string;
-  order: {
-    border: string;
-    cardBg: string;
-  }
-}
-
-type SideBarType = {
-  sideLinkBg: string;
-  linkText: string;
-  termsBg: string;
-}
-
-type FooterType = {
-  footerlinks: string;
+type ColorType = {
+  blue: string;
+  green: string;
+  yellow: string;
+  pink: string;
 };
 
 
@@ -84,21 +67,12 @@ export type DataGridStyle = {
 };
 
 export interface BaseThemeExtension {
-  color: {
-    success1: string;
-    success2: string;
-    error1: string;
-    error2: string;
-  };
   font: {
     default: string;
     title: string;
     body: string;
   };
-  navbar: NavbarType;
-  sideBar: SideBarType;
-  footer: FooterType;
-  dashboard: DashboardType;
+  color: ColorType;
   button: ButtonStyle;
   textField: TextFieldStyle;
 }

@@ -6,13 +6,9 @@
 }
 
 @font-face {
-    font-family: "Kollektif";
-    src: local("kollektif-bold"), local("Kollektif-Bold"), url("../../fonts/Kollektif-Bold.ttf") format("truetype");
-    font-weight: 700;
-}
-
-@font-face {
-    font-family: "Kollektif";
-    src: local("kollektif-regular"), local("Kollektif-Regular"), url("../../fonts/Kollektif-Regular.ttf") format("truetype");
-    font-weight: 400;
+    font-family: "Manrope";
+    src: url("../../fonts/Manrope-VariableFont_wght.ttf") format("truetype");
+    font-display: swap;
+    font-weight: 100 900;
+    font-style: normal;
 }

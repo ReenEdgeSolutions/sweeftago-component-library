@@ -10,7 +10,7 @@ export const baseLightTheme = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#F05A25",
+      main: "#F98D31",
     },
     secondary: {
       main: "#061E2D",
@@ -19,44 +19,30 @@ export const baseLightTheme = createTheme({
       default: "#F0F0F0",
     },
     text: {
-      primary: "#202020",
-      secondary: "#636363",
+      primary: "#252423",
+      secondary: "#454341",
     },
   },
   typography: {
-    fontFamily: "Inter, Kollektif, Arial, sans-serif",
+    fontFamily: "Inter, Manrope, Arial, sans-serif",
   },
   font: {
-    default: "Inter, Kollektif, Arial, sans-serif",
-    title: "Kollektif, Inter, Arial, sans-serif",
-    body: "Inter, Kollektif, Arial, sans-serif",
+    default: "Inter, Manrope, Arial, sans-serif",
+    title: "Manrope, Inter, Arial, sans-serif",
+    body: "Inter, Manrope, Arial, sans-serif",
   },
-  navbar: {
-    navlinks: '#FDFDFD',
-    closeBtn: '#D9D9D9',
-    notificationBg: '#E8E8E8',
-  },
-  sideBar: {
-    sideLinkBg: '#F0E4E1',
-    linkText: '#8C8C8C',
-    termsBg: '#F4F4F4'
-  },
-  footer: {
-    footerlinks: '#D87759',
-  },
-  dashboard: {
-    dashBg: '#EEECEB',
-    order: {
-      border: '#F3A48B',
-      cardBg: '#F0E4E1'
-    }
+  color: {
+    blue: '#37ACFA',
+    green: '#08A654',
+    yellow: '#C4C10B',
+    pink: '#EE1FDA',
   },
   button: {
     contained: {
       primary: {
-        background: "#F05A25",
-        color: "#202020",
-        hoverBackground: "#BB2B00",
+        background: "#F98D31",
+        color: "#252423",
+        hoverBackground: "#F17A2D",
         hoverColor: "#F2F2F2",
         border: "transparent",
         hoverBorder: "transparent",
