@@ -63,11 +63,7 @@ export function AppHeader({
         }}
       >
         <StyledLink href={'/'}>
-          {background ? (
           <AppLogo />
-          ): (
-          <AppLogo whiteLogo />
-          )}
         </StyledLink>
       </Box>
       <List
@@ -135,7 +131,6 @@ export function AppHeader({
           >
             <StyledLink href={'/'}>
               <AppLogo
-                whiteLogo
                 sx={{
                   width: {
                     sm: '85px',
@@ -181,7 +176,7 @@ export function AppHeader({
           }}
         >
           <StyledLink href={'/'}>
-            <AppLogo whiteLogo />
+            <AppLogo />
           </StyledLink>
           <IconButton
             onClick={toggleDrawer(true)}
