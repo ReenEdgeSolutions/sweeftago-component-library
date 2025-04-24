@@ -1,0 +1,89 @@
+{
+  "name": "@sweeftago-frontend-apps/component-library",
+  "private": false,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && vite build && yalc push",
+    "build:prod": "tsc && vite build",
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
+    "lint:fix": "eslint --fix 'src/**/*.{jsx,ts,tsx}'",
+    "format": "prettier --write src//**/*.{ts,tsx} --config ./.prettierrc",
+    "prepublishOnly": "npm run build:prod",
+    "publish:local": "yalc publish",
+    "test": "echo \"No tests yet\"",
+    "playground:install": "cd playground && npm install",
+    "playground:start:dev:secure": "cd playground && npm run dev:secure",
+    "playground:start:dev": "cd playground && npm run dev"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./dist/index.es.js": "./dist/index.es.js",
+    "./dist/index.d.ts": "./dist/index.d.ts",
+    "./dist/style.css": "./dist/style.css"
+  },
+  "main": "./dist/index.es.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "dependencies": {
+    "@mui/material": "^7.0.2",
+    "@mui/x-date-pickers": "^7.27.0",
+    "@react-google-maps/api": "^2.20.6",
+    "date-fns": "^3.6.0",
+    "framer-motion": "^12.4.2",
+    "mui-one-time-password-input": "^4.0.1",
+    "react-dropzone": "^14.3.8"
+  },
+  "peerDependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@lottiefiles/react-lottie-player": "^3.5.4",
+    "@mui/icons-material": "^7.0.0",
+    "@mui/material-nextjs": "^7.0.0",
+    "@mui/x-data-grid": "^7.27.0",
+    "formik": "^2.4.6",
+    "next": "15.3.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-toastify": "^11.0.3",
+    "yup": "^1.6.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@eslint/js": "^9.21.0",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/gitlab": "^12.1.1",
+    "@types/node": "^20.17.19",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@typescript-eslint/eslint-plugin": "^8.24.1",
+    "@typescript-eslint/parser": "^8.24.1",
+    "@vitejs/plugin-react": "^4.0.3",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.7",
+    "eslint-plugin-prettier": "^5.2.3",
+    "globals": "^16.0.0",
+    "prettier": "^3.5.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hooks": "^1.0.1",
+    "rollup-preserve-directives": "^1.1.1",
+    "typescript": "^5",
+    "typescript-eslint": "^8.24.1",
+    "vite": "^6.1.1",
+    "vite-plugin-dts": "^4.5.0",
+    "vite-plugin-linter": "^3.0.1",
+    "vite-tsconfig-paths": "^5.1.4"
+  },
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  }
+}
