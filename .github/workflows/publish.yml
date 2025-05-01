@@ -1,92 +1,63 @@
-name: Build → Lint → Release
+name: Build and Publish Package
 
-# Trigger on every push to main and every PR targeting main
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
-# The workflow itself needs to push tags/releases, so give it write perms
 permissions:
-  contents: write # allows git push + GitHub Releases
-  packages: write # allows publishing to GitHub Packages
+  packages: write
+  contents: read
 
 jobs:
-  # ──────────────────────────────
   lint:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          fetch-depth: 0 # full history for eslint-plugin-git or similar
-
-      - name: Set up Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 20
-          registry-url: https://npm.pkg.github.com
-          scope: "@ReenEdgeSolutions"
-
-      - name: Install deps
-        run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }} # PAT with read:packages
-
-      - run: npm run lint
-  # ──────────────────────────────
-  build:
-    runs-on: ubuntu-latest
-    needs: lint
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-node@v2
-        with:
-          node-version: 20
-          registry-url: https://npm.pkg.github.com
-          scope: "@ReenEdgeSolutions"
-
-      - run: npm ci
+          node-version: "18"
+          cache: "npm"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@sweeftago-frontend-apps"
+      - run: npm install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - run: npm run lint
 
-      - run: npm run build:prod
-  # ──────────────────────────────
-  release:
+  build:
     runs-on: ubuntu-latest
-    needs: build
-
     steps:
-      - name: Checkout (PAT + full history)
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          token: ${{ secrets.GH_TOKEN }} # PAT with repo scope
-          fetch-depth: 0
-
-      - name: Set up Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: 20
-          registry-url: https://registry.npmjs.org/
-          scope: "@ReenEdgeSolutions"
-
-      - name: Global install semantic-release & plugins
-        run: |
-          npm install -g semantic-release \
-            @semantic-release/git \
-            @semantic-release/changelog \
-            @semantic-release/github
-
-      - name: Configure npm auth for publish
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
-      - name: semantic-release
+          node-version: "18"
+          cache: "npm"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@sweeftago-frontend-apps"
+      - run: npm install
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }} # used for changelog commit, tag & release
-        run: npx semantic-release
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - run: npm run build:prod
+
+  publish:
+    needs: [lint, build]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          registry-url: "https://npm.pkg.github.com"
+          scope: "@sweeftago-frontend-apps"
+      - run: npm install
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
