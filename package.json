@@ -3,6 +3,14 @@
   "private": false,
   "version": "0.0.0",
   "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "restricted"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ReenEdgeSolutions/sweeftago-component-library.git"
+  },
   "scripts": {
     "build": "tsc && vite build && yalc push",
     "build:prod": "tsc && vite build",
