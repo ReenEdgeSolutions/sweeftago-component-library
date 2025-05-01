@@ -1,81 +1,92 @@
-name: Build and Publish Package
+name: Build → Lint → Release
 
+# Trigger on every push to main and every PR targeting main
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
+# The workflow itself needs to push tags/releases, so give it write perms
 permissions:
-  packages: write
-  contents: read
+  contents: write # allows git push + GitHub Releases
+  packages: write # allows publishing to GitHub Packages
 
 jobs:
-  install:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-      - name: Install dependencies
-        run: npm ci
-
+  # ──────────────────────────────
   lint:
     runs-on: ubuntu-latest
-    needs: install
+
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v2
-      - name: Set up Node.js
+        with:
+          fetch-depth: 0 # full history for eslint-plugin-git or similar
+
+      - name: Set up Node
         uses: actions/setup-node@v2
         with:
-          node-version: '20'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@ReenEdgeSolutions'
-      - run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
-      - run: npm run lint
+          node-version: 20
+          registry-url: https://npm.pkg.github.com
+          scope: "@ReenEdgeSolutions"
 
+      - name: Install deps
+        run: npm ci
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }} # PAT with read:packages
+
+      - run: npm run lint
+  # ──────────────────────────────
   build:
     runs-on: ubuntu-latest
+    needs: lint
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v2
         with:
-          node-version: '20'
-          registry-url: 'https://npm.pkg.github.com'
-          scope: '@ReenEdgeSolutions'
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com
+          scope: "@ReenEdgeSolutions"
+
       - run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
-      - run: npm run build:prod 
 
+      - run: npm run build:prod
+  # ──────────────────────────────
   release:
     runs-on: ubuntu-latest
-    needs: [lint, build]
+    needs: build
+
     steps:
-      - name: Checkout code
+      - name: Checkout (PAT + full history)
         uses: actions/checkout@v2
-      - name: Set up Node.js
+        with:
+          token: ${{ secrets.GH_TOKEN }} # PAT with repo scope
+          fetch-depth: 0
+
+      - name: Set up Node
         uses: actions/setup-node@v2
         with:
-          node-version: '20'
-          registry-url: 'https://registry.npmjs.org/'
-          scope: '@ReenEdgeSolutions'
-      - name: Install semantic-release
-        run: npm install -g semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/github
-      - name: Configure NPM registry
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+          scope: "@ReenEdgeSolutions"
+
+      - name: Global install semantic-release & plugins
         run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc 
-      - name: Run semantic-release
+          npm install -g semantic-release \
+            @semantic-release/git \
+            @semantic-release/changelog \
+            @semantic-release/github
+
+      - name: Configure npm auth for publish
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+
+      - name: semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }} # used for changelog commit, tag & release
         run: npx semantic-release
-      env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
