@@ -9,8 +9,9 @@ on:
       - main
 
 permissions:
-  packages: write
   contents: read
+  packages: write
+  id-token: write
 
 jobs:
   lint:
@@ -20,9 +21,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "18"
-          cache: "npm"
           registry-url: "https://npm.pkg.github.com"
           scope: "@reenedgesolutions"
+      - name: Debug - Check token and env variables
+        run: |
+          echo "NODE_AUTH_TOKEN is set: ${{ secrets.GH_TOKEN }}"
+          echo "Debugging the environment variables:"
+          printenv
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
       - run: npm install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -35,9 +42,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "18"
-          cache: "npm"
           registry-url: "https://npm.pkg.github.com"
           scope: "@reenedgesolutions"
+      - name: Debug - Check token and env variables
+        run: |
+          echo "NODE_AUTH_TOKEN is set: ${{ secrets.GH_TOKEN }}"
+          echo "Debugging the environment variables:"
+          printenv
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
       - run: npm install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -52,9 +65,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "18"
-          cache: "npm"
           registry-url: "https://npm.pkg.github.com"
           scope: "@reenedgesolutions"
+      - name: Debug - Check token and env variables
+        run: |
+          echo "NODE_AUTH_TOKEN is set: ${{ secrets.GH_TOKEN }}"
+          echo "Debugging the environment variables:"
+          printenv
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
       - run: npm install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
