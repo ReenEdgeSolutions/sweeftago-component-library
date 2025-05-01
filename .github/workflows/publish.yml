@@ -22,7 +22,7 @@ jobs:
           node-version: "18"
           cache: "npm"
           registry-url: "https://npm.pkg.github.com"
-          scope: "@sweeftago-frontend-apps"
+          scope: "@reenedgesolutions"
       - run: npm install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -37,7 +37,7 @@ jobs:
           node-version: "18"
           cache: "npm"
           registry-url: "https://npm.pkg.github.com"
-          scope: "@sweeftago-frontend-apps"
+          scope: "@reenedgesolutions"
       - run: npm install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -54,7 +54,7 @@ jobs:
           node-version: "18"
           cache: "npm"
           registry-url: "https://npm.pkg.github.com"
-          scope: "@sweeftago-frontend-apps"
+          scope: "@reenedgesolutions"
       - run: npm install
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
