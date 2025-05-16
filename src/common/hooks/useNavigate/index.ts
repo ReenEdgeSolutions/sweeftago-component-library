@@ -1,3 +1,4 @@
+"use client"
 import { useRouter } from "next/navigation";
 
 type NavigateFn = (path: string, isExternal?: boolean, newTab?: boolean) => void;

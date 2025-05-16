@@ -22,11 +22,11 @@ export const useAppButton = ({
 
   // Provide defaults if colorStyles is still falsy:
   const {
-    background = "transparent",
-    color: textColor = "#000",
+    background = " #F98D31",
+    color: textColor = "#252423",
     border = "transparent",
-    hoverBackground = "transparent",
-    hoverColor = "#000",
+    hoverBackground = "#E57F29",
+    hoverColor = "#252423",
     hoverBorder = "transparent",
   } = colorStyles || {};
 
@@ -41,8 +41,8 @@ export const useAppButton = ({
       border: `1px solid ${hoverBorder}`,
     },
     "&:disabled": {
-      background: variant === "contained" ? background : "rgba(0, 0, 0, 0.12)",
-      color: "#636363",
+      background: variant === "contained" ? background : "#E0E0E0",
+      color: "#615D5D",
       border: "1px solid transparent",
       opacity: 0.7,
     },

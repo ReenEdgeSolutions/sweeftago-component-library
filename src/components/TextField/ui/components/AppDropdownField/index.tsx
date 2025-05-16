@@ -57,7 +57,6 @@ export const AppDropdownField = ({
           value={option}
           sx={{
             color: theme.palette.text.primary,
-            fontFamily: theme.font.default,
             fontWeight: 500,
           }}
         >

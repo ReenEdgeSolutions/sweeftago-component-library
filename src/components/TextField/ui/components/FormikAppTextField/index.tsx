@@ -5,13 +5,10 @@ import { useFormikAppTextField } from "../../../common";
 
 export type FormikAppTextFieldProps = Omit<AppTextFieldProps, "success"> & {
   validateBeforeTouch?: boolean;
-  helperTextValidations?: Array<(value: string | undefined) => boolean>;
 };
 
-export const FormikAppTextField = (
-  props: Omit<FormikAppTextFieldProps, "helperTextStatus" | "helperTextValidations">,
-) => {
-  const { field, handleChange, hasError, errorMessage } = useFormikAppTextField(props);
+export const FormikAppTextField = (props: FormikAppTextFieldProps) => {
+  const { field, handleChange, hasError, errorMessage, label } = useFormikAppTextField(props);
 
   return (
     <AppTextField
@@ -20,6 +17,8 @@ export const FormikAppTextField = (
       onChange={handleChange}
       error={hasError}
       errorMessage={errorMessage}
+      label={label}
+      placeholder=""
     />
   );
 };
