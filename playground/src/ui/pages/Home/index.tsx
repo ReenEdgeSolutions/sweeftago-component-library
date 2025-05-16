@@ -1,163 +1,185 @@
-"use client";
-
-import { Box, Stack, Typography, useTheme } from "@mui/material";
-import { AppButton, AppHeader, AppLogo } from "@component-library";
-import { toast } from "react-toastify";
-import {
-  AppTextField,
-  FormikAppPasswordField,
-  FormikAppTextField,
-} from "../../../../../src/components/TextField/ui/components";
-import { Form, Formik } from "formik";
+"use client"
+import { useEffect, useState } from "react";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { useState } from "react";
+import { AppOtpInput, AppButton } from "@component-library";
+import { Box, Typography, Stack } from "@mui/material";
+import { RowStack } from "@component-library";
+import { LayoutHeader } from "../../../../../src/components/LayoutHeader";
 
-const TestSchema = Yup.object().shape({
-  email: Yup.string().email("Must be Email").required("Email is required"),
+const otpSchema = Yup.object().shape({
+  otp: Yup.string()
+    .matches(/^\d{6}$/, "OTP must be 6 digits")
+    .required("OTP is required"),
 });
 
 export const Home = () => {
-  const theme = useTheme();
-  const [open, setOpen] = useState(false)
+  const [time, setTime] = useState(60);
+  const [canResend, setCanResend] = useState(false);
+  const [hasConfirmedOnce, setHasConfirmedOnce] = useState(false);
 
-  const navLinksData = [
-    {
-      link: 'Solutions',
-      href: '#',
-      // onclick: () => {
-      //   setDrawerOpen(true)
-      // },
-      // dropdown: <SolutionComponent />,
-    },
-    {
-      link: 'How It Works',
-      href: '#',
-      onclick: () => {
-        // scrollToSection('services')
-        setOpen(false)
-      }
-    },
-    {
-      link: "FAQ's",
-      href: '#',
-      onclick: () => {
-        // scrollToSection('faq')
-        setOpen(false)
-      }
-    },
-    {
-      link: 'Support',
-      href: '#',
-      onclick: () => {
-        setOpen(false)
-      }
-    },
-  ]
-  const handleButtonClick = () => {
-    toast.success("You clicked the button!");
+  const number = "+1234567890"; // Replace with actual number
+
+  // Countdown logic
+  useEffect(() => {
+    let timer: NodeJS.Timeout | undefined;
+    if (time > 0) {
+      timer = setTimeout(() => setTime(time - 1), 1000);
+    } else {
+      setCanResend(true);
+    }
+    return () => clearTimeout(timer as NodeJS.Timeout);
+  }, [time]);
+
+  // Trigger resend logic
+  const handleResend = async () => {
+    if (canResend && hasConfirmedOnce) {
+      setTime(60);
+      setCanResend(false);
+      console.log("Resend OTP");
+    }
   };
 
   return (
-    <>
-      <AppHeader
-       open={open}
-       setOpen={setOpen}
-       appHeaderLinks={navLinksData}
-       background={theme.palette.background.paper}
-      >
-        <AppButton>Header</AppButton>
-      </AppHeader>
-      <Stack
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#F9F9F9",
+      }}
+    >
+      <LayoutHeader
+        handleDesktopHelpClick={() => {}}
+        handleMobileHelpClick={() => {}}
+      />
+
+      <Box
         sx={{
-          width: "100vw",
-          height: "100vh",
+          maxWidth: "614px",
+          width: "100%",
+          height: "100%" ,
+          m: {
+            xs: "90px 16px auto 16px",
+            sm: "180px auto auto auto",
+            md: "212px auto auto auto"
+          },
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          p:{
+            xs: "16px",
+            sm: "24px",
+            md: "32px",
+          },
+          borderRadius: "10px",
+          border: {xs: "none", sm: "1px solid #D5D5D5"}
         }}
-        alignItems={"center"}
-        justifyContent={"center"}
       >
-        <Typography
-          variant={"h2"}
-          component={"h1"}
-          sx={{
-            fontWeight: 800,
-            marginBottom: "40px",
-            fontFamily: (theme) => theme.font.title,
-          }}
-        >
-          Welcome to the Playground
-        </Typography>
-        <Box
-          sx={{
-            background: "black",
-          }}
-        >
-          <AppLogo />
-        </Box>
-
-        <AppButton onClick={handleButtonClick}>This Is An AppButton</AppButton>
-
-        <Formik
-          initialValues={{
-            email: "",
-            password: "",
-          }}
-          validationSchema={TestSchema}
-          // validate={(values) => {
-          // const errors: any = {};
-
-          // // Check if all validations pass
-          // const allValid = emailValidations.every(validation => validation(values.email));
-
-          // if (!allValid) {
-          //   errors.email = 'Please fix all requirements';
-          // }
-
-          // return errors;
-          // }}
-          onSubmit={() => {}}
-        >
-          <Form>
-            <Box
+        <Stack spacing={"40px"}>
+          <Stack spacing="8px">
+            <Typography
               sx={{
-                width: "65%",
+                fontSize: { xs: "18px", md: "24px" },
+                fontWeight: 600,
+                color: "#252423",
+                lineHeight: "120%",
+                mb: "5px",
+                textAlign: {xs: "left", sm : "center"}
               }}
             >
-              <FormikAppTextField
-                name={"email"}
-                type={"email"}
-                placeholder={"me@organisation.com"}
-                variant={"outlined"}
-              />
-              <FormikAppPasswordField
-                name={"password"}
-                type={"password"}
-                placeholder={"me@organisation.com"}
-                variant={"outlined"}
-                helperText={[
-                  "Must contain @ symbol",
-                  "Must have a domain extension",
-                  "Must not contain spaces",
-                  "Must be a valid email format",
-                ]}
-                // helperTextValidations={[
-                //   (value) => value && value.includes("@"),
-                //   (value) => value && /\.[a-z]{2,}$/i.test(value),
-                //   (value) => value && !value.includes(" "),
-                //   (value) => value && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value),
-                // ]}
-              />
-            </Box>
-          </Form>
-        </Formik>
+              OTP Verification
+            </Typography>
 
-        <AppTextField
-          name={"email"}
-          type={"email"}
-          placeholder={"me@organisation.com"}
-          variant={"outlined"}
-          // helperText="this is the test"
-        />
-      </Stack>
-    </>
+            <Typography
+              sx={{
+                fontSize: { xs: "18px", md: "24px" },
+                fontWeight: 600,
+                color: "#615D5D",
+                lineHeight: "120%",
+                mb: "5px",
+                textAlign: {xs: "left", sm : "center"}
+              }}
+            >
+              Enter the 6-digit code sent to your number
+              <Typography
+                component={"span"}
+                sx={{
+                  ml: "5px",
+                }}
+              >
+                ({number})
+              </Typography>
+            </Typography>
+          </Stack>
+
+          <Stack justifyContent={{xs: "flex-start", sm: "center"}} mx={{sm: "auto"}}>
+          <Formik
+            initialValues={{ otp: "" }}
+            validationSchema={otpSchema}
+            onSubmit={(values) => {
+              console.log("OTP Submitted:", values.otp);
+              setHasConfirmedOnce(true);
+              // send to backend
+            }}
+          >
+            {({ values, handleChange, handleSubmit, errors, touched}) => (
+              <Form onSubmit={handleSubmit}>
+                <AppOtpInput
+                  otp={values.otp}
+                  hasError={!!(errors.otp && touched.otp)}
+                  errorMessage={touched.otp ? errors.otp : ""}
+                  onchange={(value) => handleChange({ target: { name: "otp", value } })}
+                  oncomplete={(value) => handleChange({ target: { name: "otp", value } })}
+                />
+
+                <AppButton
+                  disableArrow
+                  type="submit"
+                  disabled={!/^\d{6}$/.test(values.otp)}
+                  fullWidth
+                  sx={{mt: "40px"}}
+                >
+                  Confirm
+                </AppButton>
+              </Form>
+            )}
+          </Formik>
+          </Stack>
+
+          <RowStack mt="40px" spacing={"5px"} justifyContent={{xs: "left", sm: "center"}}>
+            <Typography
+              sx={{
+                fontSize: "16px",
+                fontWeight: 400,
+                color: "#454341",
+                lineHeight: "140%",
+              }}
+            >
+              Did not receive it?
+            </Typography>
+
+            <AppButton
+              variant="text"
+              onClick={handleResend}
+              disabled={!canResend || !hasConfirmedOnce}
+              sx={{
+                fontSize: "16px",
+                fontWeight: 600,
+                color: canResend && hasConfirmedOnce ? "#FF7A00" : "#ccc",
+                lineHeight: "140%",
+                textTransform: "capitalize",
+                padding: "0px",
+              }}
+              disableArrow
+            >
+              {canResend ? "Resend" : `Resend in ${time} sec`}
+            </AppButton>
+          </RowStack>
+        </Stack>
+      </Box>
+    </Box>
   );
 };

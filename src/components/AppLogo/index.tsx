@@ -1,5 +1,5 @@
 import { StyledImage } from "../StyledImage";
-import sweeftLogo from "../../assets/icons/logo.svg";
+import sweeftLogo from "../../assets/icons/logo.png";
 import { SxProps } from "@mui/material";
 
 type AppLogoProps = {

@@ -8,6 +8,7 @@ export interface useFormikAppTextFieldReturnType {
   hasError: boolean;
   errorMessage: string | undefined;
   isSuccess: boolean;
+  label?: string | undefined;
 }
 
 export const useFormikAppTextField = ({
@@ -32,5 +33,6 @@ export const useFormikAppTextField = ({
     hasError,
     errorMessage,
     isSuccess,
+    label: props.label,
   };
 };

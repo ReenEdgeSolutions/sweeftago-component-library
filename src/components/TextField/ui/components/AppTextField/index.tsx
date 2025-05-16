@@ -2,7 +2,6 @@
 
 import {
   Box,
-  BoxProps,
   Collapse,
   SxProps,
   TextField,
@@ -10,8 +9,8 @@ import {
   Theme,
   Typography,
 } from "@mui/material";
-import { RowStack } from "../../../../RowStack";
 import { useTextFieldStyles } from "../../../common";
+import { RowStack } from "../../../../RowStack";
 
 export type AppTextFieldProps = TextFieldProps & {
   borderRadius?: string;
@@ -20,107 +19,25 @@ export type AppTextFieldProps = TextFieldProps & {
   fontSize?: Record<string, unknown>;
   marginTop?: Record<string, string> | string;
   errorMessage?: string;
-  themeVariant?: TextFieldProps["variant"];
-  boxProps?: BoxProps;
   success?: boolean;
-  helperTextStatus?: Record<number, "default" | "error" | "success">;
+  label?: string | undefined;
+  themeVariant?: TextFieldProps["variant"];
 };
 
 export const AppTextField = (props: AppTextFieldProps) => {
   const {
     error,
-    success,
     marginTop = {
       xs: "0",
     },
     errorMessage,
-    helperText,
-    helperTextStatus = {},
-    borderRadius,
-    borderWidth,
-    padding,
-    fontSize,
-    boxProps,
-    themeVariant,
+    label,
     ...rest
   } = props;
+
   const styles = useTextFieldStyles({
     ...props,
-    borderRadius,
-    borderWidth,
-    padding,
-    fontSize,
-    themeVariant,
-    success,
   });
-  const { sx: boxSx, ...restBoxProps } = boxProps || {};
-
-  const getHelperTextColor = (index: number) => {
-    const status = helperTextStatus[index] || (error ? "error" : success ? "success" : "default");
-
-    switch (status) {
-      case "error":
-        return "#D87759";
-      case "success":
-        return "#008500";
-      default:
-        return "#636363";
-    }
-  };
-
-  const renderHelperTexts = () => {
-    if (!Array.isArray(helperText)) {
-      return helperText;
-    }
-
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: "2px",
-          justifyContent: "space-between",
-          width: "100%",
-        }}
-      >
-        {helperText.map((text, index) => (
-          <Box
-            key={index}
-            sx={{
-              width: "fit-content",
-              display: "flex",
-              alignItems: "center",
-              mb: 0.5,
-            }}
-          >
-            <Box
-              component="span"
-              sx={{
-                display: "inline-block",
-                width: "5px",
-                height: "5px",
-                borderRadius: "50%",
-                backgroundColor: getHelperTextColor(index),
-                mr: 0.5,
-              }}
-            />
-            <Typography
-              variant="caption"
-              sx={{
-                color: getHelperTextColor(index),
-                fontSize: { xs: ".75rem", md: ".75rem" },
-                fontWeight: 400,
-                fontFamily: (theme) => theme.font.body,
-                lineHeight: "18px",
-              }}
-            >
-              {text}
-            </Typography>
-          </Box>
-        ))}
-      </Box>
-    );
-  };
 
   // Create a combined sx style object for the TextField
   const textFieldStyles: SxProps<Theme> = {
@@ -133,28 +50,31 @@ export const AppTextField = (props: AppTextFieldProps) => {
       sx={{
         flexGrow: 1,
         marginTop,
-        ...((boxSx as Record<string, unknown>) || {}),
       }}
-      {...restBoxProps}
     >
-      <TextField {...rest} sx={textFieldStyles} id="outlined-error-helper-text" helperText={null} />
-
-      {helperText && renderHelperTexts()}
+      <TextField
+        {...rest}
+        variant={rest.variant || "outlined"}
+        placeholder={rest.placeholder}
+        error={error}
+        sx={textFieldStyles}
+        label={label}
+      />
 
       <Collapse in={error} orientation={"vertical"}>
         <RowStack
           sx={{
             width: "100%",
-            mt: "6px",
           }}
           justifyContent={"flex-start"}
         >
           <Typography
             variant={"body1"}
             sx={{
-              color: "#D87759",
+              color: (theme) => theme.palette.error.main,
               fontSize: { xs: ".875rem", md: ".875rem" },
               fontWeight: 500,
+              pl: "20px"
             }}
           >
             {errorMessage}

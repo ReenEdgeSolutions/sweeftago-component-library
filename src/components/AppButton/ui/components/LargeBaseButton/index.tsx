@@ -7,13 +7,13 @@ import { pxToRem } from "../../../../../common";
 
 // Create the raw styled "large" button, similar to BaseButton but bigger
 const RawLargeBaseButton = styled(Button)<ButtonProps>(() => ({
-  borderRadius: "8px",
+  borderRadius: "10px",
   textTransform: "none",
-  padding: "16px 32px",
-  fontSize: pxToRem(18),
+  padding: "16px 20px",
+  fontSize: pxToRem(16),
   boxShadow: "none",
-  fontWeight: 600,
-  lineHeight: "28px",
+  fontWeight: 500,
+  lineHeight: "140%",
 }));
 
 type MUIButtonOverridable = OverridableComponent<ButtonTypeMap<object, "button">>;

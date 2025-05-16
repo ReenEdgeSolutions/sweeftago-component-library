@@ -1,3 +1,4 @@
+"use client"
 import { useContext } from "react";
 import { FullPageModalContext, FullPageModalContextProps } from "../../../module/partials";
 

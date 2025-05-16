@@ -1,10 +1,10 @@
 "use client";
 
-// import { createTheme, ThemeOptions, useColorScheme } from "@mui/material/styles";
 import { createTheme, ThemeOptions } from "@mui/material/styles";
-
-import { mergeDeep } from "../../../common";
 import { Theme } from "@mui/material";
+import { mergeDeep } from "../../../common";
+
+// Import the theme declarations from above or include them here
 
 export const baseLightTheme = createTheme({
   palette: {
@@ -16,11 +16,11 @@ export const baseLightTheme = createTheme({
       main: "#061E2D",
     },
     background: {
-      default: "#F0F0F0",
+      default: "#F9F9F9",
     },
     text: {
-      primary: "#252423",
-      secondary: "#454341",
+      primary: "#212121",
+      secondary: "#979797",
     },
   },
   typography: {
@@ -36,16 +36,20 @@ export const baseLightTheme = createTheme({
     green: '#08A654',
     yellow: '#C4C10B',
     pink: '#EE1FDA',
+    error: "#f5b2b2"
   },
   button: {
     contained: {
       primary: {
         background: "#F98D31",
         color: "#252423",
-        hoverBackground: "#F17A2D",
-        hoverColor: "#F2F2F2",
+        hoverBackground: "#E57F29",
+        hoverColor: "#252423",
         border: "transparent",
         hoverBorder: "transparent",
+        focusBackground: "#FAA45A",
+        focusColor: "#252423",
+        focusBorder: "transparent",
       },
       secondary: {
         background: "#061E2D",
@@ -62,16 +66,19 @@ export const baseLightTheme = createTheme({
         hoverBackground: "inherit",
         hoverColor: "inherit",
         hoverBorder: "transparent",
+        focusBackground: "inherit",
+        focusColor: "inherit",
+        focusBorder: "transparent",
       },
     },
     outlined: {
       primary: {
         background: "transparent",
-        color: "#592C1D",
-        border: "#BB2B00",
-        hoverBackground: "#F3D8CF",
-        hoverBorder: "#D87759",
-        hoverColor: "#D87759",
+        color: "#252423",
+        border: "#F98D31",
+        hoverBackground: "transparent",
+        hoverBorder: "#F98D31",
+        hoverColor: "#252423",
       },
       secondary: {
         background: "transparent",
@@ -85,7 +92,7 @@ export const baseLightTheme = createTheme({
         background: "transparent",
         color: "inherit",
         border: "currentColor",
-        hoverBackground: "rgba(0,0,0,0.04)",
+        hoverBackground: "currentColor",
         hoverBorder: "inherit",
         hoverColor: "inherit",
       },
@@ -101,10 +108,10 @@ export const baseLightTheme = createTheme({
       },
       primary: {
         background: "transparent !important",
-        color: "#592C1D",
+        color: "#F98D31",
         border: "transparent",
         hoverBackground: "transparent !important",
-        hoverColor: "#BB2B00",
+        hoverColor: "#F98D31",
         hoverBorder: "transparent",
       },
       inherit: {
@@ -121,198 +128,59 @@ export const baseLightTheme = createTheme({
     outlined: {
       default: {
         colors: {
-          background: "#F9F9F9",
-          placeholder: "#636363",
-          text: "#202020",
-          label: "#202020",
-          border: "#D9D9D9",
-          error: "#FCC2B0",
+          background: "transparent",
+          placeholder: "#252423",
+          text: "#252423",
+          label: "#9D99AC",
+          border: "#D5D5D5",
+          errorBg: "#F5F5F5",
+          errorBorder: "#E8E6F8",
+          error: "#FF5E5E",
         },
       },
       focused: {
         colors: {
-          background: "#EEECEB",
-          placeholder: "#636363",
-          text: "#636363",
-          label: "#202020",
-          border: "#CECECE",
-          error: "#FCC2B0",
+          background: "#F5F5F5",
+          placeholder: "#515D65",
+          text: "#202020",
+          label: "#9D99AC",
+          border: "#D5D5D5",
+          errorBg: "#FFF5F5",
+          errorBorder: "#FFD8D8",
+          error: "#FF5E5E",
         },
       },
     },
     filled: {
       default: {
         colors: {
-          background: "#F4F4F4",
-          placeholder: "#515D65",
-          text: "#202020",
-          label: "#202020",
-          border: "#F4F4F4",
-          error: "#FCC2B0",
+          background: "transparent",
+          placeholder: "#252423",
+          text: "#252423",
+          label: "#9D99AC",
+          border: " #D5D5D5",
+          errorBg: "#F5F5F5",
+          errorBorder: "#E8E6F8",
+          error: "#FF5E5E",
         },
       },
       focused: {
         colors: {
-          background: "#F0F0F0",
+          background: "#F5F5F5",
           placeholder: "#515D65",
           text: "#202020",
-          label: "#202020",
-          border: "#D9D9D9",
-          error: "#FCC2B0",
+          label: "#9D99AC",
+          border: "#D5D5D5",
+          errorBg: "#FFF5F5",
+          errorBorder: " #FFD8D8",
+          error: "#FF5E5E",
         },
       },
     },
   },
 });
 
-// export const baseDarkTheme = createTheme({
-//   palette: {
-//     mode: "dark",
-//     primary: {
-//       main: "#0064E1",
-//     },
-//     secondary: {
-//       main: "#F25922",
-//     },
-//     background: {
-//       default: "#202020",
-//     },
-//     text: {
-//       primary: "#EEE",
-//       secondary: "#B6B6B6",
-//     },
-//   },
-//   typography: {
-//     fontFamily: "Inter, Kollektif, Arial, sans-serif",
-//   },
-//   font: {
-//     default: "Inter, Kollektif, Arial, sans-serif",
-//     title: "Kollektif, Inter, Arial, sans-serif",
-//     body: "Inter, Kollektif, Arial, sans-serif",
-//   },
-//   color: {
-//     error: "#FF5E5E",
-//     info: "#2F80ED",
-//     warning: "#FFBD60",
-//     baseDarkMode: "#010005",
-//     success50: "#E7F6EC",
-//     success700: "#036B26",
-//     lightGreenHighlight: "#E7F6EC",
-//     secondaryMain: "#010005",
-//     baseLight: "#F4F4F4",
-//     mainGradient: "#0073EE",
-//     redShade: "#FFE1E1",
-//   },
-//   gradients: {
-//     innerBoxFaint:
-//       "linear-gradient(28deg, rgba(0, 100, 225, 0.15) 19.69%, rgba(0, 100, 225, 0.15) 41.03%, rgba(0, 115, 238, 0.15) 63.98%, rgba(0, 130, 251, 0.15) 73.05%)",
-//   },
-//   button: {
-//     contained: {
-//       primary: {
-//         background:
-//           "linear-gradient(28deg, #0064E1 19.69%, #0064E1 41.03%, #0073EE 63.98%, #0082FB 73.05%)",
-//         shadow:
-//           "0px 14px 22px -9px rgba(16, 25, 40, 0.14), 0px 0px 3px -1px rgba(16, 25, 40, 0.04) !important",
-//         color: "#F7F7F7",
-//         hoverBackground:
-//           "linear-gradient(28deg, #000A70 19.69%, #000A70 41.03%, #000A70 63.98%, #000A70 73.05%)\n",
-//         hoverColor: "#F7F7F7",
-//       },
-//       secondary: {
-//         background: "#010005 !important",
-//         shadow: "none !important",
-//         color: "#F4F4F4",
-//       },
-//       inherit: {
-//         background: "inherit",
-//         shadow: "none !important",
-//         color: "inherit",
-//       },
-//     },
-//     text: {
-//       secondary: {
-//         background: "transparent !important",
-//         shadow: "none !important",
-//         color: "#010005",
-//       },
-//     },
-//   },
-//   textField: {
-//     outlined: {
-//       default: {
-//         colors: {
-//           background: "#FFFFFF",
-//           placeholder: "rgba(1, 0, 5, 0.3)",
-//           text: "#010005",
-//           label: "#010005",
-//           border: "#515D6533",
-//           error: "#FF5E5E",
-//         },
-//       },
-//       focused: {
-//         colors: {
-//           background: "#FFFFFF",
-//           placeholder: "rgba(1, 0, 5, 0.3)",
-//           text: "#010005",
-//           label: "#010005",
-//           border: "#0064E1",
-//           error: "#FF5E5E",
-//         },
-//       },
-//     },
-//     filled: {
-//       default: {
-//         colors: {
-//           background: "#F4F4F4",
-//           placeholder: "#515D65",
-//           text: "#010005",
-//           label: "#010005",
-//           border: "#F4F4F4",
-//           error: "#FF5E5E",
-//         },
-//       },
-//       focused: {
-//         colors: {
-//           background: "#F4F4F4",
-//           placeholder: "#515D65",
-//           text: "#010005",
-//           label: "#010005",
-//           border: "#0064E1",
-//           error: "#FF5E5E",
-//         },
-//       },
-//     },
-//     assessment: {
-//       default: {
-//         colors: {
-//           background: "transparent",
-//           placeholder: "rgba(1, 0, 5, 0.5)",
-//           text: "#010005",
-//           label: "#010005",
-//           border: "#515D6533",
-//           error: "#FF5E5E",
-//         },
-//       },
-//       focused: {
-//         colors: {
-//           background: "transparent",
-//           placeholder: "rgba(1, 0, 5, 0.5)",
-//           text: "#010005",
-//           label: "#010005",
-//           border: "#010005",
-//           error: "#FF5E5E",
-//         },
-//       },
-//     },
-//   },
-//   }
-// )
-
 export const createAppTheme = (overrides: ThemeOptions): Theme => {
-  // const { mode } = useColorScheme();
-  // const isDarkMode = mode === 'dark';
-  // const baseTheme = isDarkMode ? baseDarkTheme : baseLightTheme;
   const mergedTheme = mergeDeep(baseLightTheme, overrides);
   return createTheme(mergedTheme);
 };

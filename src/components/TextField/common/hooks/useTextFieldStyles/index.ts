@@ -1,136 +1,89 @@
 import { AppTextFieldProps } from "../../../ui/components";
-import { useTheme } from "@mui/material";
-import { useMemo } from "react";
 import { SxProps, Theme } from "@mui/system";
 
 export const useTextFieldStyles = ({
-  borderRadius = "8px",
+  borderRadius = "10px",
   borderWidth = "1px",
   padding = {
-    xs: "12px 16px !important",
-    sm: "12px 16px !important",
+    xs: "14px 20px !important",
+    md: "16px 20px !important",
   },
   fontSize = {
-    xs: "0.875rem",
-    md: "0.875rem",
+    xs: "14px",
+    md: "16px",
   },
-  variant = "outlined",
-  themeVariant = variant,
   error,
-  success,
 }: Pick<
   AppTextFieldProps,
-  "borderRadius" | "borderWidth" | "padding" | "fontSize" | "themeVariant" | "error" | "success" | "variant"
+  "borderRadius" | "borderWidth" | "fontSize" | "padding" | "error" | "success"
 >): SxProps<Theme> => {
-  const { textField } = useTheme();
+  const defaultBorder = "#D5D5D5";
+  const defaultBg = "transparent";
+  const errorBorder = "#FF5E5E";
+  const errorBg = "#FFF5F5";
 
-  return useMemo((): SxProps<Theme> => {
-    const textFieldVariant = themeVariant as keyof typeof textField;
-    const stateStyle = textField[textFieldVariant];
-    const {
-      background: defaultBackground,
-      border: defaultBorder,
-      text: defaultText,
-      placeholder: defaultPlaceholder,
-      error: defaultError,
-    } = stateStyle.default.colors;
+  return {
+    width: "100%",
+    backgroundColor: defaultBg,
+    borderRadius,
 
-    const {
-      background: focusedBackground,
-      border: focusedBorder,
-      text: focusedText,
-      placeholder: focusedPlaceholder,
-    } = stateStyle.focused.colors;
+    "& .MuiInputBase-input": {
+      fontWeight: 400,
+      fontSize,
+      color: "#212121",
+      padding,
+      lineHeight: "140%",
+      "&::placeholder": {
+        color: "#252423",
+        opacity: 1,
+      },
+      "&:-webkit-autofill": {
+        transition: "background-color 600000s 0s, color 600000s 0s",
+      },
+      "&[data-autocompleted]": {
+        backgroundColor: "transparent !important",
+      },
+      "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
+        WebkitAppearance: "none",
+        margin: 0,
+      },
+    },
 
-     const successColor = "#4CAF50";
+    "& .MuiInputLabel-root": {
+      color: " #212121",
+      fontWeight: 400,
+      fontSize,
+      "&.MuiInputLabel-shrink": {
+        fontSize: "14px", // make sure floating label stays same size
+        color: " #9D99AC", // or any consistent color you want
+      },
+      "&.Mui-focused": {
+        color: " #9D99AC",
+        fontSize: "14px",
+      },
+      "&.Mui-error": {
+        color: " #9D99AC",
+      },
+    },
 
-    const resolveBorderColor = (isFocused: boolean): string => {
-      if (error) {
-        return defaultError;
-      }
-      if (success) {
-        return successColor;
-      }
-      if (isFocused) {
-        return focusedBorder;
-      }
-      return defaultBorder;
-    };
-    
-    return {
-      width: "100%",
-      backgroundColor: defaultBackground,
-      borderRadius: borderRadius,
+    "& .MuiOutlinedInput-root": {
+      backgroundColor: error ? errorBg : defaultBg,
 
-      "& .MuiInputBase-input": {
-        fontWeight: 400,
-        fontSize: fontSize,
-        color: defaultText,
-        borderRadius: borderRadius,
-        padding: padding,
-        lineHeight: "20px",
-
-        "&::placeholder": {
-          color: defaultPlaceholder,
-          fontWeight: 400,
-          fontSize: fontSize,
-          opacity: 1,
-        },
-        "&:-webkit-autofill, &:-webkit-autofill:hover, &:-webkit-autofill:focus, &:-webkit-autofill:active":
-          {
-            transition: "background-color 600000s 0s, color 600000s 0s",
-          },
-        "&[data-autocompleted]": {
-          backgroundColor: "transparent !important",
-        },
-        "&::-webkit-inner-spin-button, &::-webkit-outer-spin-button": {
-          WebkitAppearance: "none",
-          margin: 0,
-        },
+      "& fieldset": {
+        borderRadius,
+        border: `${borderWidth} solid ${error ? errorBorder : defaultBorder}`,
       },
 
-      "& .MuiOutlinedInput-root": {
-        // padding: padding,
+      "&:hover fieldset": {
+        border: `${borderWidth} solid ${error ? errorBorder : defaultBorder}`,
+      },
+
+      "&.Mui-focused": {
+        backgroundColor: error ? errorBg : defaultBg,
         "& fieldset": {
-          borderRadius: borderRadius,
-          border: `${borderWidth} solid ${resolveBorderColor(false)}`,
-        },
-        "&:hover fieldset": {
-          border: `${borderWidth} solid ${resolveBorderColor(true)}`,
-        },
-        "&.Mui-focused": {
-          color: focusedText,
-          backgroundColor: focusedBackground,
-
-          "& fieldset": {
-            border: `${borderWidth} solid ${resolveBorderColor(true)}`,
-          },
-          "&::placeholder": {
-            color: focusedPlaceholder,
-          },
+          border: `${borderWidth} solid ${error ? errorBorder : defaultBorder}`,
         },
       },
-
-      "& .MuiFilledInput-root": {
-        backgroundColor: defaultBackground,
-        borderRadius: borderRadius,
-        "&:before": {
-          borderBottom: `${borderWidth} solid ${defaultBorder}`,
-        },
-        "&:hover:before": {
-          borderBottom: `${borderWidth} solid ${resolveBorderColor(false)}`,
-        },
-        "&.Mui-focused": {
-          backgroundColor: focusedBackground,
-
-          "&:after": {
-            borderBottom: `${borderWidth} solid ${resolveBorderColor(true)}`,
-          },
-          "&::placeholder": {
-            color: focusedPlaceholder,
-          },
-        },
-      },
-    };
-  }, [themeVariant, error, borderRadius, fontSize, padding, borderWidth, textField]);
+    },
+  };
 };

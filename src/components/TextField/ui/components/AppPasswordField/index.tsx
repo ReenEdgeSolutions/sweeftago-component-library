@@ -1,9 +1,10 @@
-import { pxToRem } from "../../../../../common";
 import { AppTextField, AppTextFieldProps } from "../AppTextField";
 import { useAppPasswordField } from "./common/hooks";
-import { Box } from "@mui/material";
+import { InputAdornment, IconButton } from "@mui/material";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-export type AppPasswordFieldProps = Omit<AppTextFieldProps, "hel">;
+export type AppPasswordFieldProps = Omit<AppTextFieldProps, "type">;
 
 export const AppPasswordField = (props: AppPasswordFieldProps) => {
   const { obscurePassword, handleVisibilityButtonClicked } = useAppPasswordField();
@@ -14,25 +15,23 @@ export const AppPasswordField = (props: AppPasswordFieldProps) => {
       type={obscurePassword ? "password" : "text"}
       InputProps={{
         endAdornment: (
-          <Box
-            component="span"
-            onClick={handleVisibilityButtonClicked}
-            sx={{
-              color: "#636363",
-              fontSize: pxToRem(16),
-              fontWeight: 400,
-              fontFamily: (theme) => theme.font.body,
-              cursor: "pointer",
-              userSelect: "none",
-              padding: "4px 8px",
-              textDecoration: "underline",
-              "&:hover": {
-                textDecoration: "none",
-              },
-            }}
-          >
-            {obscurePassword ? "Show" : "Hide"}
-          </Box>
+          <InputAdornment position="end">
+            <IconButton
+              onClick={handleVisibilityButtonClicked}
+              edge="end"
+              aria-label="toggle password visibility"
+              sx={{
+                padding: 0,
+                "& svg": {
+                  width: 24,
+                  height: 24,
+                  marginRight: "20px",
+                },
+              }}
+            >
+              {obscurePassword ? <VisibilityOff /> : <Visibility />}
+            </IconButton>
+          </InputAdornment>
         ),
       }}
     />

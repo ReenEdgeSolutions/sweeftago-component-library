@@ -7,13 +7,13 @@ import { pxToRem } from "../../../../../common";
 
 // Create the raw styled button
 const RawBaseButton = styled(Button)<ButtonProps>(() => ({
-  borderRadius: "8px",
+  borderRadius: "10px",
   textTransform: "none",
-  padding: "12px 24px",
-  fontSize: pxToRem(16),
+  padding: "16px 20px",
+  fontSize: pxToRem(14),
   boxShadow: "none",
   fontWeight: 500,
-  lineHeight: "24px",
+  lineHeight: "130%",
 }));
 
 // Use `object` instead of {} to allow normal button event props (like onMouseEnter)
