@@ -1,10 +1,8 @@
-import { CSSObject, Stack, Theme, Typography, useTheme } from "@mui/material";
+import { CSSObject, Stack, Theme,useTheme } from "@mui/material";
 import { AppLogo } from "../../../../AppLogo";
 import { RowStack } from "../../../../RowStack";
 import { AppSearchField } from "../../../../TextField";
-import { usePathname } from "next/navigation";
-import { StyledImage } from "../../../../StyledImage";
-import { SideLinksProps } from "../../components";
+import { SideLinks, SideLinksProps } from "../../components";
 
 export type AppDashboardSidebarProps = {
   links?: SideLinksProps[];
@@ -36,7 +34,6 @@ export function AppDashboardSidebar({
   links,
   open,
 }: AppDashboardSidebarProps) {
-  const pathName = usePathname();
   const theme = useTheme();
 
   const sidebarLinks = links || [];
@@ -93,47 +90,13 @@ export function AppDashboardSidebar({
         {/* Navigation Links */}
         <Stack spacing={"40px"} mt="30px">
           {sidebarLinks.map((item, index) => (
-            <RowStack
+            <SideLinks
+              sideIcon={item.sideIcon}
+              sideLink={item.sideLink}
+              link={item.link}
               key={index}
-              alignItems="center"
-              spacing={1.5}
-              sx={{
-                padding: open ? "12px 16px" : "12px 8px",
-                borderRadius: "8px",
-                cursor: "pointer",
-                backgroundColor: pathName === item.link ? " #FDDDC1" : "transparent",
-                "&:hover": {
-                  backgroundColor: "#FDDDC1",
-                },
-                justifyContent: open ? "flex-start" : "center",
-              }}
-            >
-              {/* Icon */}
-              <StyledImage
-                sx={{
-                  color: pathName === item.link ? "#FF8A00" : "#666",
-                  display: "flex",
-                  // width: "40px"
-                }}
-                src={item.sideIcon}
-                alt="side-icons"
-              />
-
-              {/* Text (only show when sidebar is open) */}
-              {open && (
-                <Typography
-                  sx={{
-                    color: pathName === item.link ? " #FF8A00" : "#333",
-                    fontWeight: pathName === item.link ? 600 : 500,
-                    fontSize: "14px",
-                    lineHeight: "20px",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {item.sideLink}
-                </Typography>
-              )}
-            </RowStack>
+              isSideBarOpen={open}
+            />
           ))}
         </Stack>
       </Stack>

@@ -14,7 +14,7 @@ export const AppDeliveryCards = ({
   deliverydata,
 }: AppDeliveryCardsProps) => {
   return(
-    <Grid container spacing={"24px"}>
+    <Grid container spacing={"24px"} width="100%">
       {deliverydata.map(item => (
         <Grid size={{sm: 6, md: 3}} key={item.id}>
           <Cards

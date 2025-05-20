@@ -76,7 +76,6 @@ export function SideLinks({ sideIcon, sideLink, link, isSideBarOpen }: SideLinks
                 xs: "20px",
                 sm: "24px",
               },
-              fontFamily: (theme) => theme.font.default,
               transition: "all .3s ease-in-out",
             }}
             className="text-change"

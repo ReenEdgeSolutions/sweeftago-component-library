@@ -19,7 +19,8 @@ export const Cards = ({
         gap: "24px",
         height: "100%",
         background: background,
-        borderRadius: "10px"
+        borderRadius: "10px",
+        width: "100%"
       }}
     >
       <Typography

@@ -18,7 +18,6 @@ export const FormikAppTextField = (props: FormikAppTextFieldProps) => {
       error={hasError}
       errorMessage={errorMessage}
       label={label}
-      placeholder=""
     />
   );
 };

@@ -5,7 +5,7 @@ import { pxToRem } from "../../common/utils";
 import { AppSearchField } from "../TextField";
 
 interface AppHelpCenterProps {
-  handleSignUpClick: () => void;
+  handleSignUpClick?: () => void;
   handleSearchClick: () => void;
   handleWhatsappChatClick: () => void;
   faqData: {
@@ -13,6 +13,7 @@ interface AppHelpCenterProps {
     question: string;
     answer: string;
   }[];
+  showHeader?: boolean;
 }
 
 export const AppHelpCenter = ({
@@ -20,6 +21,7 @@ export const AppHelpCenter = ({
   handleSearchClick,
   handleWhatsappChatClick,
   faqData,
+  showHeader = true,
 }: AppHelpCenterProps) => {
   const [expanded, setExpanded] = useState<number | false>(false);
 
@@ -32,19 +34,19 @@ export const AppHelpCenter = ({
       sx={{
         width: "100%",
         height: "100%",
-        justifyContent: "center",
-        alignItems: "center",
         backgroundColor: "#F9F9F9",
       }}
     >
-      <Header handleSignUpClick={handleSignUpClick}/>
+      {showHeader && (
+        <Header handleSignUpClick={handleSignUpClick || (() => {})}/>
+      )}
 
       <Box
         sx={{
           width: "100%",
           height: "100%" ,
           p:{
-            xs: "94px 16px 32px 16px",
+            xs: showHeader? "94px 16px 32px 16px": "44px 32px 32px 32px",
             sm: "44px 32px 32px 32px",
           }
         }}
@@ -55,14 +57,13 @@ export const AppHelpCenter = ({
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            margin: "0 auto",
+            margin: showHeader? "0 auto" : "0 0 auto 0",
             maxWidth: "857px",
             width: "100%",
-            gap: "33px"
           }}
         >
-          <Stack spacing={"32px"} sx={{ width: "100%" }}> {/* Added width: 100% */}
-            <Box sx={{ width: "100%" }}> {/* Added width: 100% */}
+          <Stack spacing={"32px"} sx={{ width: "100%", mb: "33px" }}>
+            <Box sx={{ width: "100%" }}>
               <Typography
                 sx={{
                   fontWeight: 500,
@@ -106,11 +107,13 @@ export const AppHelpCenter = ({
             <WhatsappChatSupport handleWhatsappChatClick={handleWhatsappChatClick}/>
           </Stack>
 
-          <FAQ
-            faqData={faqData}
-            handleChange={handleChange}
-            expanded={expanded}
-          />
+          <Box sx={{ width: "100%" }}>
+            <FAQ
+              faqData={faqData}
+              handleChange={handleChange}
+              expanded={expanded}
+            />
+          </Box>
         </Box>
       </Box>
     </Box>

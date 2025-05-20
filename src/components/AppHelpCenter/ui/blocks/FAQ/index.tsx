@@ -17,6 +17,7 @@ export const FAQ: React.FC<FAQProp> = ({ faqData, expanded, handleChange }: FAQP
       sx={{
         backgroundColor: "transparent",
         height: "100%",
+        width: "100%"
       }}
     >
       <Typography
@@ -30,7 +31,7 @@ export const FAQ: React.FC<FAQProp> = ({ faqData, expanded, handleChange }: FAQP
       >
         FAQ
       </Typography>
-      
+
       <Box sx={{ mt: "24px" }}>
         {faqData.map((faq) => (
           <Accordion

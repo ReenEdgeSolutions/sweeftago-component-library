@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-import logo from "./ui/assets/icon/sweeftago-logo.png"
+import logo from "./ui/assets/icon/sweeftago-logo.svg"
 import helpIcon from "./ui/assets/icon/Vector.svg"
 import { AppButton } from '../AppButton';
 import { useMediaQuery, useTheme } from '@mui/material';

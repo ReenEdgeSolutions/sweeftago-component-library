@@ -9,11 +9,13 @@ export type AppDropdownFieldProps = Omit<
 > & {
   name: string;
   dropdownData: string[];
+  onChange?: (e: React.ChangeEvent<{ value: unknown }>) => void;
 };
 
 export const AppDropdownField = ({
   name,
   dropdownData,
+  onChange,
   ...rest
 }: AppDropdownFieldProps) => {
   const theme = useTheme();
@@ -23,14 +25,17 @@ export const AppDropdownField = ({
 
   return (
     <AppTextField
-      {...rest}
       select
-      name={field.name}
-      value={field.value}
-      onChange={field.onChange}
-      onBlur={field.onBlur}
+      {...field}
+      {...rest}
       error={hasError}
       helperText={hasError ? meta.error : rest.helperText}
+      onChange={(e) => {
+        field.onChange(e);
+        if (onChange) {
+          onChange(e as React.ChangeEvent<{ value: unknown }>);
+        }
+      }}
       SelectProps={{
         IconComponent: KeyboardArrowDown,
         sx: {
@@ -38,28 +43,11 @@ export const AppDropdownField = ({
             color: theme.palette.text.primary,
           },
         },
-        MenuProps: {
-          PaperProps: {
-            sx: {
-              borderRadius: "16px",
-              padding: {
-                xs: "8px 16px",
-                sm: "10px 40px",
-              },
-            },
-          },
-        },
+        ...rest.SelectProps
       }}
     >
       {dropdownData.map((option) => (
-        <MenuItem
-          key={option}
-          value={option}
-          sx={{
-            color: theme.palette.text.primary,
-            fontWeight: 500,
-          }}
-        >
+        <MenuItem key={option} value={option}>
           {option}
         </MenuItem>
       ))}
