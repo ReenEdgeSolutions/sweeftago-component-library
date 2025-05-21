@@ -35,7 +35,7 @@ export const AppSuccessModal = ({
           display: "block",
         }}
       />
-      
+
       <Typography
         sx={{
           // fontFamily: "manrope",
@@ -69,6 +69,7 @@ export const AppSuccessModal = ({
         {label}
       </Typography>
 
+        
       <AppButton
         disableArrow
         variant="contained"
