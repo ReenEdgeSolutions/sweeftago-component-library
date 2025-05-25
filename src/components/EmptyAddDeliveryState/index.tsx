@@ -3,14 +3,18 @@ import { StyledImage } from "../StyledImage";
 import { pxToRem } from "../../common";
 import deliveryBox from "./ui/assets/icon/empty-box.svg"
 
-interface EmptyAddDeliveryStateProps {
-  handleCreateNewDelivery: () => void;
+export interface EmptyAddDeliveryStateProps {
+  handleCreateNewDelivery?: () => void;
   isSetUpCompletted: boolean;
+  showCreateNewDeliveryBtn?: boolean;
+  emptyDeliveryguideText: string;
 }
 
 export const EmptyAddDeliveryState = ({
   handleCreateNewDelivery,
-  isSetUpCompletted
+  isSetUpCompletted,
+  showCreateNewDeliveryBtn = false,
+  emptyDeliveryguideText
 }: EmptyAddDeliveryStateProps) => {
   return(
     <Stack
@@ -40,29 +44,32 @@ export const EmptyAddDeliveryState = ({
           mb: 1
         }}
       >
-        You haven't made any delivery requests yet.  Let's help you schedule your first started.
+        {emptyDeliveryguideText}
       </Typography>
-      <Button
-        variant="text"
-        sx={{
-          color: "#F98D31",
-          padding: "0px",
-          backgroundColor: "transparent",
-          "&:hover": {
+
+      {showCreateNewDeliveryBtn && (
+        <Button
+          variant="text"
+          sx={{
+            color: "#F98D31",
+            padding: "0px",
             backgroundColor: "transparent",
-          },
-          "&:active": {
-            backgroundColor: "transparent",
-          },
-          "&:focus": {
-            backgroundColor: "transparent",
-          },
-        }}
-        disabled={!isSetUpCompletted}
-        onClick={handleCreateNewDelivery}
-      >
-        Create New Delivery
-      </Button>
+            "&:hover": {
+              backgroundColor: "transparent",
+            },
+            "&:active": {
+              backgroundColor: "transparent",
+            },
+            "&:focus": {
+              backgroundColor: "transparent",
+            },
+          }}
+          disabled={!isSetUpCompletted}
+          onClick={handleCreateNewDelivery}
+        >
+          Create New Delivery
+        </Button>
+      )}
     </Stack>
   );
 }

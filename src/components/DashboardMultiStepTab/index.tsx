@@ -12,11 +12,8 @@ import { DashboardStepperController } from '../DashboardStepperController';
 interface DashboardMultiStepTabProps {
   children: React.ReactNode;
   activeTab: number;
-  setActiveTab: (tab: number) => void;
   completedSteps: number[];
-  setCompletedSteps: (steps: number[]) => void;
   handleTabChange: (event: React.SyntheticEvent, newValue: number) => void;
-  handleSkip: () => void;
   tabTitles: {
     id: number;
     label: string;

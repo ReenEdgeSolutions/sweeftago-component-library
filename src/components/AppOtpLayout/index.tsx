@@ -82,7 +82,7 @@ export const AppOtpLayout = ({
             <Typography
               sx={{
                 fontSize: { xs: "18px", md: "24px" },
-                fontWeight: 600,
+                fontWeight: 500,
                 color: "#615D5D",
                 lineHeight: "120%",
                 mb: "5px",

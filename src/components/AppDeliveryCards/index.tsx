@@ -8,10 +8,12 @@ interface AppDeliveryCardsProps {
     cardLabel: string
     cardValue: string
   }[]
+  isProfileComplete?: boolean
 }
 
 export const AppDeliveryCards = ({
   deliverydata,
+  isProfileComplete
 }: AppDeliveryCardsProps) => {
   return(
     <Grid container spacing={"24px"} width="100%">
@@ -21,6 +23,7 @@ export const AppDeliveryCards = ({
             background={item.background}
             cardLabel={item.cardLabel}
             cardValue={item.cardValue}
+            isProfileComplete = {isProfileComplete}
           />
         </Grid>
       ))}

@@ -1,17 +1,23 @@
-import { Box,Stack,Typography,} from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import { AppLogo } from "../../../../AppLogo";
 import { StyledRating } from "../../components";
 import { pxToRem } from "src/common";
 
-export interface AppDashboardSidebarProps{
-  isGeneralInfoCompleted: boolean
-  isPickUpDetailsCompleted: boolean
-  ratePercent: number
+// Define the rating item interface
+export interface RatingItem {
+  text: string;
+  isCompleted: boolean;
+  percentage: number;
 }
+
+export interface AppDashboardSidebarProps {
+  ratePercent: number;
+  ratingItems: RatingItem[];
+}
+
 export function AppDashboardSidebar({
-  isGeneralInfoCompleted,
-  isPickUpDetailsCompleted,
-  ratePercent
+  ratePercent,
+  ratingItems
 }: AppDashboardSidebarProps) {
   return (
     <Stack
@@ -23,7 +29,7 @@ export function AppDashboardSidebar({
         maxHeight: "100vh",
         paddingY: "20px",
         paddingLeft: "32px",
-        paddingRight: "32px" ,
+        paddingRight: "32px",
         maxWidth: "320px",
         background: "#F9F9F9",
         borderRight: "1px solid rgba(214, 212, 209, 0.7)",
@@ -33,8 +39,8 @@ export function AppDashboardSidebar({
       {/* Top section */}
       <Stack>
         {/* Logo */}
-        <Stack sx={{ width: '100%'}} justifyContent={"center"} mb={"50px"}>
-            <AppLogo sx={{width: "214px", height: "71.33px"}}/>
+        <Stack sx={{ width: '100%' }} justifyContent={"center"} mb={"50px"}>
+          <AppLogo sx={{ width: "214px", height: "71.33px" }} />
         </Stack>
 
         <Stack
@@ -68,6 +74,9 @@ export function AppDashboardSidebar({
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
+                fontSize: pxToRem(14),
+                fontWeight: 600,
+                color: "#0AA65D",
               }}
             >
               {ratePercent}%
@@ -75,15 +84,14 @@ export function AppDashboardSidebar({
           </Stack>
 
           <Stack spacing={"16px"}>
-            <StyledRating
-              text="General Information "
-              isInfoCompleted={isGeneralInfoCompleted}
-            />
-
-            <StyledRating
-              text="Pickup  Details"
-              isInfoCompleted={isPickUpDetailsCompleted}
-            />
+            {ratingItems.map((item, index) => (
+              <StyledRating
+                key={index}
+                text={item.text}
+                isInfoCompleted={item.isCompleted}
+                percentage={item.percentage}
+              />
+            ))}
           </Stack>
         </Stack>
       </Stack>
