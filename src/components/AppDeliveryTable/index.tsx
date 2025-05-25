@@ -1,42 +1,58 @@
-import { Box,  FormControl, MenuItem, Pagination, Paper, Select, SelectChangeEvent, Stack, Tab, Tabs, Typography } from "@mui/material";
+import { Box,  Paper, Tab, Tabs} from "@mui/material";
 import { AppDeliveryPanel, AppDeliveryPanelProps } from "../AppDeliveryPanel";
-import { pxToRem } from "../../common/utils";
+import { CustomPagination, CustomPaginationProps } from "../CustomPagination";
+import { EmptyAddDeliveryState, EmptyAddDeliveryStateProps } from "../EmptyAddDeliveryState";
 
-interface AppDeliveryTableProps {
+// Base props that are always required
+interface BaseAppDeliveryTableProps {
   children: React.ReactNode;
-  appDeliveryPanel : AppDeliveryPanelProps;
   handleTabChange: (event: React.SyntheticEvent, newValue: number) => void;
   TabData: { label: string; count: number }[];
-  itemsPerPage: number;
-  handleItemsPerPageChange: (event: SelectChangeEvent<number>, child: React.ReactNode) => void;
-  currentPage: number;
-  handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
-  totalItems: number;
-  totalPages: number;
   currentTab: number;
+  isProfileComplete?: boolean;
 }
 
-export const AppDeliveryTable = ({
-  appDeliveryPanel,
-  children,
-  handleTabChange,
-  TabData,
-  itemsPerPage,
-  handleItemsPerPageChange,
-  currentPage,
-  handlePageChange,
-  totalItems,
-  totalPages,
-  currentTab
-}: AppDeliveryTableProps) => {
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+// Props when showAppDeliveryPanel is true (default)
+interface AppDeliveryTablePropsWithPanel extends BaseAppDeliveryTableProps {
+  showAppDeliveryPanel?: true;
+  appDeliveryPanel: AppDeliveryPanelProps;
+  paginationProps?: CustomPaginationProps;
+  emptyAddDeliveryStateProps?: EmptyAddDeliveryStateProps;
+}
+
+// Props when showAppDeliveryPanel is explicitly false
+interface AppDeliveryTablePropsWithoutPanel extends BaseAppDeliveryTableProps {
+  showAppDeliveryPanel: false;
+  appDeliveryPanel?: never;
+  paginationProps?: CustomPaginationProps;
+  emptyAddDeliveryStateProps?: EmptyAddDeliveryStateProps;
+}
+
+// Union type
+type AppDeliveryTableProps = AppDeliveryTablePropsWithPanel | AppDeliveryTablePropsWithoutPanel;
+
+export const AppDeliveryTable = (props: AppDeliveryTableProps) => {
+  const {
+    children,
+    handleTabChange,
+    TabData,
+    currentTab,
+    isProfileComplete,
+    showAppDeliveryPanel = true,
+    paginationProps,
+    emptyAddDeliveryStateProps
+  } = props;
+
+  // Type guard to access appDeliveryPanel safely
+  const appDeliveryPanel = 'appDeliveryPanel' in props ? props.appDeliveryPanel : undefined;
 
   return (
     <Box width="100%">
-      <AppDeliveryPanel
-        {...appDeliveryPanel}
-      />
+      {showAppDeliveryPanel && appDeliveryPanel && (
+        <AppDeliveryPanel
+          {...appDeliveryPanel}
+        />
+      )}
 
       {/* Tabs */}
       <Paper elevation={0} sx={{ mb: 3, mt:"24px"}} >
@@ -67,72 +83,28 @@ export const AppDeliveryTable = ({
           {TabData.map((tab, index) => (
             <Tab
               key={index}
-              label={`${tab.label} (${tab.count})`}
+              label={`${tab.label} (${isProfileComplete ? tab.count : 0})`}
               sx={{ minWidth: 'auto' }}
             />
           ))}
         </Tabs>
       </Paper>
 
-      {/* Delivery Items */}
+      {!isProfileComplete && emptyAddDeliveryStateProps && (
+        <EmptyAddDeliveryState {...emptyAddDeliveryStateProps}/>
+      )}
+
+      {isProfileComplete && (
+        <Box>
+          {/* Delivery Items */}
           {children}
 
-      {/* Pagination */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Stack direction="row" spacing={2} alignItems="center">
-          <Typography
-            sx={{
-              fontSize: pxToRem(14),
-              fontWeight: 400,
-              color: '#615D5D',
-              lineHeight: '140%',
-            }}
-          >
-            Items per page
-          </Typography>
-
-          <FormControl size="small">
-            <Select
-              value={itemsPerPage}
-              onChange={handleItemsPerPageChange}
-              sx={{ minWidth: 60 }}
-            >
-              <MenuItem value={3}>3</MenuItem>
-              <MenuItem value={5}>5</MenuItem>
-              <MenuItem value={10}>10</MenuItem>
-              <MenuItem value={25}>25</MenuItem>
-            </Select>
-          </FormControl>
-
-          <Typography
-            sx={{
-              fontSize: pxToRem(14),
-              fontWeight: 400,
-              color: '#615D5D',
-              lineHeight: '140%',
-            }}
-          >
-            {startIndex + 1}-{endIndex} of {totalItems} items
-          </Typography>
-        </Stack>
-
-        <Pagination
-          count={totalPages}
-          page={currentPage}
-          onChange={handlePageChange}
-          color="primary"
-          sx={{
-            '& .MuiPaginationItem-root': {
-              '&.Mui-selected': {
-                backgroundColor: '#F98D31',
-                '&:hover': {
-                  backgroundColor: '#ea580c',
-                },
-              },
-            },
-          }}
-        />
-      </Box>
+          {/* Pagination */}
+          {paginationProps && (
+            <CustomPagination {...paginationProps}/>
+          )}
+        </Box>
+      )}
     </Box>
   )
 }

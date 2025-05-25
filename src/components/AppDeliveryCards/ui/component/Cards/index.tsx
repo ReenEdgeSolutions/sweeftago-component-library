@@ -5,12 +5,14 @@ interface CardsProps {
   background: string
   cardLabel: string
   cardValue: string
+  isProfileComplete?: boolean // Make it optional
 }
 
 export const Cards = ({
   background,
   cardLabel,
-  cardValue
+  cardValue,
+  isProfileComplete = false // Provide default value
 }: CardsProps) => {
   return (
     <Stack
@@ -43,7 +45,7 @@ export const Cards = ({
           lineHeight: "120%"
         }}
       >
-        {cardValue}
+        {isProfileComplete ? cardValue : 0}
       </Typography>
     </Stack>
   )

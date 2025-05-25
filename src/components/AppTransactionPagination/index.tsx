@@ -44,8 +44,8 @@ export const AppTransactionPagination = ({
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
 
   const initialValues = {
-    statusFilter: "all",
-    dateSort: "all"
+    statusFilter: "Filter by status",
+    dateSort: "Sort by date"
   };
 
   return (
@@ -73,7 +73,7 @@ export const AppTransactionPagination = ({
                   name="statusFilter"
                   placeholder="Filter by status"
                   dropdownData={statusFilterData.map((item: FilterSortData) => item.value)}
-                  sx={{ width: "194px" }}
+                  sx={{ width: "210px" }}
                   InputProps={{
                     startAdornment: (
                       <StyledImage
@@ -103,7 +103,7 @@ export const AppTransactionPagination = ({
                   name="dateSort"
                   placeholder="Sort by date"
                   dropdownData={dateSortData.map((item: FilterSortData) => item.value)}
-                  sx={{ width: "185px" }}
+                  sx={{ width: "210px" }}
                   InputProps={{
                     startAdornment: (
                       <StyledImage

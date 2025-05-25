@@ -145,6 +145,7 @@ export const DeliveryRequestCard = ({
               backgroundColor: "transparent",
             },
           }}
+          disableArrow
         >
           {'>>'}View Details
         </AppButton>

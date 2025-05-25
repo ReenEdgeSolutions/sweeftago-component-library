@@ -28,7 +28,6 @@ export * from "./AppDashboardLayout";
 export * from "./AppTitleAndLabel";
 export * from "./AppDeliveryCards";
 export * from './AppDeliveryPanel';
-export * from "./AppTab"
 export * from "./DashboardCompleteSetup";
 export * from './DashboardMultiStepTab'
 export * from "./AppDeliveryTable";
