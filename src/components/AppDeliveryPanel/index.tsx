@@ -18,6 +18,7 @@ export interface AppDeliveryPanelProps {
   isTransaction?: boolean
   handleFilterClick?: () => void;
   handleSortClick?: () => void;
+  showRequestsBtn?: boolean;
 }
 
 export const AppDeliveryPanel = ({
@@ -29,7 +30,8 @@ export const AppDeliveryPanel = ({
   showSavedDraft = false,
   isTransaction = false,
   handleFilterClick,
-  handleSortClick
+  handleSortClick,
+  showRequestsBtn = true
 }: AppDeliveryPanelProps) => {
   return(
     <Box>
@@ -91,14 +93,16 @@ export const AppDeliveryPanel = ({
                 View Saved Draft
               </AppButton>
             )}
+            {showRequestsBtn && (
+              <AppButton
+                onClick={handleRequestsBtnClick}
+                disableArrow
+                startIcon={"+"}
+              >
+                {requestsBtnText}
+              </AppButton>
+            )}
 
-            <AppButton
-              onClick={handleRequestsBtnClick}
-              disableArrow
-              startIcon={"+"}
-            >
-              {requestsBtnText}
-            </AppButton>
           </RowStack>
         </RowStack>
       )}

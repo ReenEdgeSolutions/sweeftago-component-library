@@ -13,6 +13,8 @@ export type AppDropdownFieldProps = Omit<
   showRadioSelection?: boolean;
   maxHeight?: number | string;
   enableScroll?: boolean;
+  onDropdownOpen?: () => void;
+  onDropdownClose?: () => void;
 };
 
 export const AppDropdownField = ({
@@ -23,7 +25,9 @@ export const AppDropdownField = ({
   showRadioSelection = false,
   maxHeight = 300,
   enableScroll = false,
-  ...rest
+  onDropdownOpen, // Extract custom props
+  onDropdownClose, // Extract custom props
+  ...rest // Now rest won't contain custom props
 }: AppDropdownFieldProps) => {
   const theme = useTheme();
   // Connect to Formik
@@ -37,7 +41,7 @@ export const AppDropdownField = ({
     <AppTextField
       select
       {...field}
-      {...rest}
+      {...rest} // Safe to spread now - no custom props
       error={hasError}
       helperText={hasError ? meta.error : rest.helperText}
       onChange={(e) => {
@@ -49,6 +53,12 @@ export const AppDropdownField = ({
       SelectProps={{
         IconComponent: KeyboardArrowDown,
         displayEmpty: true,
+        onOpen: () => {
+          onDropdownOpen?.(); // Use extracted prop directly
+        },
+        onClose: () => {
+          onDropdownClose?.(); // Use extracted prop directly
+        },
         renderValue: (selected) => {
           if (!selected || selected === "") {
             return placeholder;
@@ -110,7 +120,7 @@ export const AppDropdownField = ({
             fontStyle: "italic"
           })
         },
-        ...rest.SelectProps
+        ...rest.SelectProps // Safe to spread SelectProps since custom props are filtered out
       }}
     >
       {/* Add empty option for placeholder - appears when nothing is selected */}
