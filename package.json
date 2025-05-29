@@ -1,7 +1,7 @@
 {
   "name": "@reenedgesolutions/component-library",
   "private": false,
-  "version": "1.5.5",
+  "version": "1.6.0",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build && yalc push",
@@ -61,7 +61,7 @@
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/github": "^11.0.1",
     "@types/node": "^20.17.19",
-    "@types/react": "^19",
+    "@types/react": "^19.1.5",
     "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^8.24.1",
     "@typescript-eslint/parser": "^8.24.1",
