@@ -54,7 +54,8 @@ export const ColumnCustomizationModal: React.FC<ColumnCustomizationModalProps> =
               borderBottom: '1px solid #E0E0E0',
               fontSize: pxToRem(16),
               fontWeight: 500,
-              lineHeight: '140%'
+              lineHeight: '140%',
+              pb: "15px"
             }}
           >
             Maximum of {maxVisibleColumns} columns
@@ -125,11 +126,13 @@ export const ColumnCustomizationModal: React.FC<ColumnCustomizationModalProps> =
             sx={{
               borderColor: '#D5D5D5',
               color: 'text.primary',
+              backgroundColor: 'transparent',
               '&:hover': {
                 borderColor: '#F98D31',
-                backgroundColor: 'rgba(249, 141, 49, 0.04)',
+                backgroundColor: 'rgba(249, 142, 49, 0.25)',
               },
             }}
+            fullWidth
           >
             Cancel
           </AppButton>
@@ -144,6 +147,7 @@ export const ColumnCustomizationModal: React.FC<ColumnCustomizationModalProps> =
                 backgroundColor: '#E07B28',
               },
             }}
+            fullWidth
           >
             Proceed
           </AppButton>
