@@ -57,7 +57,7 @@ export const TableBodyBlock: React.FC<TableBodyBlockProps> = ({
           selected={isSelected(row)}
           sx={{
             '&:hover': {
-              backgroundColor: ' #f9f9f9',
+              backgroundColor: '#f9f9f9',
             },
             ...bodyRowStyles,
           }}

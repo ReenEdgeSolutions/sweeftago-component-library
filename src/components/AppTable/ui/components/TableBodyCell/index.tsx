@@ -20,12 +20,6 @@ export const TableBodyCell: React.FC<TableBodyCellProps> = ({
   bodyCellStyles,
 }) => {
   const renderCellValue = () => {
-    // First check if column has a custom render function
-    if (column.render) {
-      console.log("Using custom render for column:", column.id); // Debug log
-      return column.render({ value, row });
-    }
-
     if (column.format) {
       return column.format(value, row);
     }
@@ -57,12 +51,7 @@ export const TableBodyCell: React.FC<TableBodyCellProps> = ({
       align={column.align || 'left'}
       sx={bodyCellStyles}
     >
-      {(() => {
-        const cellValue = renderCellValue();
-        return React.isValidElement(cellValue) || typeof cellValue === 'string' || typeof cellValue === 'number'
-          ? cellValue
-          : null;
-      })()}
+      {renderCellValue()}
     </TableCell>
   );
 };
