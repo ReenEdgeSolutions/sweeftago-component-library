@@ -74,7 +74,7 @@ export const AppTextField = (props: AppTextFieldProps) => {
               color: (theme) => theme.palette.error.main,
               fontSize: { xs: ".875rem", md: ".875rem" },
               fontWeight: 500,
-              pl: "20px"
+              pl: "16px"
             }}
           >
             {errorMessage}

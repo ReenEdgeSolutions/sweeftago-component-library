@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material"
 import { pxToRem } from "../../common/utils"
-import { RowStack } from "src/components/RowStack"
+import { RowStack } from "../RowStack"
 import { StyledImage } from "../StyledImage"
 
 interface LabelAndImgProps {

@@ -51,32 +51,6 @@ export const AppDeliveryPanel = ({
           </Typography>
 
           <RowStack spacing={"24px"} alignItems={"center"}>
-            <AppButton
-              onClick={handleExport}
-              disableArrow
-              startIcon={
-                <StyledImage
-                  src={downloadIcon}
-                  alt="download"
-                  sx={{
-                    width: "24px",
-                    height: "24px",
-                    marginRight: "10px",
-                  }}
-                />
-              }
-              sx={{
-                color: "#615D5D",
-                border: "1px solid #D5D5D5",
-                backgroundColor: "transparent",
-                "&:hover": {
-                  backgroundColor: "transparent",
-                },
-              }}
-            >
-              Export
-            </AppButton>
-
             {showSavedDraft && (
               <AppButton
                 onClick={handleViewSavedDraft}
@@ -103,6 +77,31 @@ export const AppDeliveryPanel = ({
               </AppButton>
             )}
 
+            <AppButton
+              onClick={handleExport}
+              disableArrow
+              startIcon={
+                <StyledImage
+                  src={downloadIcon}
+                  alt="download"
+                  sx={{
+                    width: "24px",
+                    height: "24px",
+                    marginRight: "10px",
+                  }}
+                />
+              }
+              sx={{
+                color: "#615D5D",
+                border: "1px solid #D5D5D5",
+                backgroundColor: "transparent",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
+              Export
+            </AppButton>
           </RowStack>
         </RowStack>
       )}

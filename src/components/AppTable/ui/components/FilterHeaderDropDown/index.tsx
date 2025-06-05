@@ -117,7 +117,7 @@ export const FilterHeaderDropdown: React.FC<FilterHeaderDropdownProps> = ({
             padding: '8px 16px',
             margin: '0 8px',
             borderRadius: '6px',
-            transition: 'background-color 0.2s ease',
+            transition: '0.2s ease',
             textAlign: 'left',
             justifyContent: 'flex-start',
             '&:hover': {

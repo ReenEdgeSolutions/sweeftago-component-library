@@ -9,8 +9,7 @@ export const useTextFieldStyles = ({
     md: "16px 20px !important",
   },
   fontSize = {
-    xs: "14px",
-    md: "16px",
+    xs: "14px"
   },
   error,
 }: Pick<

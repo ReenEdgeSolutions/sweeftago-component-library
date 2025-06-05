@@ -18,7 +18,12 @@ export const AppDeliveryCards = ({
   return(
     <Grid container spacing={"24px"} width="100%">
       {deliverydata.map(item => (
-        <Grid size={{sm: 6, md: 3}} key={item.id}>
+        <Grid
+          size={{
+            sm: 6,
+            md: deliverydata.length === 3 ? 4 : deliverydata.length > 3 ? 3 : 6
+          }}
+          key={item.id}>
           <Cards
             background={item.background}
             cardLabel={item.cardLabel}

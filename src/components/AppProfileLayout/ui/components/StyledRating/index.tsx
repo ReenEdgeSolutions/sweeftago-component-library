@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material"
-import { pxToRem } from "src/common"
-import { RowStack } from "src/components/RowStack"
-import { StyledImage } from "src/components/StyledImage"
+import { pxToRem } from "../../../../../common"
+import { RowStack } from "../../../../RowStack"
+import { StyledImage } from "../../../../StyledImage"
 import checkedIcon from '../../assets/icons/checked.svg'
 
 interface StyledRatingProps {

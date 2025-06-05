@@ -1,119 +1,188 @@
-"use client";
 import {
-  Box,
-  Table,
-  TableContainer,
-  Paper,
-} from '@mui/material';
-
-import {
-  useTableState,
-  useTableSelection,
-  useTableActions,
-  useColumnCustomization,
-} from './common';
-
-import { TableHeader, TableHeaderRow} from './ui/components';
-
-import {
-  TableBodyBlock,
-  ActionsMenu,
- } from './ui/blocks';
+  DataGrid as MuiDataGrid,
+  DataGridProps,
+  GridCallbackDetails,
+  GridColDef,
+  GridPaginationModel,
+  GridSortDirection,
+  MuiEvent,
+  GridRowSelectionModel,
+} from "@mui/x-data-grid";
+import { MouseEvent, useCallback, useEffect, useState } from "react";
+import { Box, SxProps, Theme} from "@mui/material";
+import { pxToRem } from "../../common";
 import { CustomPagination } from '../CustomPagination';
-import { ColumnCustomizationModal } from './ui/blocks';
+import {  DataGridLoader, TableHeader } from './ui/components';
+import {StatusRenderer, FilterHeaderDropdown, StatusType } from "./ui/components";
+import { colorMap } from "../../common";
 
-import { TableColumn, TableAction, TableStyles } from './common';
+export type GridRow = { id: string | number };
 
-export interface AppTableProps {
-  data: Record<string, unknown>[];
-  columns: TableColumn[];
-  actions?: TableAction[];
-  deleteActions?: TableAction[];
-  showCustomizeButton?: boolean;
-  showPagination?: boolean;
-  maxVisibleColumns?: number;
-  defaultItemsPerPage?: number;
+export type GridColSpec<T extends GridRow> = Omit<
+  GridColDef<T>,
+  "field" | "headerName"
+> & {
+  field: Extract<keyof T, string> | string;
+  headerName: string;
+};
+
+export type GridSortSpec<T extends GridRow> = {
+  field: Extract<keyof T, string> | string;
+  sort: GridSortDirection;
+};
+
+export type GridDataFetchResult<T extends GridRow> = {
+  rows: T[];
+  totalRows: number;
+};
+
+export type GridDataFetcher<T extends GridRow> = (
+  page: number,
+  pageSize: number,
+  sortModel: GridSortSpec<T>[]
+) => Promise<GridDataFetchResult<T>>;
+
+export interface AppTableProps<T extends GridRow> extends Omit<
+  DataGridProps,
+  | "columns"
+  | "rows"
+  | "onRowClick"
+  | "paginationModel"
+  | "onPaginationModelChange"
+  | "rowCount"
+  | "paginationMode"
+  | "hideFooter"
+  | "checkboxSelection"
+> {
+  columns: GridColSpec<T>[];
+  fetchData: GridDataFetcher<T>;
   selectable?: boolean;
-  onSelectionChange?: (selectedRows: Record<string, unknown>[]) => void;
-  styles?: TableStyles;
+  showPagination?: boolean;
+  initialPageSize?: number;
+  onSelectionChange?: (selectedRows: T[]) => void;
+  onRowClick?: (
+    row: T,
+    event: MuiEvent<MouseEvent>,
+    details: GridCallbackDetails
+  ) => void;
+  disableRowClick?: boolean;
   emptyMessage?: string;
-  loading?: boolean;
   title?: string;
   handleExport?: () => void;
   showTitle?: boolean;
   showAddRiderButton?: boolean;
   handleRiderAddClick?: () => void;
   handleDeleteAsignRider?: (data: number) => void;
+  showCustomizeButton?: boolean;
+  onCustomizeClick?: () => void;
+  pageSizeOptions?: number[];
+  slots?: DataGridProps['slots'];
+
+  // Custom pagination props - passed from parent
+  paginationModel?: GridPaginationModel;
+  onPaginationModelChange?: (model: GridPaginationModel) => void;
+  itemsPerPage?: number;
+  handleItemsPerPageChange?: (itemsPerPage: number) => void;
+  currentPage?: number;
+  handlePageChange?: (page: number) => void;
+  totalItems?: number;
+  totalPages?: number;
+  sx?: SxProps<Theme>;
 }
 
-export const AppTable: React.FC<AppTableProps> = ({
-  data = [],
-  columns = [],
-  actions = [],
-  deleteActions = [],
-  showCustomizeButton = false,
-  showPagination = true,
-  maxVisibleColumns = 6,
-  defaultItemsPerPage = 5,
+export const AppTable = <T extends GridRow>({
+  columns,
+  fetchData,
   selectable = false,
+  showPagination = true,
+  initialPageSize = 10,
   onSelectionChange,
-  styles = {},
-  emptyMessage = 'No data available',
-  loading = false,
+  onRowClick,
+  disableRowClick = false,
   title,
   handleExport,
   showTitle = true,
-  showAddRiderButton=false,
+  showAddRiderButton = false,
   handleRiderAddClick,
-  handleDeleteAsignRider
-}) => {
-  const {
-    filteredColumns,
-    paginatedData,
-    currentPage,
-    itemsPerPage,
-    totalPages,
-    handlePageChange,
-    handleItemsPerPageChange,
-    handleColumnToggle,
-    visibleColumns,
-  } = useTableState({
-    data,
-    columns,
-    maxVisibleColumns,
-    defaultItemsPerPage,
-    showPagination,
-  });
+  handleDeleteAsignRider,
+  showCustomizeButton = false,
+  onCustomizeClick,
+  pageSizeOptions = [5, 10, 15, 25, 50, 100],
+  sx = {},
+  slots,
+  // slots,
+  // Custom pagination props
+  paginationModel: paginationModelProp,
+  onPaginationModelChange: onPaginationModelChangeProp,
+  itemsPerPage,
+  handleItemsPerPageChange,
+  currentPage,
+  handlePageChange,
+  totalItems,
+  totalPages,
+  ...moreGridProps
+}: AppTableProps<T>) => {
+  const [rows, setRows] = useState<T[]>([]);
+  const [rowCount, setRowCount] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const {
-    handleSelectAll,
-    handleSelectRow,
-    isSelected,
-    isIndeterminate,
-    isAllSelected,
-  } = useTableSelection({ data, onSelectionChange });
+  // internal pagination state as fallback
+  const [internalPaginationModel, setInternalPaginationModel] =
+    useState<GridPaginationModel>({
+      pageSize: initialPageSize,
+      page: 0,
+    });
 
-  const {
-    anchorEl,
-    currentRowIndex,
-    handleActionClick,
-    handleActionClose,
-  } = useTableActions();
+  const paginationModel = paginationModelProp ?? internalPaginationModel;
+  const onPaginationModelChange =
+    onPaginationModelChangeProp ?? setInternalPaginationModel;
 
-  const {
-    customizeAnchor,
-    handleCustomizeClick,
-    handleCustomizeClose,
-  } = useColumnCustomization();
+  // Selection state
+  const [selectionModel, setSelectionModel] = useState<GridRowSelectionModel>([]);
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+const [sortModel, _setSortModel] = useState<GridSortSpec<T>[]>([]);
+
+
+  // Handle row click
+  const rowClickHandler: DataGridProps["onRowClick"] = (
+    params,
+    event,
+    details
+  ) => {
+    if (disableRowClick || !onRowClick) return;
+    onRowClick(params.row, event, details);
+  };
+
+  const handleRowClick = useCallback(rowClickHandler, [onRowClick, disableRowClick]);
+
+  // Handle selection change
+  const handleSelectionChange = useCallback((newSelection: GridRowSelectionModel) => {
+    setSelectionModel(newSelection);
+    if (onSelectionChange) {
+      const selectedRows = rows.filter(row => newSelection.includes(row.id));
+      onSelectionChange(selectedRows);
+    }
+  }, [rows, onSelectionChange]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      const { page, pageSize } = paginationModel;
+      const data = await fetchData(page + 1, pageSize, sortModel);
+      setRows(data.rows);
+      setRowCount(data.totalRows);
+      setLoading(false);
+    };
+    loadData();
+  }, [paginationModel, sortModel, fetchData]);
 
   return (
-    <Box sx={{ width: '100%', ...styles.container }}>
-      {/* Table Header */}
+    <Box sx={{ width: '100%' }}>
       <TableHeader
         title={title}
         showCustomizeButton={showCustomizeButton}
-        onCustomizeClick={handleCustomizeClick}
-        customizeButtonStyles={styles.customizeButton}
+        onCustomizeClick={onCustomizeClick ?? (() => {})}
         handleExport={handleExport}
         showTitle={showTitle}
         showAddRiderButton={showAddRiderButton}
@@ -121,76 +190,117 @@ export const AppTable: React.FC<AppTableProps> = ({
         handleDeleteAsignRider={handleDeleteAsignRider}
       />
 
-      {/* Main Table */}
-      <TableContainer component={Paper} sx={styles.table}>
-        <Table stickyHeader>
-          <TableHeaderRow
-            selectable={selectable}
-            isIndeterminate={isIndeterminate}
-            isAllSelected={isAllSelected}
-            onSelectAll={handleSelectAll}
-            filteredColumns={filteredColumns}
-            hasActions={actions.length > 0}
-            hasDelete={deleteActions.length > 0}
-            headerCellStyles={styles.headerCell}
-          />
-
-          <TableBodyBlock
-            data={paginatedData}
-            filteredColumns={filteredColumns}
-            actions={actions}
-            deleteActions={deleteActions} 
-            selectable={selectable}
-            isSelected={isSelected}
-            onSelectRow={handleSelectRow}
-            onActionClick={handleActionClick}
-            loading={loading}
-            emptyMessage={emptyMessage}
-            bodyRowStyles={styles.bodyRow}
-            bodyCellStyles={styles.bodyCell}
-          />
-        </Table>
-      </TableContainer>
-
-      {/* Pagination */}
-      {showPagination && data.length > 4 && (
-        <Box sx={{ mt: 3,mb: 3, ...styles.pagination }}>
-          <CustomPagination
-            itemsPerPage={itemsPerPage}
-            handleItemsPerPageChange={handleItemsPerPageChange}
-            currentPage={currentPage}
-            handlePageChange={handlePageChange}
-            totalItems={data.length}
-            totalPages={totalPages}
-          />
-        </Box>
-      )}
-
-      {/* Actions Menu */}
-      <ActionsMenu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleActionClose}
-        actions={actions}
-        currentRow={paginatedData[currentRowIndex]}
-        currentRowIndex={currentRowIndex}
-      />
-
-      {/* Column Customization Modal */}
-      <ColumnCustomizationModal
-        open={Boolean(customizeAnchor)}
-        onClose={handleCustomizeClose}
+      <Box sx={{
+        border: "1px solid #D6D4D1",
+        borderRadius: "10px",
+        overflow: "hidden"
+      }}>
+        <MuiDataGrid<T>
         columns={columns}
-        visibleColumns={visibleColumns}
-        maxVisibleColumns={maxVisibleColumns}
-        onColumnToggle={handleColumnToggle}
+        rows={rows}
+        rowCount={rowCount}
+        loading={loading}
+        paginationMode="server"
+        paginationModel={paginationModel}
+        onPaginationModelChange={onPaginationModelChange}
+        hideFooter
+        checkboxSelection={selectable}
+        disableRowSelectionOnClick={disableRowClick}
+        rowSelectionModel={selectionModel}
+        onRowSelectionModelChange={handleSelectionChange}
+        pageSizeOptions={pageSizeOptions}
+        rowHeight={68}
+        onRowClick={handleRowClick}
+        slots={{
+          loadingOverlay: DataGridLoader,
+          ...slots,
+        }}
+        sx={{
+          "&, [class^=MuiDataGrid]": {
+            border: "none",
+            backgroundColor: "inherit",
+          },
+          "& .MuiDataGrid-root": {
+            borderRadius: "10px",
+            boxShadow: "none",
+          },
+          "& .MuiDataGrid-container--top [role=row]": {
+            // backgroundColor: alpha("#828282", .1),
+            borderRadius: "4px"
+          },
+          "& .MuiDataGrid-columnHeader": {
+            backgroundColor: "#E2E2E2",
+            borderBottom: "none !important",
+            height: "68px !important",
+            minHeight: "68px !important",
+          },
+          "& .MuiDataGrid-columnHeaderTitle": {
+            fontWeight: 500,
+            fontSize: pxToRem(16),
+            lineHeight: "24px",
+            fontStyle: 'normal'
+          },
+          "& .MuiDataGrid-row": {
+            backgroundColor: "transparent",
+            borderRadius: "4px",
+            boxShadow: "none",
+            transition: "all 0.4s ease",
+            cursor: disableRowClick ? "default" : "pointer",
+            // "& .MuiDataGrid-row.Mui-selected": {
+            //   backgroundColor: "transparent !important",
+            //   "&:hover": {
+            //     backgroundColor: "#E2E2E2 !important",
+            //   }
+            // },
+            //   "& .MuiDataGrid-row.Mui-selected .MuiDataGrid-cell": {
+            //   backgroundColor: "transparent !important",
+            // },
+            "&:hover": {
+              backgroundColor: "#E2E2E2",
+            },
+            "&:active": {
+              backgroundColor: "transparent"
+            }
+          },
+          "& .MuiDataGrid-cell": {
+            fontWeight: 400,
+            fontSize: pxToRem(16),
+            lineHeight: "140%",
+            fontStyle: 'normal',
+            display: "flex",
+            alignItems: "center",
+          },
+          "& .MuiDataGrid-cellCheckbox, & .MuiDataGrid-columnHeaderCheckbox": {
+          },
+          "& .MuiCheckbox-root": {
+            color: "#D6D4D1", // customize checkbox color
+            "&.Mui-checked": {
+              color: "#F98D31", // checked color
+            },
+          },
+          ...sx,
+        }}
+        {...moreGridProps}
       />
+      </Box>
+
+
+    {/* Custom Pagination - Only show if props are provided */}
+    {showPagination && itemsPerPage && handleItemsPerPageChange && currentPage && handlePageChange && totalItems && totalPages && (
+      <Box sx={{ mt: 3, mb: 3 }}>
+        <CustomPagination
+          itemsPerPage={itemsPerPage}
+          handleItemsPerPageChange={(event) => handleItemsPerPageChange(Number(event.target.value))}
+          currentPage={currentPage}
+          handlePageChange={(_, value) => handlePageChange(value)}
+          totalItems={totalItems}
+          totalPages={totalPages}
+        />
+      </Box>
+      )}
     </Box>
   );
 };
 
-// Export all types and interfaces
-export type { TableColumn, TableAction, TableStyles } from './common';
-
-// Export individual components for advanced usage
-export { StatusRenderer, VerificationRenderer, AvatarRenderer, DateRenderer, FilterHeaderDropdown } from './ui/components';
+export { StatusRenderer, FilterHeaderDropdown, colorMap };
+export type { StatusType };

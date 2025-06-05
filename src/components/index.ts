@@ -42,4 +42,5 @@ export * from './AppTwinBtnSuccess';
 export * from "./AppTable";
 export * from "./EmptyAddDeliveryState"
 export * from "./LogisticsProfileLayout";
-export * from './AppTab'
+export * from './AppTab';
+export * from "./CustomPagination";

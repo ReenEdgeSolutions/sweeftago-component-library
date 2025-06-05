@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material"
-import { pxToRem } from "src/common"
+import { pxToRem } from "../../common"
 import { AppButton } from "../AppButton"
 
 export const DashboardCompleteSetup = ({
