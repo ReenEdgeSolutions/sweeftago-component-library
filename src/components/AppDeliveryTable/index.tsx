@@ -1,7 +1,8 @@
-import { Box,  Paper, Tab, Tabs} from "@mui/material";
+import { Box,  Paper} from "@mui/material";
 import { AppDeliveryPanel, AppDeliveryPanelProps } from "../AppDeliveryPanel";
 import { CustomPagination, CustomPaginationProps } from "../CustomPagination";
 import { EmptyAddDeliveryState, EmptyAddDeliveryStateProps } from "../EmptyAddDeliveryState";
+import { AppTab } from "../AppTab";
 
 // Base props that are always required
 interface BaseAppDeliveryTableProps {
@@ -56,38 +57,11 @@ export const AppDeliveryTable = (props: AppDeliveryTableProps) => {
 
       {/* Tabs */}
       <Paper elevation={0} sx={{ mb: 3, mt:"24px"}} >
-        <Tabs
-          value={currentTab}
-          onChange={handleTabChange}
-          aria-label="delivery tabs"
-          variant="fullWidth"
-          sx={{
-            bgcolor: '#F0F0F0',
-            borderRadius: "10px",
-            '& .MuiTab-root': {
-              m: 0.5,
-              borderRadius: "10px",
-              minHeight: '40px',
-              color: '#000000' // default color
-            },
-            '& .MuiTab-root.Mui-selected': {
-              bgcolor: '#192E38',
-              color: '#ffffff', // active tab text color
-              textDecoration: 'none',
-              '&:hover': {
-                textDecoration: 'none',
-              }
-            }
-          }}
-        >
-          {TabData.map((tab, index) => (
-            <Tab
-              key={index}
-              label={`${tab.label} (${isProfileComplete ? tab.count : 0})`}
-              sx={{ minWidth: 'auto' }}
-            />
-          ))}
-        </Tabs>
+        <AppTab
+          currentTab={currentTab}
+          handleTabChange={handleTabChange}
+          TabData={TabData}
+        />
       </Paper>
 
       {!isProfileComplete && emptyAddDeliveryStateProps && (

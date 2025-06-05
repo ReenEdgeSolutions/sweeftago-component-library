@@ -1,0 +1,15 @@
+import { StatusType } from "src/components/AppTable/ui/components";
+
+export const colorMap: Record<StatusType, string> = {
+  Unpaid: '#F93232',
+  Pending: '#877615',
+  Paid: '#37BD57',
+  Active: '#4CAF50',
+  Inactive: '#9E9E9E',
+  Intransit: '#11B0FF',
+  Delivered: '#37BD57',
+  Cancelled: '#F93232',
+  Scheduled: '#FF9800',
+  Ongoing: '#11B0FF',
+  New: '#877615',
+};

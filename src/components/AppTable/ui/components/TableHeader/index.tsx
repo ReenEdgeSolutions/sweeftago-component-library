@@ -2,7 +2,6 @@ import React from 'react';
 import {Typography,Stack, Box, IconButton } from '@mui/material';
 import { Settings } from '@mui/icons-material';
 
-import { SxProps, Theme } from '@mui/material';
 import { AppButton } from '../../../../AppButton';
 import { RowStack } from '../../../../RowStack';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
@@ -15,7 +14,6 @@ interface TableHeaderProps {
   showCustomizeButton: boolean;
   onCustomizeClick: (event: React.MouseEvent<HTMLElement>) => void;
   handleExport?: () => void;
-  customizeButtonStyles?: SxProps<Theme>;
   showTitle?: boolean;
   showAddRiderButton?: boolean;
   handleRiderAddClick?: () => void;
@@ -26,7 +24,6 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
   title = "All Deliveries",
   showCustomizeButton,
   onCustomizeClick,
-  customizeButtonStyles,
   handleExport,
   showTitle = false,
   showAddRiderButton= false,
@@ -81,9 +78,8 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
                   '&:hover': {
                     backgroundColor: 'transparent',
                     borderColor: '#D5D5D5',
-                    color: ' #615D5D',
+                    color: '#615D5D',
                   },
-                  ...customizeButtonStyles,
                 }}
               >
                 Customize table

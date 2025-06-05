@@ -1,18 +1,24 @@
 import { Box, Typography, FormControlLabel, Checkbox, Stack} from '@mui/material';
 import { AppModal } from '../../../../AppModal';
-import { TableColumn } from '../../../common';
 import { pxToRem } from 'src/common';
 import { AppButton } from 'src/components/AppButton';
 import { RowStack } from 'src/components/RowStack';
 
+interface Column {
+  id: string;
+  label: string;
+}
+
 interface ColumnCustomizationModalProps {
-  columns: TableColumn[];
   visibleColumns: string[];
   maxVisibleColumns: number;
   onColumnToggle: (columnId: string) => void;
   open: boolean;
   onClose: () => void;
+  columns: Column[];
 }
+
+
 
 export const ColumnCustomizationModal: React.FC<ColumnCustomizationModalProps> = ({
   columns,
@@ -62,52 +68,52 @@ export const ColumnCustomizationModal: React.FC<ColumnCustomizationModalProps> =
           </Typography>
 
           <Stack spacing={2}>
-            {columns.map((column) => {
-              const isChecked = visibleColumns.includes(column.id);
-              const isDisabled = !isChecked && visibleColumns.length >= maxVisibleColumns;
+            {columns.map((column: Column) => {
+              const isChecked: boolean = visibleColumns.includes(column.id);
+              const isDisabled: boolean = !isChecked && visibleColumns.length >= maxVisibleColumns;
 
               return (
-                <FormControlLabel
-                  key={column.id}
-                  control={
-                    <Checkbox
-                      checked={isChecked}
-                      onChange={() => handleColumnToggle(column.id)}
-                      disabled={isDisabled}
-                      sx={{
-                        color: '#D5D5D5',
-                        '&.Mui-checked': {
-                          color: '#F98D31',
-                        },
-                        '&.Mui-disabled': {
-                          color: '#E0E0E0',
-                        },
-                      }}
-                    />
-                  }
-                  label={
-                    <Typography
-                      component="span"
-                      sx={{
-                        color: "#615D5D",
-                        fontWeight: 400,
-                        fontSize: pxToRem(16),
-                        lineHeight: '140%',
-                      }}
-                    >
-                      {column.label}
-                    </Typography>
-                  }
+              <FormControlLabel
+                key={column.id}
+                control={
+                <Checkbox
+                  checked={isChecked}
+                  onChange={() => handleColumnToggle(column.id)}
+                  disabled={isDisabled}
                   sx={{
-                    margin: 0,
-                    cursor: isDisabled ? 'not-allowed' : 'pointer',
-                    p: 1,
-                    borderRadius: '8px',
-                    '&:hover': {
-                      backgroundColor: isDisabled ? 'transparent' : 'rgba(249, 141, 49, 0.04)',
-                    },
+                  color: '#D5D5D5',
+                  '&.Mui-checked': {
+                    color: '#F98D31',
+                  },
+                  '&.Mui-disabled': {
+                    color: '#E0E0E0',
+                  },
                   }}
                 />
+                }
+                label={
+                <Typography
+                  component="span"
+                  sx={{
+                  color: "#615D5D",
+                  fontWeight: 400,
+                  fontSize: pxToRem(16),
+                  lineHeight: '140%',
+                  }}
+                >
+                  {column.label}
+                </Typography>
+                }
+                sx={{
+                margin: 0,
+                cursor: isDisabled ? 'not-allowed' : 'pointer',
+                p: 1,
+                borderRadius: '8px',
+                '&:hover': {
+                  backgroundColor: isDisabled ? 'transparent' : 'rgba(249, 141, 49, 0.04)',
+                },
+                }}
+              />
               );
             })}
           </Stack>
@@ -125,7 +131,6 @@ export const ColumnCustomizationModal: React.FC<ColumnCustomizationModalProps> =
             onClick={onClose}
             sx={{
               borderColor: '#D5D5D5',
-              color: 'text.primary',
               backgroundColor: 'transparent',
               '&:hover': {
                 borderColor: '#F98D31',

@@ -1,11 +1,12 @@
 "use client"
-import { AppDashboardLayout, AppDeliveryCards, AppDeliveryPanel, AppTab, AppTitleAndLabel } from "@component-library"
+import { AppDashboardLayout, AppDeliveryCards, AppDeliveryPanel, AppTitleAndLabel } from "@component-library"
 import homeIcon from "./ui/assets/icons/home.svg"
 import earnings from "./ui/assets/icons/money.svg";
 import route from "./ui/assets/icons/location.svg"
 import support from "./ui/assets/icons/help-center.png"
 import profileImg from "./ui/assets/icons/profile.png"
 import { Box, Stack } from "@mui/material";
+import { LogisticsFinancials } from "../LogisticsFinancials";
 
 const sidebarLinks = [
   {
@@ -102,7 +103,7 @@ export const DashboardLayout = () => {
             showSavedDraft={true}
           />
 
-          <AppTab/>
+          <LogisticsFinancials/>
         </Stack>
       </Box>
     </AppDashboardLayout>

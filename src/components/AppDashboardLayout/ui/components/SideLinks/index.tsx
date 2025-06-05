@@ -1,3 +1,4 @@
+"use client"
 import { IconButton, Typography } from "@mui/material";
 import { StaticImageData } from "next/image";
 import { usePathname } from "next/navigation";
@@ -43,7 +44,7 @@ export function SideLinks({ sideIcon, sideLink, link, isSideBarOpen }: SideLinks
           sx={{
             padding: 0,
             "& img": {
-              width: "20px",
+              width: isSideBarOpen ? "20px" : "30px",
               height: "auto",
               filter: isActive
                 ? "invert(56%) sepia(76%) saturate(1690%) hue-rotate(346deg) brightness(95%) contrast(91%)" // for #F05A25
@@ -55,11 +56,9 @@ export function SideLinks({ sideIcon, sideLink, link, isSideBarOpen }: SideLinks
           <StyledImage
             src={sideIcon}
             alt="side-icons"
-            width={24}
-            height={24}
             sx={{
-              width: "24px",
-              height: "24px",
+              width: "30px",
+              height: "30px",
             }}
           />
         </IconButton>

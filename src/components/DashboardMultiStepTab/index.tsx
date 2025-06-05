@@ -18,6 +18,7 @@ interface DashboardMultiStepTabProps {
     id: number;
     label: string;
   }[];
+  showTitleAndDesc?: boolean;
 }
 
 export const DashboardMultiStepTab = ({
@@ -26,6 +27,7 @@ export const DashboardMultiStepTab = ({
   completedSteps,
   handleTabChange,
   tabTitles,
+  showTitleAndDesc = true
 }: DashboardMultiStepTabProps) => {
 
   return (
@@ -42,10 +44,12 @@ export const DashboardMultiStepTab = ({
         backgroundColor: 'white',
       }}
     >
-      <AppTitleAndDesc
-        title="Almost There — Let's Get You Set Up!"
-        description="Just a few quick steps to help you start requesting deliveries on WhatsApp"
-      />
+      {showTitleAndDesc && (
+        <AppTitleAndDesc
+          title="Almost There — Let's Get You Set Up!"
+          description="Just a few quick steps to help you start requesting deliveries on WhatsApp"
+        />
+      )}
 
       <Grid container spacing={2}>
         {/* Left-side Stepper */}
@@ -59,9 +63,7 @@ export const DashboardMultiStepTab = ({
             />
           </Box>
         </Grid>
-
-
-
+        
         {/* Right-side Content */}
         <Grid size={{xs: 12, md: 7}}>
           <Stack spacing="24px">

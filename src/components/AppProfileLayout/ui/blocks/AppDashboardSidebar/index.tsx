@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { AppLogo } from "../../../../AppLogo";
 import { StyledRating } from "../../components";
-import { pxToRem } from "src/common";
+import { pxToRem } from "../../../../../common";
 
 // Define the rating item interface
 export interface RatingItem {
