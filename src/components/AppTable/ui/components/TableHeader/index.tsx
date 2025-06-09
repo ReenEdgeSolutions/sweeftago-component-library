@@ -7,7 +7,7 @@ import { RowStack } from '../../../../RowStack';
 import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
 import { pxToRem } from '../../../../../common';
 import { StyledImage } from '../../../../../components';
-import deleteIcon from '../../assets/icon/delete.svg'
+import deleteIcon from '../../assets/icon/delete.svg';
 
 interface TableHeaderProps {
   title?: string;
@@ -18,6 +18,7 @@ interface TableHeaderProps {
   showAddRiderButton?: boolean;
   handleRiderAddClick?: () => void;
   handleDeleteAsignRider?: (data :number) => void;
+  disabledCustomisedButton?: boolean
 }
 
 export const TableHeader: React.FC<TableHeaderProps> = ({
@@ -28,7 +29,8 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
   showTitle = false,
   showAddRiderButton= false,
   handleRiderAddClick,
-  handleDeleteAsignRider
+  handleDeleteAsignRider,
+  disabledCustomisedButton = false
 }) => {
   return (
     <Box width="100%" mb="24px">
@@ -65,26 +67,28 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
               Export
             </AppButton>
 
-            <Stack direction="row" spacing={1}>
-              <AppButton
-                variant="outlined"
-                startIcon={<Settings />}
-                onClick={onCustomizeClick}
-                disableArrow
-                sx={{
-                  borderColor: '#D5D5D5',
-                  color: '#615D5D',
-                  backgroundColor: 'transparent',
-                  '&:hover': {
-                    backgroundColor: 'transparent',
+            {!disabledCustomisedButton && (
+              <Stack direction="row" spacing={1}>
+                <AppButton
+                  variant="outlined"
+                  startIcon={<Settings />}
+                  onClick={onCustomizeClick}
+                  disableArrow
+                  sx={{
                     borderColor: '#D5D5D5',
                     color: '#615D5D',
-                  },
-                }}
-              >
-                Customize table
-              </AppButton>
-            </Stack>
+                    backgroundColor: 'transparent',
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                      borderColor: '#D5D5D5',
+                      color: '#615D5D',
+                    },
+                  }}
+                >
+                  Customize table
+                </AppButton>
+              </Stack>
+            )}
           </RowStack>
         </RowStack>
       )}

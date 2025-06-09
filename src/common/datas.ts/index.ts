@@ -1,4 +1,4 @@
-import { StatusType } from "src/components/AppTable/ui/components";
+import { StatusType } from "../../components/AppTable";
 
 export const colorMap: Record<StatusType, string> = {
   Unpaid: '#F93232',

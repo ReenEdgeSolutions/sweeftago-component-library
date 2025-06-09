@@ -81,6 +81,8 @@ export const DashboardLayout = () => {
       }}
       sidebarProps={{
         links: sidebarLinks,
+        handleLogout: () => console.log("logout"),
+        handleDeactivateAccount: () => console.log("deactivate account"),
       }}
     >
       <Box>

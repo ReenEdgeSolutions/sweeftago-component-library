@@ -9,11 +9,11 @@ import {
   GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import { MouseEvent, useCallback, useEffect, useState } from "react";
-import { Box, SxProps, Theme} from "@mui/material";
+import { Box, SxProps, Theme, Typography } from "@mui/material";
 import { pxToRem } from "../../common";
 import { CustomPagination } from '../CustomPagination';
-import {  DataGridLoader, TableHeader } from './ui/components';
-import {StatusRenderer, FilterHeaderDropdown, StatusType } from "./ui/components";
+import { DataGridLoader, TableHeader } from './ui/components';
+import { StatusRenderer, FilterHeaderDropdown, StatusType } from "./ui/components";
 import { colorMap } from "../../common";
 
 export type GridRow = { id: string | number };
@@ -41,6 +41,46 @@ export type GridDataFetcher<T extends GridRow> = (
   pageSize: number,
   sortModel: GridSortSpec<T>[]
 ) => Promise<GridDataFetchResult<T>>;
+
+// Custom NoRowsOverlay component
+const CustomNoRowsOverlay = () => {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        minHeight: 200,
+        textAlign: 'center',
+        py: 4,
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: pxToRem(16),
+          fontWeight: 400,
+          color: '#797979',
+          lineHeight: '140%',
+        }}
+      >
+        No information available
+      </Typography>
+      <Typography
+        sx={{
+          fontSize: pxToRem(14),
+          fontWeight: 400,
+          color: '#B0B0B0',
+          lineHeight: '140%',
+          mt: 1,
+        }}
+      >
+        Information will be shown here once available
+      </Typography>
+    </Box>
+  );
+};
 
 export interface AppTableProps<T extends GridRow> extends Omit<
   DataGridProps,
@@ -74,6 +114,7 @@ export interface AppTableProps<T extends GridRow> extends Omit<
   handleRiderAddClick?: () => void;
   handleDeleteAsignRider?: (data: number) => void;
   showCustomizeButton?: boolean;
+  disabledCustomisedButton?: boolean
   onCustomizeClick?: () => void;
   pageSizeOptions?: number[];
   slots?: DataGridProps['slots'];
@@ -107,10 +148,10 @@ export const AppTable = <T extends GridRow>({
   handleDeleteAsignRider,
   showCustomizeButton = false,
   onCustomizeClick,
+  disabledCustomisedButton = false,
   pageSizeOptions = [5, 10, 15, 25, 50, 100],
   sx = {},
   slots,
-  // slots,
   // Custom pagination props
   paginationModel: paginationModelProp,
   onPaginationModelChange: onPaginationModelChangeProp,
@@ -126,7 +167,6 @@ export const AppTable = <T extends GridRow>({
   const [rowCount, setRowCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
 
-  // internal pagination state as fallback
   const [internalPaginationModel, setInternalPaginationModel] =
     useState<GridPaginationModel>({
       pageSize: initialPageSize,
@@ -141,8 +181,7 @@ export const AppTable = <T extends GridRow>({
   const [selectionModel, setSelectionModel] = useState<GridRowSelectionModel>([]);
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const [sortModel, _setSortModel] = useState<GridSortSpec<T>[]>([]);
-
+  const [sortModel, _setSortModel] = useState<GridSortSpec<T>[]>([]);
 
   // Handle row click
   const rowClickHandler: DataGridProps["onRowClick"] = (
@@ -178,7 +217,7 @@ const [sortModel, _setSortModel] = useState<GridSortSpec<T>[]>([]);
   }, [paginationModel, sortModel, fetchData]);
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', overflow: "hidden" }}>
       <TableHeader
         title={title}
         showCustomizeButton={showCustomizeButton}
@@ -188,6 +227,7 @@ const [sortModel, _setSortModel] = useState<GridSortSpec<T>[]>([]);
         showAddRiderButton={showAddRiderButton}
         handleRiderAddClick={handleRiderAddClick}
         handleDeleteAsignRider={handleDeleteAsignRider}
+        disabledCustomisedButton={disabledCustomisedButton}
       />
 
       <Box sx={{
@@ -196,107 +236,108 @@ const [sortModel, _setSortModel] = useState<GridSortSpec<T>[]>([]);
         overflow: "hidden"
       }}>
         <MuiDataGrid<T>
-        columns={columns}
-        rows={rows}
-        rowCount={rowCount}
-        loading={loading}
-        paginationMode="server"
-        paginationModel={paginationModel}
-        onPaginationModelChange={onPaginationModelChange}
-        hideFooter
-        checkboxSelection={selectable}
-        disableRowSelectionOnClick={disableRowClick}
-        rowSelectionModel={selectionModel}
-        onRowSelectionModelChange={handleSelectionChange}
-        pageSizeOptions={pageSizeOptions}
-        rowHeight={68}
-        onRowClick={handleRowClick}
-        slots={{
-          loadingOverlay: DataGridLoader,
-          ...slots,
-        }}
-        sx={{
-          "&, [class^=MuiDataGrid]": {
-            border: "none",
-            backgroundColor: "inherit",
-          },
-          "& .MuiDataGrid-root": {
-            borderRadius: "10px",
-            boxShadow: "none",
-          },
-          "& .MuiDataGrid-container--top [role=row]": {
-            // backgroundColor: alpha("#828282", .1),
-            borderRadius: "4px"
-          },
-          "& .MuiDataGrid-columnHeader": {
-            backgroundColor: "#E2E2E2",
-            borderBottom: "none !important",
-            height: "68px !important",
-            minHeight: "68px !important",
-          },
-          "& .MuiDataGrid-columnHeaderTitle": {
-            fontWeight: 500,
-            fontSize: pxToRem(16),
-            lineHeight: "24px",
-            fontStyle: 'normal'
-          },
-          "& .MuiDataGrid-row": {
-            backgroundColor: "transparent",
-            borderRadius: "4px",
-            boxShadow: "none",
-            transition: "all 0.4s ease",
-            cursor: disableRowClick ? "default" : "pointer",
-            // "& .MuiDataGrid-row.Mui-selected": {
-            //   backgroundColor: "transparent !important",
-            //   "&:hover": {
-            //     backgroundColor: "#E2E2E2 !important",
-            //   }
-            // },
-            //   "& .MuiDataGrid-row.Mui-selected .MuiDataGrid-cell": {
-            //   backgroundColor: "transparent !important",
-            // },
-            "&:hover": {
+          columns={columns}
+          rows={rows}
+          rowCount={rowCount}
+          loading={loading}
+          paginationMode="server"
+          paginationModel={paginationModel}
+          onPaginationModelChange={onPaginationModelChange}
+          hideFooter
+          hideFooterSelectedRowCount
+          hideFooterPagination
+          checkboxSelection={selectable}
+          disableRowSelectionOnClick={disableRowClick}
+          rowSelectionModel={selectionModel}
+          onRowSelectionModelChange={handleSelectionChange}
+          pageSizeOptions={pageSizeOptions}
+          rowHeight={68}
+          onRowClick={handleRowClick}
+          slots={{
+            loadingOverlay: DataGridLoader,
+            noRowsOverlay: CustomNoRowsOverlay,
+            ...slots,
+          }}
+          sx={{
+            "&, [class^=MuiDataGrid]": {
+              border: "none",
+              backgroundColor: "inherit",
+            },
+            "& .MuiDataGrid-root": {
+              borderRadius: "10px",
+              boxShadow: "none",
+            },
+            "& .MuiDataGrid-container--top [role=row]": {
+              borderRadius: "4px"
+            },
+            "& .MuiDataGrid-columnHeader": {
               backgroundColor: "#E2E2E2",
+              borderBottom: "none !important",
+              height: "68px !important",
+              minHeight: "68px !important",
             },
-            "&:active": {
-              backgroundColor: "transparent"
-            }
-          },
-          "& .MuiDataGrid-cell": {
-            fontWeight: 400,
-            fontSize: pxToRem(16),
-            lineHeight: "140%",
-            fontStyle: 'normal',
-            display: "flex",
-            alignItems: "center",
-          },
-          "& .MuiDataGrid-cellCheckbox, & .MuiDataGrid-columnHeaderCheckbox": {
-          },
-          "& .MuiCheckbox-root": {
-            color: "#D6D4D1", // customize checkbox color
-            "&.Mui-checked": {
-              color: "#F98D31", // checked color
+            "& .MuiDataGrid-columnHeaderTitle": {
+              fontWeight: 500,
+              fontSize: pxToRem(16),
+              lineHeight: "24px",
+              fontStyle: 'normal'
             },
-          },
-          ...sx,
-        }}
-        {...moreGridProps}
-      />
-      </Box>
-
-
-    {/* Custom Pagination - Only show if props are provided */}
-    {showPagination && itemsPerPage && handleItemsPerPageChange && currentPage && handlePageChange && totalItems && totalPages && (
-      <Box sx={{ mt: 3, mb: 3 }}>
-        <CustomPagination
-          itemsPerPage={itemsPerPage}
-          handleItemsPerPageChange={(event) => handleItemsPerPageChange(Number(event.target.value))}
-          currentPage={currentPage}
-          handlePageChange={(_, value) => handlePageChange(value)}
-          totalItems={totalItems}
-          totalPages={totalPages}
+            "& .MuiDataGrid-row": {
+              backgroundColor: "transparent",
+              borderRadius: "4px",
+              boxShadow: "none",
+              transition: "all 0.4s ease",
+              cursor: disableRowClick ? "default" : "pointer",
+              "&:hover": {
+                backgroundColor: "#E2E2E2",
+              },
+              "&:active": {
+                backgroundColor: "transparent"
+              }
+            },
+            "& .MuiDataGrid-cell": {
+              fontWeight: 400,
+              fontSize: pxToRem(16),
+              lineHeight: "140%",
+              fontStyle: 'normal',
+              display: "flex",
+              alignItems: "center",
+            },
+            "& .MuiCheckbox-root": {
+              color: "#D6D4D1",
+              "&.Mui-checked": {
+                color: "#F98D31",
+              },
+            },
+            // Hide any footer elements that might show row count
+            "& .MuiDataGrid-footerContainer": {
+              display: "none !important",
+            },
+            "& .MuiDataGrid-selectedRowCount": {
+              display: "none !important",
+            },
+            // Hide any overlay text/numbers that might appear
+            "& .MuiDataGrid-overlay": {
+              backgroundColor: "transparent",
+            },
+            ...sx,
+          }}
+          {...moreGridProps}
         />
       </Box>
+
+      {/* Custom Pagination - Only show if props are provided */}
+      {showPagination && itemsPerPage && handleItemsPerPageChange && currentPage && handlePageChange && totalItems && totalPages && (
+        <Box sx={{ mt: 3, mb: 3 }}>
+          <CustomPagination
+            itemsPerPage={itemsPerPage}
+            handleItemsPerPageChange={(event) => handleItemsPerPageChange(Number(event.target.value))}
+            currentPage={currentPage}
+            handlePageChange={(_, value) => handlePageChange(value)}
+            totalItems={totalItems}
+            totalPages={totalPages}
+          />
+        </Box>
       )}
     </Box>
   );
