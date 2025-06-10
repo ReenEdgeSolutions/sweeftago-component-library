@@ -17,8 +17,8 @@ export const Cards = ({
   return (
     <Stack
       sx={{
-        p: "16px 24px",
-        gap: "24px",
+        p: {xs: "12px" ,sm: "16px 24px"},
+        gap: {xs: "8px", sm:"16px"} ,
         height: "100%",
         background: background,
         borderRadius: "10px",

@@ -8,15 +8,29 @@ interface FilterHeaderDropdownProps {
   options: string[];
   selectedValue: string;
   onSelectionChange: (value: string) => void;
+  onValueClick?: (event: React.MouseEvent<HTMLElement>, value: string) => void;
 }
 
 export const FilterHeaderDropdown: React.FC<FilterHeaderDropdownProps> = ({
   label,
   options,
-  onSelectionChange
+  selectedValue,
+  onSelectionChange,
+  onValueClick
 }) => {
   const handleChange = (event: SelectChangeEvent<string>) => {
     onSelectionChange(event.target.value);
+  };
+
+  const handleMenuItemClick = (event: React.MouseEvent<HTMLElement>, option: string) => {
+    // Prevent the select from closing immediately
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Call the onValueClick if provided
+    if (onValueClick) {
+      onValueClick(event, option);
+    }
   };
 
   return (
@@ -26,7 +40,7 @@ export const FilterHeaderDropdown: React.FC<FilterHeaderDropdownProps> = ({
       </Typography>
       <Box sx={{ minWidth: 20, position: 'relative', marginLeft: '10px' }}>
         <Select
-          value=""
+          value={selectedValue}
           onChange={handleChange}
           displayEmpty
           variant="standard"
@@ -112,33 +126,38 @@ export const FilterHeaderDropdown: React.FC<FilterHeaderDropdownProps> = ({
             },
           }}
         >
-          <MenuItem value="All" sx={{
-            fontSize: pxToRem(14),
-            padding: '8px 16px',
-            margin: '0 8px',
-            borderRadius: '6px',
-            transition: '0.2s ease',
-            textAlign: 'left',
-            justifyContent: 'flex-start',
-            '&:hover': {
-              backgroundColor: 'rgba(0, 0, 0, 0.04)',
-            },
-            '&.Mui-selected': {
-              backgroundColor: 'rgba(249, 141, 49, 0.1)',
+          <MenuItem
+            value="All"
+            onClick={(event) => handleMenuItemClick(event, "All")}
+            sx={{
+              fontSize: pxToRem(14),
+              padding: '8px 16px',
+              margin: '0 8px',
+              borderRadius: '6px',
+              transition: '0.2s ease',
+              textAlign: 'left',
+              justifyContent: 'flex-start',
               '&:hover': {
-                backgroundColor: 'rgba(249, 141, 49, 0.15)',
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
               },
-            },
-            '&.Mui-focusVisible': {
-              backgroundColor: 'rgba(0, 0, 0, 0.04)',
-            },
-          }}>
+              '&.Mui-selected': {
+                backgroundColor: 'rgba(249, 141, 49, 0.1)',
+                '&:hover': {
+                  backgroundColor: 'rgba(249, 141, 49, 0.15)',
+                },
+              },
+              '&.Mui-focusVisible': {
+                backgroundColor: 'rgba(0, 0, 0, 0.04)',
+              },
+            }}
+          >
             All
           </MenuItem>
           {options.map((option) => (
             <MenuItem
               key={option}
               value={option}
+              onClick={(event) => handleMenuItemClick(event, option)}
               sx={{
                 fontSize: pxToRem(14),
                 padding: '8px 16px',

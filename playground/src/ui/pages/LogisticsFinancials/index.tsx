@@ -9,6 +9,7 @@ import {
   AppDeliveryCards,
   AppButton,
   StyledImage,
+  StatusType,
 } from "@component-library";
 import { deliveryData6, financialData } from "./ui/common/data";
 import { Box, Stack, Typography } from "@mui/material";
@@ -90,7 +91,7 @@ export const LogisticsFinancials = () => {
       headerName: "Status",
       flex: 1,
       minWidth: 150,
-      renderCell: (params) => <StatusRenderer status={params.value as string} />,
+      renderCell: (params) => <StatusRenderer status={params.value as StatusType | undefined} />,
     },
   ];
 

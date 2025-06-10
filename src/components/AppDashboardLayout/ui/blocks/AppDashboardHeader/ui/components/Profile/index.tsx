@@ -10,13 +10,13 @@ export interface ProfileProps {
   userMail: string;
   userImg?: string | StaticImageData;
   profileClick: () => void;
-  profileRef?: React.Ref<HTMLDivElement>;
+  profileRef?: React.RefObject<HTMLDivElement> | ((instance: HTMLDivElement | null) => void);
 }
 
 export const Profile = ({ profileClick, userImg, userMail, lastName, firstName, profileRef }: ProfileProps) => {
   return (
     <RowStack
-      ref={profileRef}
+      ref={profileRef || null}
       spacing={1}
       onClick={profileClick}
       sx={{

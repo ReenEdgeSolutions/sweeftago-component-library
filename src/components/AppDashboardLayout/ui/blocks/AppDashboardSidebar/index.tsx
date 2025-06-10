@@ -1,13 +1,25 @@
-import { CSSObject, Divider, Stack, Theme,useTheme } from "@mui/material";
+import { CSSObject, Divider, Stack, Theme, useTheme, useMediaQuery, } from "@mui/material";
 import { AppLogo } from "../../../../AppLogo";
 import { RowStack } from "../../../../RowStack";
 import logoIcon from "./ui/assets/icons/logo-icon.png";
 import { SideLinks, SideLinksProps } from "../../components";
 import { StyledImage } from "../../../../StyledImage";
+import { MobileLogoutAndDeactivate, MobileProfileHeader } from "./ui/components";
 
 export type AppDashboardSidebarProps = {
   links?: SideLinksProps[];
   open: boolean;
+  // Mobile drawer mode
+  isMobileDrawer?: boolean;
+  onMobileClose?: () => void;
+  mobileProfileProps?: {
+    firstName: string;
+    lastName: string;
+    userMail?: string;
+    profileClick?: () => void;
+  };
+  handleLogout: () => void;
+  handleDeactivateAccount: () => void;
 };
 
 export const SIDEBAR_WIDTH = 320;
@@ -34,71 +46,95 @@ const closedMixin = (theme: Theme): CSSObject => ({
 export function AppDashboardSidebar({
   links,
   open,
+  isMobileDrawer = false,
+  onMobileClose,
+  mobileProfileProps,
+  handleLogout,
+  handleDeactivateAccount,
 }: AppDashboardSidebarProps) {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const sidebarLinks = links || [];
-
-
-
   return (
     <Stack
-      justifyContent="space-between"
+      spacing="40px"
       sx={{
         position: "relative",
         overflowY: "auto",
-        height: "100vh",
-        maxHeight: "100vh",
-        // paddingY: "20px",
-        // paddingLeft: open ? "32px" : "10px",
-        // paddingRight: open ? "32px" : "10px",
+        height: isMobileDrawer ? "100%" : "100vh",
+        maxHeight: isMobileDrawer ? "100%" : "100vh",
         paddingY: "40px",
         paddingLeft: "24px",
         paddingRight: "20px",
         '::-webkit-scrollbar': { display: 'none' },
         scrollbarWidth: 'none',
-        maxWidth: SIDEBAR_WIDTH,
-        borderRight: "1px solid #E1E1E1",
+        maxWidth: isMobileDrawer ? "100%" : SIDEBAR_WIDTH,
+        borderRight: isMobileDrawer ? "none" : "1px solid #E1E1E1",
         background: "#F9F9F9",
         width: "100%",
         zIndex: theme.zIndex.appBar + 1,
-        ...(open && {
-          ...openedMixin(theme),
+        // Apply desktop transitions only when not mobile drawer
+        ...(!isMobileDrawer && !isMobile && {
+          ...(open && {
+            ...openedMixin(theme),
+          }),
+          ...(!open && {
+            ...closedMixin(theme),
+          }),
         }),
-        ...(!open && {
-          ...closedMixin(theme),
-        }),
+        // Mobile styles - hide on mobile unless it's a drawer
+        display: isMobile && !isMobileDrawer ? 'none' : 'flex',
       }}
       divider={<Divider orientation="horizontal" flexItem />}
     >
       {/* Top section */}
       <Stack>
-        {/* Logo */}
-        <RowStack sx={{ width: '100%'}} justifyContent={open ? "flex-start" : "center"} mb={"30px"}>
-          {open ? (
-            <AppLogo sx={{width: "214px", height: "71.33px"}}/>
-          ) : (
-            <StyledImage
-              src={logoIcon}
-              alt="Logo"
-              sx={{ width: "35px", height: "35px"}}
-            />
-          )}
-        </RowStack>
+        {/* Mobile Profile Header - only show in mobile drawer mode */}
+        {isMobileDrawer && mobileProfileProps && <MobileProfileHeader
+          onMobileClose={onMobileClose}
+          mobileProfileProps={mobileProfileProps}
+        />}
+
+        {/* Logo - show when not mobile or when sidebar is open or in mobile drawer */}
+        {(!isMobile) && (
+          <RowStack
+            sx={{ width: '100%'}}
+            justifyContent={(open) ? "flex-start" : "center"}
+            mb={"30px"}
+          >
+            {(open) ? (
+              <AppLogo sx={{width: "214px", height: "71.33px"}}/>
+            ) : (
+              <StyledImage
+                src={logoIcon}
+                alt="Logo"
+                sx={{ width: "35px", height: "35px"}}
+              />
+            )}
+          </RowStack>
+        )}
 
         {/* Navigation Links */}
-        <Stack spacing={"40px"} mt="30px">
+        <Stack spacing={isMobileDrawer ? "20px" : "40px"} mt={isMobileDrawer ? "10px" : "30px"}>
           {sidebarLinks.map((item, index) => (
             <SideLinks
               sideIcon={item.sideIcon}
               sideLink={item.sideLink}
               link={item.link}
               key={index}
-              isSideBarOpen={open}
+              isSideBarOpen={isMobileDrawer ? true : open}
             />
           ))}
         </Stack>
       </Stack>
+
+      {isMobileDrawer && mobileProfileProps && (
+        <MobileLogoutAndDeactivate
+          handleLogout={handleLogout}
+          handleDeactivateAccount={handleDeactivateAccount}
+        />
+      )}
     </Stack>
   );
 }
