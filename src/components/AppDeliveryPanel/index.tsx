@@ -1,12 +1,22 @@
+import { useState } from 'react';
 import { pxToRem } from "../../common/utils";
 import { RowStack } from "../RowStack"
-import { Box, Typography } from '@mui/material';
-import { AppButton } from "../AppButton";
+import {
+  Box,
+  Typography,
+  Popover,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  IconButton,
+  useMediaQuery,
+} from '@mui/material';
 import { StyledImage } from "../StyledImage";
 import downloadIcon from "./ui/assets/icon/export.svg"
-import sortIcon from "./ui/assets/icon/sort.svg"
-import filterIcon from "./ui/assets/icon/filter.svg"
-import arrowIcon from "./ui/assets/icon/arrow-down.svg"
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { ActionButtons, TransactionButtons } from './ui/components';
+import { AppButton } from '../AppButton';
 
 export interface AppDeliveryPanelProps {
   panelTitle?: string;
@@ -33,157 +43,244 @@ export const AppDeliveryPanel = ({
   handleSortClick,
   showRequestsBtn = true
 }: AppDeliveryPanelProps) => {
-  return(
+  const isMobile = useMediaQuery('(max-width:576px)');
+  const isTablet = useMediaQuery('(min-width:577px) and (max-width:768px)');
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+
+  // Mobile Popover Menu Items - Using actual desktop button functionality
+  const mobileMenuItems = [
+    ...(showSavedDraft ? [{
+      text: 'View Saved Draft',
+      icon: <StyledImage
+        src={downloadIcon}
+        alt="draft"
+        sx={{
+          width: "20px",
+          height: "20px",
+        }}
+      />,
+      onClick: () => {
+        handleViewSavedDraft?.();
+        handleMenuClose();
+      }
+    }] : []),
+    // ...(showRequestsBtn ? [{
+    //   text: requestsBtnText || 'New Request',
+    //   icon: <Box sx={{
+    //     width: '20px',
+    //     height: '20px',
+    //     display: 'flex',
+    //     alignItems: 'center',
+    //     justifyContent: 'center',
+    //     fontSize: '16px',
+    //     fontWeight: 'bold',
+    //     color: '#F98D31'
+    //   }}>+</Box>,
+    //   onClick: () => {
+    //     handleRequestsBtnClick?.();
+    //     handleMenuClose();
+    //   }
+    // }] : []),
+    {
+      text: 'Export',
+      icon: <StyledImage
+        src={downloadIcon}
+        alt="export"
+        sx={{
+          width: "20px",
+          height: "20px",
+        }}
+      />,
+      onClick: () => {
+        handleExport?.();
+        handleMenuClose();
+      }
+    }
+  ];
+
+  // Desktop/Tablet Action Buttons
+
+
+  return (
     <Box>
       {!isTransaction && (
-        <RowStack justifyContent="space-between" alignItems="center">
-
-          <Typography
-            sx={{
-              fontSize: pxToRem(20),
-              fontWeight: 500,
-              lineHeight: '120%',
-              padding: '16px 0',
-              color: '#252423'
-            }}
-          >
-            {panelTitle}
-          </Typography>
-
-          <RowStack spacing={"24px"} alignItems={"center"}>
-            {showSavedDraft && (
-              <AppButton
-                onClick={handleViewSavedDraft}
-                disableArrow
+        <>
+          {/* Mobile Layout */}
+          {isMobile && (
+            <RowStack justifyContent="space-between" alignItems="center" sx={{ padding: '16px 0' }}>
+              <Typography
                 sx={{
-                  color: "#252423",
-                  border: "1px solid #F98D31",
-                  backgroundColor: "transparent",
-                  "&:hover": {
-                    backgroundColor: "transparent",
-                  },
+                  fontSize: pxToRem(20),
+                  fontWeight: 500,
+                  lineHeight: '120%',
+                  color: '#252423'
                 }}
               >
-                View Saved Draft
-              </AppButton>
-            )}
-            {showRequestsBtn && (
-              <AppButton
-                onClick={handleRequestsBtnClick}
-                disableArrow
-                startIcon={"+"}
-              >
-                {requestsBtnText}
-              </AppButton>
-            )}
+                {panelTitle}
+              </Typography>
 
-            <AppButton
-              onClick={handleExport}
-              disableArrow
-              startIcon={
-                <StyledImage
-                  src={downloadIcon}
-                  alt="download"
-                  sx={{
-                    width: "24px",
-                    height: "24px",
-                    marginRight: "10px",
-                  }}
+              <IconButton
+                onClick={handleMenuClick}
+                sx={{
+                  color: '#666',
+                  padding: '8px',
+                }}
+              >
+                <MoreVertIcon />
+              </IconButton>
+
+              <Popover
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleMenuClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                sx={{
+                  '& .MuiPopover-paper': {
+                    borderRadius: '8px',
+                    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
+                    minWidth: '180px',
+                    mt: 1
+                  }
+                }}
+              >
+                <List sx={{ padding: 0 }}>
+                  {mobileMenuItems.map((item, index) => (
+                    <ListItem
+                      key={index}
+                      onClick={item.onClick}
+                      sx={{
+                        padding: '12px 16px',
+                        borderBottom: index < mobileMenuItems.length - 1 ? '1px solid #F0F0F0' : 'none',
+                        cursor: 'pointer',
+                        '&:hover': {
+                          backgroundColor: '#F8F8F8'
+                        }
+                      }}
+                    >
+                      <ListItemIcon sx={{ minWidth: '36px' }}>
+                        {item.icon}
+                      </ListItemIcon>
+                      <ListItemText
+                        primary={item.text}
+                        sx={{
+                          '& .MuiListItemText-primary': {
+                            fontSize: '14px',
+                            color: '#252423'
+                          }
+                        }}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </Popover>
+            </RowStack>
+          )}
+
+          {/* Tablet Layout */}
+          {isTablet && (
+            <Box>
+              <Typography
+                sx={{
+                  fontSize: pxToRem(20),
+                  fontWeight: 500,
+                  lineHeight: '120%',
+                  padding: '16px 0 12px 0',
+                  color: '#252423'
+                }}
+              >
+                {panelTitle}
+              </Typography>
+
+              <Box sx={{ paddingBottom: '16px' }}>
+                <ActionButtons
+                  showSavedDraft={showSavedDraft}
+                  handleViewSavedDraft={handleViewSavedDraft}
+                  showRequestsBtn={showRequestsBtn}
+                  requestsBtnText={requestsBtnText}
+                  handleRequestsBtnClick={handleRequestsBtnClick}
+                  handleExport={handleExport || (() => {})}
                 />
-              }
-              sx={{
-                color: "#615D5D",
-                border: "1px solid #D5D5D5",
-                backgroundColor: "transparent",
-                "&:hover": {
-                  backgroundColor: "transparent",
-                },
-              }}
-            >
-              Export
-            </AppButton>
-          </RowStack>
-        </RowStack>
+              </Box>
+            </Box>
+          )}
+
+          {/* Desktop Layout */}
+          {!isMobile && !isTablet && (
+            <RowStack justifyContent="space-between" alignItems="center">
+              <Typography
+                sx={{
+                  fontSize: pxToRem(20),
+                  fontWeight: 500,
+                  lineHeight: '120%',
+                  padding: '16px 0',
+                  color: '#252423'
+                }}
+              >
+                {panelTitle}
+              </Typography>
+
+              <ActionButtons
+                showSavedDraft={showSavedDraft}
+                handleViewSavedDraft={handleViewSavedDraft}
+                showRequestsBtn={showRequestsBtn}
+                requestsBtnText={requestsBtnText}
+                handleRequestsBtnClick={handleRequestsBtnClick}
+                handleExport={handleExport || (() => {})}
+              />
+            </RowStack>
+          )}
+        </>
       )}
 
       {isTransaction && (
-        <RowStack justifyContent="space-between" alignItems="center" mb="21px">
-          <AppButton
-            startIcon={
-              <StyledImage
-                src={filterIcon}
-                alt="filter"
-                sx={{
-                  width: "24px",
-                  height: "24px",
-                  marginRight: "10px",
-                }}
-              />
-            }
-            endIcon={
-              <StyledImage
-                src={arrowIcon}
-                alt="arrow"
-                sx={{
-                  width: "24px",
-                  height: "24px",
-                  marginLeft: "10px",
-                }}
-              />
-            }
-            sx={{
-              color: "#615D5D",
-              p: "12px 16px",
-              border: "1px solid #D5D5D5",
-              backgroundColor: "transparent",
-              "&:hover": {
-                backgroundColor: "transparent",
-              },
-            }}
-            onClick={handleFilterClick}
-            disableArrow
-          >
-            Filter by status
-          </AppButton>
+        <TransactionButtons
+          handleFilterClick={handleFilterClick || (() => {})}
+          handleSortClick={handleSortClick || (() => {})}
+        />
+      )}
 
+      {isMobile && showRequestsBtn && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: "70%",
+            right: 20,
+            transform: 'translateY(-50%)',
+          }}
+        >
           <AppButton
-            startIcon={
-              <StyledImage
-                src={sortIcon}
-                alt="filter"
-                sx={{
-                  width: "24px",
-                  height: "24px",
-                  marginRight: "10px",
-                }}
-              />
-            }
-            endIcon={
-              <StyledImage
-                src={arrowIcon}
-                alt="arrow"
-                sx={{
-                  width: "24px",
-                  height: "24px",
-                  marginLeft: "10px",
-                }}
-              />
-            }
-            sx={{
-              color: "#615D5D",
-              p: "12px 16px",
-              border: "1px solid #D5D5D5",
-              backgroundColor: "transparent",
-              "&:hover": {
-                backgroundColor: "transparent",
-              },
-            }}
-            onClick={handleSortClick}
             disableArrow
+            onClick={handleRequestsBtnClick}
+            sx={{
+              fontSize: pxToRem(32),
+              lineHeight: "140%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              boxShadow: " 0px 1px 2px rgba(173, 172, 172, 0.71)"
+            }}
           >
-            Sort by Date
+            +
           </AppButton>
-        </RowStack>
+        </Box>
       )}
     </Box>
   )

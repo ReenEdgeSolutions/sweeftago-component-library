@@ -1,12 +1,17 @@
 "use client"
-import { AppDashboardLayout, AppDeliveryCards, AppDeliveryPanel, AppTitleAndLabel } from "@component-library"
+import {useState} from "react"
+import { AppDashboardLayout, AppDeliveryPanel, AppTitleAndLabel } from "@component-library"
 import homeIcon from "./ui/assets/icons/home.svg"
 import earnings from "./ui/assets/icons/money.svg";
 import route from "./ui/assets/icons/location.svg"
 import support from "./ui/assets/icons/help-center.png"
 import profileImg from "./ui/assets/icons/profile.png"
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
 import { LogisticsFinancials } from "../LogisticsFinancials";
+import { VendorDashboardInfo } from "../DeliveryTable";
+import { TransactionHistory } from "../TransactionHistory";
+import { DashboardHelpCenter } from "../DashboardHelpCenter";
+import { UserProfilePage } from "../ProfilePage";
 
 const sidebarLinks = [
   {
@@ -31,35 +36,32 @@ const sidebarLinks = [
   },
 ];
 
-const deliveryData = [
-  {
-    id: 1,
-    background: "#BFFFE2",
-    cardLabel: "Total Deliveries",
-    cardValue: "20",
-  },
-  {
-    id: 2,
-    background: "#B2FAFF",
-    cardLabel: "Average Fulfillment Time",
-    cardValue: "1-2hrs",
-  },
-  {
-    id: 3,
-    background: "#CAFD9E",
-    cardLabel: "Total Spent",
-    cardValue: "₦5,000",
-  },
-  {
-    id: 4,
-    background: "#F2FF9A",
-    cardLabel: "Delivery Success Rate",
-    cardValue: "100%",
-  },
-]
-
 
 export const DashboardLayout = () => {
+  const [isGeneralInfoCompleted, setIsGeneralInfoCompleted] = useState(false);
+    const [isPickUpDetailsCompleted, setIsPickUpDetailsCompleted] = useState(false);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+
+  const calculateRatePercent = () => {
+    const completedSections = [isGeneralInfoCompleted, isPickUpDetailsCompleted].filter(Boolean).length;
+    const totalSections = 2;
+    return Math.round((completedSections / totalSections) * 100);
+  };
+
+const ratingItems = [
+  {
+    text: "General Information",
+    isCompleted: isGeneralInfoCompleted,
+    percentage: 50
+  },
+  {
+    text: "Pickup Details",
+    isCompleted: isPickUpDetailsCompleted,
+    percentage: 50
+  }
+];
+
   const handleProfileClick = () => {
     console.log("profile clicked")
   }
@@ -83,19 +85,19 @@ export const DashboardLayout = () => {
         links: sidebarLinks,
         handleLogout: () => console.log("logout"),
         handleDeactivateAccount: () => console.log("deactivate account"),
+        showSideLinks: isMobile ? true : false,
+        ratingItems: ratingItems,
+        showProfileRating: true,
+        ratePercent: calculateRatePercent(),
       }}
     >
       <Box>
-        <Stack spacing={"24px"}>
-          <AppTitleAndLabel
-            title="Hello Cakes & Creams!"
-            label="Here’s a quick look at your activities this week."
-          />
+        <AppTitleAndLabel
+          title="Hello Cakes & Creams!"
+          label="Here’s a quick look at your activities this week."
+        />
 
-          <AppDeliveryCards deliverydata={deliveryData}/>
-        </Stack>
-
-        <Stack mt="50px" spacing={"32px"}>
+        {/* <Stack spacing={"32px"}>
           <AppDeliveryPanel
             panelTitle="My Delivery Request"
             handleExport={() => console.log("export")}
@@ -106,7 +108,15 @@ export const DashboardLayout = () => {
           />
 
           <LogisticsFinancials/>
-        </Stack>
+
+          <VendorDashboardInfo isProfileComplete={true}/>
+        </Stack> */}
+        {/* <TransactionHistory/> */}
+        {/* <DashboardHelpCenter/> */}
+        {/* <UserProfilePage
+          setIsGeneralInfoCompleted={setIsGeneralInfoCompleted}
+          setIsPickUpDetailsCompleted={setIsPickUpDetailsCompleted}
+        /> */}
       </Box>
     </AppDashboardLayout>
   )

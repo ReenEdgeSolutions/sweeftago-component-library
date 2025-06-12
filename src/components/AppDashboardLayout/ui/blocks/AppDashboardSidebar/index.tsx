@@ -4,7 +4,7 @@ import { RowStack } from "../../../../RowStack";
 import logoIcon from "./ui/assets/icons/logo-icon.png";
 import { SideLinks, SideLinksProps } from "../../components";
 import { StyledImage } from "../../../../StyledImage";
-import { MobileLogoutAndDeactivate, MobileProfileHeader } from "./ui/components";
+import { MobileLogoutAndDeactivate, MobileProfileHeader, ProfileRating } from "./ui/components";
 
 export type AppDashboardSidebarProps = {
   links?: SideLinksProps[];
@@ -20,6 +20,14 @@ export type AppDashboardSidebarProps = {
   };
   handleLogout: () => void;
   handleDeactivateAccount: () => void;
+  showSideLinks?: boolean;
+  ratePercent?: number;
+  ratingItems?: {
+    text: string;
+    isCompleted: boolean;
+    percentage: number;
+  }[];
+  showProfileRating?: boolean;
 };
 
 export const SIDEBAR_WIDTH = 320;
@@ -51,6 +59,10 @@ export function AppDashboardSidebar({
   mobileProfileProps,
   handleLogout,
   handleDeactivateAccount,
+  showSideLinks = true,
+  ratePercent,
+  ratingItems,
+  showProfileRating
 }: AppDashboardSidebarProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -115,18 +127,29 @@ export function AppDashboardSidebar({
           </RowStack>
         )}
 
+        {!isMobileDrawer && !isMobile && showProfileRating &&(
+          <ProfileRating
+            ratePercent={ratePercent ?? 0}
+            ratingItems={ratingItems ?? []}
+            open = { open }
+            isMobile={isMobile}
+          />
+        )}
+
         {/* Navigation Links */}
-        <Stack spacing={isMobileDrawer ? "20px" : "40px"} mt={isMobileDrawer ? "10px" : "30px"}>
-          {sidebarLinks.map((item, index) => (
-            <SideLinks
-              sideIcon={item.sideIcon}
-              sideLink={item.sideLink}
-              link={item.link}
-              key={index}
-              isSideBarOpen={isMobileDrawer ? true : open}
-            />
-          ))}
-        </Stack>
+        {showSideLinks && (
+          <Stack spacing={isMobileDrawer ? "20px" : "40px"} mt={isMobileDrawer ? "10px" : "30px"}>
+            {sidebarLinks.map((item, index) => (
+              <SideLinks
+                sideIcon={item.sideIcon}
+                sideLink={item.sideLink}
+                link={item.link}
+                key={index}
+                isSideBarOpen={isMobileDrawer ? true : open}
+              />
+            ))}
+          </Stack>
+        )}
       </Stack>
 
       {isMobileDrawer && mobileProfileProps && (

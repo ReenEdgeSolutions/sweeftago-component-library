@@ -1,3 +1,4 @@
+"use client"
 import { Stack, Typography } from "@mui/material"
 import { pxToRem } from "../../../../../common/utils"
 
@@ -17,20 +18,24 @@ export const Cards = ({
   return (
     <Stack
       sx={{
-        p: {xs: "12px" ,sm: "16px 24px"},
-        gap: {xs: "8px", sm:"16px"} ,
+        p: {xs: "12px 16px" ,sm: "16px 24px"},
+        gap: {xs: "8px", md:"16px"} ,
         height: "100%",
         background: background,
         borderRadius: "10px",
-        width: "100%"
+        width: "100%",
       }}
     >
       <Typography
         sx={{
-          fontSize: pxToRem(16),
-          fontWeight: 400,
+          fontSize: {
+            xs: pxToRem(14),
+            md: pxToRem(16)
+          },
+          fontWeight: 500,
           color: "#615D5D",
           lineHeight: "140%",
+          textAlign: {sm: "center",md: "left"}
         }}
       >
         {cardLabel}
@@ -39,10 +44,15 @@ export const Cards = ({
       <Typography
         sx={{
           // fontFamily: "nunito Sans"
-          fontSize: pxToRem(24),
-          fontWeight: 700,
+          fontSize: {
+            xs: pxToRem(16),
+            sm: pxToRem(18),
+            md: pxToRem(24)
+          },
+          fontWeight: {xs:600, md: 700},
           color: "#000000",
-          lineHeight: "120%"
+          lineHeight: "120%",
+          textAlign: {sm: "center",md: "left"}
         }}
       >
         {isProfileComplete ? cardValue : 0}
