@@ -1,4 +1,4 @@
-export const getStatusStyles = (status: string) => {
+export const getStatusStyles = (status: string): { backgroundColor: string; color: string } => {
   switch (status.toLowerCase()) {
     case "scheduled":
       return {
@@ -28,7 +28,7 @@ export const getStatusStyles = (status: string) => {
   }
 };
 
-export const useDetailsStatus = (status: string) => {
+export const useDetailsStatus = (status: string): { color: string } => {
   switch (status.toLowerCase()) {
     case "scheduled":
       return {
@@ -54,7 +54,7 @@ export const useDetailsStatus = (status: string) => {
 }
 
 
-export const transanctionStatus = (status: string) => {
+export const transanctionStatus = (status: string): { color: string; backgroundColor: string } => {
   switch (status) {
     case 'successful':
       return {
