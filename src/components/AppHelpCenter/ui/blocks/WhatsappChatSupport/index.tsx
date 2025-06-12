@@ -24,6 +24,7 @@ export const WhatsappChatSupport = ({
         cursor: "pointer", // Added cursor:pointer for better UX
         "&:hover": {
           boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.05)", // Optional: adds subtle hover effect
+          backgroundColor: "rgb(227, 253, 215)"
         },
       }}
     >

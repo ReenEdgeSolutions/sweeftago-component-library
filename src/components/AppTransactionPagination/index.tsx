@@ -1,4 +1,4 @@
-import { Box, SelectChangeEvent} from "@mui/material";
+import { Box, SelectChangeEvent, useTheme, useMediaQuery} from "@mui/material";
 import { Form, Formik } from "formik";
 import { AppDropdownField } from "../TextField";
 import { TransactionData } from "../../common";
@@ -41,9 +41,12 @@ export const AppTransactionPagination = ({
   handleFilterChange
 }: AppTransactionPaginationProps) => {
 
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.only('xs'));
+
   const initialValues = {
-    statusFilter: "Filter by status",
-    dateSort: "Sort by date"
+    statusFilter: isXs ? "Status" : "Filtered bystatus",
+    dateSort: isXs ? "Date" : "Sort by date"
   };
 
   return (
@@ -71,16 +74,15 @@ export const AppTransactionPagination = ({
                   name="statusFilter"
                   placeholder="Filter by status"
                   dropdownData={statusFilterData.map((item: FilterSortData) => item.value)}
-                  sx={{ width: "210px" }}
+                  sx={{ width: {xs:"165px",sm: "210px"} }}
                   InputProps={{
                     startAdornment: (
                       <StyledImage
                         src={filterIcon}
                         alt="filter"
                         sx={{
-                          width: "24px",
-                          height: "24px",
-                          marginRight: "10px",
+                          width: {xs:"20px",sm: "24px"},
+                          height: {xs:"20px",sm: "24px"},
                         }}
                       />
                     )
@@ -101,16 +103,15 @@ export const AppTransactionPagination = ({
                   name="dateSort"
                   placeholder="Sort by date"
                   dropdownData={dateSortData.map((item: FilterSortData) => item.value)}
-                  sx={{ width: "210px" }}
+                  sx={{ width: {xs:"165px",sm: "210px"} }}
                   InputProps={{
                     startAdornment: (
                       <StyledImage
                         src={sortIcon}
                         alt="sort icon"
                         sx={{
-                          width: "24px",
-                          height: "24px",
-                          marginRight: "10px",
+                          width: {xs:"20px",sm: "24px"},
+                          height: {xs:"20px",sm: "24px"},
                         }}
                       />
                     )
@@ -135,15 +136,17 @@ export const AppTransactionPagination = ({
       {children}
 
       {/* Pagination */}
-      <CustomPagination
-        itemsPerPage={itemsPerPage}
-        handleItemsPerPageChange={handleItemsPerPageChange}
-        currentPage={currentPage}
-        handlePageChange={handlePageChange}
-        totalItems={totalItems}
-        totalPages={totalPages}
-        pageIndex={[6,12,18,24]}
-      />
+      {!isXs && (
+        <CustomPagination
+          itemsPerPage={itemsPerPage}
+          handleItemsPerPageChange={handleItemsPerPageChange}
+          currentPage={currentPage}
+          handlePageChange={handlePageChange}
+          totalItems={totalItems}
+          totalPages={totalPages}
+          pageIndex={[6,12,18,24]}
+        />
+      )}
     </Box>
   );
 };

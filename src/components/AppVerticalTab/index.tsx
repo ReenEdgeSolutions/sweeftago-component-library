@@ -21,10 +21,10 @@ const AppTab = styled(Tab, {
   active: boolean;
 }>(({ active }) => ({
   padding: '14.5px 16px',
-  "&:not(:first-of-type):not(:last-of-type)": {
-    margin: '24px 0 !important',
-  },
   alignItems: "start",
+  "&:not(:last-of-type)": {
+    marginBottom: '24px', 
+  },
   ...(active && {
     background: "#FDE4CE",
   }),

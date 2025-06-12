@@ -6,7 +6,7 @@ import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { pxToRem } from "../../../../../common";
 
 // Create the raw styled button
-const RawBaseButton = styled(Button)<ButtonProps>(() => ({
+const RawBaseButton = styled(Button)<ButtonProps>(({ theme }) => ({
   borderRadius: "10px",
   textTransform: "none",
   padding: "16px 20px",
@@ -14,6 +14,11 @@ const RawBaseButton = styled(Button)<ButtonProps>(() => ({
   boxShadow: "none",
   fontWeight: 500,
   lineHeight: "130%",
+  maxHeight: "45px",
+  [theme.breakpoints.only('xs')]: {
+    fontWeight: 400,
+    fontSize: pxToRem(12),
+  }
 }));
 
 // Use `object` instead of {} to allow normal button event props (like onMouseEnter)

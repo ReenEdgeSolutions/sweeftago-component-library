@@ -16,10 +16,23 @@ export const AppDeliveryCards = ({
   isProfileComplete
 }: AppDeliveryCardsProps) => {
   return(
-    <Grid container spacing={"24px"} width="100%">
+    <Grid container
+    spacing={{
+      xs:"12px",
+      sm:"24px"
+    }}
+    width="100%"
+    // justifyContent="center"
+    // alignItems="center"
+    // sx={{
+    //   display: 'flex',
+    //   flexWrap: 'wrap'
+    // }}
+    >
       {deliverydata.map(item => (
         <Grid
           size={{
+            xs: 12,
             sm: 6,
             md: deliverydata.length === 3 ? 4 : deliverydata.length > 3 ? 3 : 6
           }}

@@ -50,7 +50,7 @@ export function AppDashboardLayout({
   return (
     <Stack
       sx={{
-        width: "100vw",
+        width: "100%",
         height: "100vh",
         flexDirection: "row",
       }}
@@ -71,6 +71,10 @@ export function AppDashboardLayout({
             boxSizing: "border-box",
             width: 280,
             border: "none",
+            zIndex: 1500,
+          },
+          "& .MuiBackdrop-root": {
+            zIndex: 1499, // Backdrop should be just below the drawer
           },
         }}
       >
@@ -78,9 +82,6 @@ export function AppDashboardLayout({
           {...sidebarProps}
           open={sidebarOpen}
           isMobileDrawer={true}
-          // onMobileClose={handleMobileDrawerToggle}
-          // handleDeactivateAccount={sidebarProps.handleDeactivateAccount}
-          // handleLogout={sidebarProps.handleLogout}
           mobileProfileProps={
             headerProps.profileProps
               ? {

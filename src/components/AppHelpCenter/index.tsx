@@ -46,7 +46,7 @@ export const AppHelpCenter = ({
           width: "100%",
           height: "100%" ,
           p:{
-            xs: showHeader? "94px 16px 32px 16px": "44px 32px 32px 32px",
+            xs: showHeader? "94px 16px 32px 16px": 0,
             sm: "44px 32px 32px 32px",
           }
         }}

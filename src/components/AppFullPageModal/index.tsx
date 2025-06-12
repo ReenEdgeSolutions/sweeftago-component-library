@@ -37,17 +37,49 @@ export const AppFullPageModal = ({ children, onClose, ...rest }: AppFullPageModa
       TransitionComponent={Transition}
       PaperProps={{
         sx: {
-          background: "white",
-          padding: "40px 0",
+          background: "#f9f9f9",
+          padding: 0,
+          // Ensure the modal content can handle menu overlays
+          position: "relative",
+          overflow: "visible", // Allow menu to overflow if needed
         },
+      }}
+      // Prevent backdrop clicks from interfering with menu
+      BackdropProps={{
+        sx: {
+          // Lower z-index for backdrop to allow menu to appear above
+          zIndex: -1,
+        },
+        // Prevent backdrop from blocking menu interactions
+        onClick: (e) => {
+          e.stopPropagation();
+        }
       }}
       {...rest}
       fullScreen
       keepMounted={false}
-      onClose={handleDialogClose} // Use the wrapped handler
+      onClose={handleDialogClose}
+      // Allow menu interactions by not closing on backdrop click
+      disableEscapeKeyDown={false}
+      // Ensure proper stacking context
+      sx={{
+        zIndex: 1000, // Standard MUI Dialog z-index
+        ...rest.sx
+      }}
     >
       {/* Provide the onClose function via context */}
-      <FullPageModalProvider value={{ onClose: onClose }}>{children}</FullPageModalProvider>
+      <FullPageModalProvider value={{ onClose: onClose }}>
+        {/* Wrapper to handle menu positioning */}
+        <div style={{
+          height: '100%',
+          width: '100%',
+          position: 'relative',
+          // Ensure this container doesn't interfere with menu
+          zIndex: 'auto'
+        }}>
+          {children}
+        </div>
+      </FullPageModalProvider>
     </Dialog>
   );
 };

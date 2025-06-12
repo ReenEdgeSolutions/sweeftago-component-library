@@ -16,9 +16,12 @@ export const AppTitleAndLabel = ({
     <Stack spacing="8px">
       <Typography
         sx={{
-          fontSize: fontSize,
-          fontWeight: 500,
-          lineHeight: "120%",
+          fontSize: {
+            xs:pxToRem(14),
+            md:fontSize
+          },
+          fontWeight: 600,
+          lineHeight: {xs:"140%",md: '120%'},
           color: "#252423",
         }}
       >
@@ -27,7 +30,10 @@ export const AppTitleAndLabel = ({
 
       <Typography
         sx={{
-          fontSize: pxToRem(16),
+          fontSize: {
+            xs:pxToRem(14),
+            sm:pxToRem(16),
+          },
           fontWeight: 400,
           lineHeight: "140%",
           color: "#615D5D",

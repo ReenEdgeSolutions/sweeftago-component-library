@@ -34,7 +34,6 @@ export * from "./AppDeliveryTable";
 export * from "./DeliveryRequestCard";
 export * from "./LabelAndImg";
 export * from "./AppTransactionPagination";
-export * from "./AppProfileLayout"
 export * from "./AppVerticalTab";
 export * from "./AppTabPanel";
 export * from "./AppBackAndChildren";
@@ -44,3 +43,4 @@ export * from "./EmptyAddDeliveryState"
 export * from "./LogisticsProfileLayout";
 export * from './AppTab';
 export * from "./CustomPagination";
+export * from "./TransactionCard";
