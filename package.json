@@ -1,7 +1,7 @@
 {
   "name": "@reenedgesolutions/component-library",
   "private": false,
-  "version": "1.8.5",
+  "version": "1.9.0",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build && yalc push",
@@ -38,8 +38,7 @@
     "date-fns": "^3.6.0",
     "framer-motion": "^12.4.2",
     "mui-one-time-password-input": "^4.0.1",
-    "react-dropzone": "^14.3.8",
-    "react-drag-drop-files": "^3.0.1"
+    "react-dropzone": "^14.3.8"
   },
   "peerDependencies": {
     "@emotion/react": "^11.14.0",
