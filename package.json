@@ -38,7 +38,8 @@
     "date-fns": "^3.6.0",
     "framer-motion": "^12.4.2",
     "mui-one-time-password-input": "^4.0.1",
-    "react-dropzone": "^14.3.8"
+    "react-dropzone": "^14.3.8",
+    "react-drag-drop-files": "^3.0.1"
   },
   "peerDependencies": {
     "@emotion/react": "^11.14.0",
