@@ -12,15 +12,15 @@ import { pxToRem } from "../../../../../common";
 interface CustomFileUploadProps {
   name: string;
   accept: Record<string, string[]>;
-  handleUpload: (file: File) => void;
+  handleUpload?: (file: File) => void;
   onFileMetaExtract?: (meta: { name: string; size: string; preview: string }) => void;
 }
 
 export const AppFileField = ({
   name,
   accept,
-  handleUpload,
   onFileMetaExtract,
+  handleUpload,
 }: CustomFileUploadProps) => {
   const [, , helpers] = useField(name);
   const [fileName, setFileName] = useState<string | null>(null);
@@ -46,12 +46,15 @@ export const AppFileField = ({
     if (acceptedFiles && acceptedFiles.length > 0) {
       const file = acceptedFiles[0];
       helpers.setValue(file);
+      if (handleUpload && file) {
+        if (file) {
+          handleUpload?.(file);
+        }
+      }
 
-      if (!file) return;
-
-      const name = file.name;
-      const size = formatFileSize(file.size);
-      const previewUrl = URL.createObjectURL(file);
+      const name = file ? file.name : "";
+      const size = file ? formatFileSize(file.size) : "0 B";
+      const previewUrl = file ? URL.createObjectURL(file) : "";
 
       setFileName(name);
       setFileSize(size);
@@ -59,7 +62,11 @@ export const AppFileField = ({
       setIsUploaded(true);
 
       // Call the handleUpload prop
-      handleUpload(file);
+      if (handleUpload) {
+        if (file) {
+          handleUpload(file);
+        }
+      }
 
       if (onFileMetaExtract) {
         onFileMetaExtract({ name, size, preview: previewUrl });
