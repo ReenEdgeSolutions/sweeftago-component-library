@@ -1,21 +1,27 @@
-"use client"
-import { Box, Typography, IconButton, Stack } from '@mui/material';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import deleteIcon from "../../assets/icons/cancel.png"
-import { useField } from 'formik';
-import { useDropzone } from 'react-dropzone';
-import { useState, useEffect } from 'react';
-import { RowStack } from '../../../../RowStack';
-import { StyledImage } from '../../../../../components/StyledImage';
-import { pxToRem } from '../../../../../common/utils';
+"use client";
+import { Box, Typography, IconButton, Stack } from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import deleteIcon from "../../assets/icons/cancel.png";
+import { useField } from "formik";
+import { useDropzone } from "react-dropzone";
+import { useState, useEffect } from "react";
+import { RowStack } from "../../../../RowStack";
+import { StyledImage } from "../../../../../components/StyledImage";
+import { pxToRem } from "../../../../../common/utils";
 
 interface CustomFileUploadProps {
   name: string;
   accept: Record<string, string[]>;
   onFileMetaExtract?: (meta: { name: string; size: string; preview: string }) => void;
+  handleUpload?: (file: File) => void; 
 }
 
-export const AppFileField = ({ name, accept, onFileMetaExtract }: CustomFileUploadProps) => {
+export const AppFileField = ({
+  name,
+  accept,
+  onFileMetaExtract,
+  handleUpload,
+}: CustomFileUploadProps) => {
   const [, , helpers] = useField(name);
   const [fileName, setFileName] = useState<string | null>(null);
   const [fileSize, setFileSize] = useState<string | null>(null);
@@ -31,19 +37,22 @@ export const AppFileField = ({ name, accept, onFileMetaExtract }: CustomFileUplo
   }, [preview]);
 
   const formatFileSize = (bytes: number): string => {
-    if (bytes < 1024) return bytes + ' B';
-    else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
-    else return (bytes / 1048576).toFixed(1) + ' MB';
+    if (bytes < 1024) return bytes + " B";
+    else if (bytes < 1048576) return (bytes / 1024).toFixed(1) + " KB";
+    else return (bytes / 1048576).toFixed(1) + " MB";
   };
 
   const onDrop = (acceptedFiles: File[]) => {
     if (acceptedFiles && acceptedFiles.length > 0) {
       const file = acceptedFiles[0];
       helpers.setValue(file);
-      if (!file) return;
-      const name = file.name;
-      const size = formatFileSize(file.size);
-      const previewUrl = URL.createObjectURL(file);
+      if (handleUpload && file) {
+        handleUpload(file);
+      }
+
+      const name = file ? file.name : "";
+      const size = file ? formatFileSize(file.size) : "0 B";
+      const previewUrl = file ? URL.createObjectURL(file) : "";
 
       setFileName(name);
       setFileSize(size);
@@ -58,7 +67,7 @@ export const AppFileField = ({ name, accept, onFileMetaExtract }: CustomFileUplo
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    helpers.setValue('');
+    helpers.setValue(""); // Reset Formik field
     setFileName(null);
     setFileSize(null);
     if (preview) {
@@ -68,50 +77,52 @@ export const AppFileField = ({ name, accept, onFileMetaExtract }: CustomFileUplo
     setIsUploaded(false);
 
     if (onFileMetaExtract) {
-      onFileMetaExtract({ name: '', size: '', preview: '' });
+      onFileMetaExtract({ name: "", size: "", preview: "" });
     }
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
     accept,
-    multiple: false
+    multiple: false,
   });
 
   return (
-    <Box sx={{ marginBottom: '24px' }}>
+    <Box sx={{ marginBottom: "24px" }}>
       {isUploaded ? (
         <Box
           sx={{
-            border: '1px solid #D5D5D5',
-            borderRadius: '10px',
-            padding: '16px 20px',
-            display: 'flex',
-            flexDirection: 'column',
-            cursor: 'pointer',
-            minHeight: '100px'
+            border: "1px solid #D5D5D5",
+            borderRadius: "10px",
+            padding: "16px 20px",
+            display: "flex",
+            flexDirection: "column",
+            cursor: "pointer",
+            minHeight: "100px",
           }}
         >
           <RowStack justifyContent={"space-between"} alignItems="center" mb="16px">
             <RowStack justifyContent={"flex-start"} alignItems="center">
-              <Box sx={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '4px',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginRight: '11px'
-              }}>
+              <Box
+                sx={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "4px",
+                  overflow: "hidden",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: "11px",
+                }}
+              >
                 <Box
                   component="img"
                   src={preview!}
                   alt="Preview"
                   sx={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover'
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
                   }}
                 />
               </Box>
@@ -119,10 +130,10 @@ export const AppFileField = ({ name, accept, onFileMetaExtract }: CustomFileUplo
               <Stack spacing={"4px"} justifyContent={"center"} alignItems="flex-start">
                 <Typography
                   sx={{
-                    fontSize: {xs: pxToRem(14), md: pxToRem(16)},
+                    fontSize: { xs: pxToRem(14), md: pxToRem(16) },
                     fontWeight: 400,
-                    color: '#252423',
-                    lineHeight: '140%',
+                    color: "#252423",
+                    lineHeight: "140%",
                   }}
                 >
                   {fileName}
@@ -132,8 +143,8 @@ export const AppFileField = ({ name, accept, onFileMetaExtract }: CustomFileUplo
                   sx={{
                     fontSize: pxToRem(10),
                     fontWeight: 400,
-                    color: '#252423',
-                    lineHeight: '130%',
+                    color: "#252423",
+                    lineHeight: "130%",
                   }}
                 >
                   {fileSize}
@@ -141,35 +152,39 @@ export const AppFileField = ({ name, accept, onFileMetaExtract }: CustomFileUplo
               </Stack>
             </RowStack>
 
-            <IconButton onClick={handleDelete} size="small" sx={{ padding: '4px' }}>
+            <IconButton onClick={handleDelete} size="small" sx={{ padding: "4px" }}>
               <StyledImage
                 src={deleteIcon}
                 alt="Delete"
                 sx={{
-                  width: '24px',
-                  height: '24px',
+                  width: "24px",
+                  height: "24px",
                 }}
               />
             </IconButton>
           </RowStack>
 
-          <Box sx={{
-            width: '100%',
-            height: '7px',
-            backgroundColor: '#E8F5E9',
-            marginTop: '4px',
-            marginBottom: '2px',
-            borderRadius: '2px',
-            overflow: 'hidden',
-          }}>
-            <Box sx={{
-              width: '100%',
-              height: '100%',
-              backgroundColor: '#4CAF50'
-            }}/>
+          <Box
+            sx={{
+              width: "100%",
+              height: "7px",
+              backgroundColor: "#E8F5E9",
+              marginTop: "4px",
+              marginBottom: "2px",
+              borderRadius: "2px",
+              overflow: "hidden",
+            }}
+          >
+            <Box
+              sx={{
+                width: "100%",
+                height: "100%",
+                backgroundColor: "#4CAF50",
+              }}
+            />
           </Box>
 
-          <Typography variant="body2" color="textSecondary" sx={{ paddingLeft: '4px' }}>
+          <Typography variant="body2" color="textSecondary" sx={{ paddingLeft: "4px" }}>
             Completed
           </Typography>
         </Box>
@@ -177,21 +192,21 @@ export const AppFileField = ({ name, accept, onFileMetaExtract }: CustomFileUplo
         <Box
           {...getRootProps()}
           sx={{
-            border: '1px dashed #D5D5D5',
-            borderRadius: '4px',
-            padding: '24px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            minHeight: '100px',
-            backgroundColor: isDragActive ? '#f7f7f7' : 'transparent',
-            '&:hover': { backgroundColor: '#f7f7f7' }
+            border: "1px dashed #D5D5D5",
+            borderRadius: "4px",
+            padding: "24px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+            minHeight: "100px",
+            backgroundColor: isDragActive ? "#f7f7f7" : "transparent",
+            "&:hover": { backgroundColor: "#f7f7f7" },
           }}
         >
           <input {...getInputProps()} />
-          <CloudUploadIcon sx={{ fontSize: 40, color: '#D5D5D5', marginBottom: 2 }} />
+          <CloudUploadIcon sx={{ fontSize: 40, color: "#D5D5D5", marginBottom: 2 }} />
           <Typography variant="body1" color="textPrimary" align="center">
             Click or drag to upload
           </Typography>

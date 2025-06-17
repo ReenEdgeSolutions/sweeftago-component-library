@@ -1,5 +1,4 @@
 import { Box, Stepper, Step, StepLabel } from "@mui/material";
-import CheckIcon from '@mui/icons-material/Check';
 
 interface AppStepperControllerProps {
   activeTab: number;
@@ -36,10 +35,10 @@ export const AppStepperController = ({
             backgroundColor: '#E0E0E0'
           },
           '& .MuiStepConnector-root.Mui-active .MuiStepConnector-line': {
-            backgroundColor: '#F98D31'
+            backgroundColor: '#E0E0E0'
           },
           '& .MuiStepConnector-root.Mui-completed .MuiStepConnector-line': {
-            backgroundColor: '#F98D31'
+            backgroundColor: ' #F98D31'
           },
           '& .MuiStep-root': {
             padding: 0,
@@ -53,7 +52,7 @@ export const AppStepperController = ({
             letterSpacing: '0.5px',
             marginTop: 0.5,
             '&.Mui-active': {
-              color: '#F98D31'
+              color: '#E0E0E0'
             },
             '&.Mui-completed': {
               color: '#F98D31'
@@ -74,7 +73,7 @@ export const AppStepperController = ({
                     width: 36,
                     height: 36,
                     borderRadius: '50%',
-                    backgroundColor: completed ? '#F98D31' : active ? '#F98D31' : '#E0E0E0',
+                    backgroundColor: completed ? '#F98D31' : '#E0E0E0',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -82,7 +81,7 @@ export const AppStepperController = ({
                     fontWeight: 500
                   }}
                 >
-                  {completed ? <CheckIcon fontSize="small" /> : index + 1}
+                  {index + 1}
                 </Box>
               )}
             >

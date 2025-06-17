@@ -13,9 +13,9 @@ import { AppAuthLayout } from '../AppAuthLayout';
 interface AppMultiStepTabProps {
   children: React.ReactNode;
   activeTab: number;
-  setActiveTab: (tab: number) => void;
+  setActiveTab?: (tab: number) => void;
   completedSteps: number[];
-  setCompletedSteps: (steps: number[]) => void;
+  setCompletedSteps?: (steps: number[]) => void;
   handleTabChange: (event: React.SyntheticEvent, newValue: number) => void;
   handleSkip: () => void;
   tabTitles: {
