@@ -1,7 +1,8 @@
-import { MenuItem, useTheme, Radio } from "@mui/material";
+import { MenuItem, Radio, useTheme } from "@mui/material";
 import { AppTextField, AppTextFieldProps } from "../AppTextField";
 import { KeyboardArrowDown } from "@mui/icons-material";
 import { useField } from "formik";
+import React from "react";
 
 export type AppDropdownFieldProps = Omit<
   AppTextFieldProps,
@@ -72,25 +73,25 @@ export const AppDropdownField = ({
             PaperProps: {
               sx: {
                 maxHeight: maxHeight,
-                overflowY: 'auto',
-                padding: '16px',
-                borderRadius: '10px',
+                overflowY: "auto",
+                padding: "16px",
+                borderRadius: "10px",
                 // Smooth dropdown animation
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                 // Custom scrollbar styling
-                '&::-webkit-scrollbar': {
-                  width: '6px',
+                "&::-webkit-scrollbar": {
+                  width: "6px",
                 },
-                '&::-webkit-scrollbar-track': {
-                  background: '#f1f1f1',
-                  borderRadius: '3px',
+                "&::-webkit-scrollbar-track": {
+                  background: "#f1f1f1",
+                  borderRadius: "3px",
                 },
-                '&::-webkit-scrollbar-thumb': {
-                  background: '#c1c1c1',
-                  borderRadius: '3px',
+                "&::-webkit-scrollbar-thumb": {
+                  background: "#c1c1c1",
+                  borderRadius: "3px",
                 },
-                '&::-webkit-scrollbar-thumb:hover': {
-                  background: '#a8a8a8',
+                "&::-webkit-scrollbar-thumb:hover": {
+                  background: "#a8a8a8",
                 },
               },
             },
@@ -101,26 +102,28 @@ export const AppDropdownField = ({
         sx: {
           ".MuiSvgIcon-root": {
             color: theme.palette.text.primary,
-            transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
           },
           // Remove outline and maintain consistent border with default color
-          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#D5D5D5',
-            borderWidth: '1px',
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#D5D5D5",
+            borderWidth: "1px",
           },
-          '&:hover .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#D5D5D5',
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#D5D5D5",
           },
-          '& .MuiOutlinedInput-notchedOutline': {
-            borderColor: '#D5D5D5',
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#D5D5D5",
           },
           // Apply styles when placeholder is showing
-          ...(hasValue ? {} : {
-            color: "text.secondary",
-            fontStyle: "italic"
-          })
+          ...(hasValue
+            ? {}
+            : {
+                color: "text.secondary",
+                fontStyle: "italic",
+              }),
         },
-        ...rest.SelectProps // Safe to spread SelectProps since custom props are filtered out
+        ...rest.SelectProps, // Safe to spread SelectProps since custom props are filtered out
       }}
     >
       {/* Add empty option for placeholder - appears when nothing is selected */}
@@ -137,23 +140,23 @@ export const AppDropdownField = ({
           sx={{
             // Only add radio styling if showRadioSelection is true
             ...(showRadioSelection && {
-              display: 'flex',
-              alignItems: 'center',
+              display: "flex",
+              alignItems: "center",
               gap: 1,
               pl: 2,
               // Maintain padding within the scrollable area
               mx: 0,
               // Smooth hover effect
-              transition: 'background-color 0.2s ease',
+              transition: "background-color 0.2s ease",
             }),
             // Remove default hover background for consistent styling
-            '&:hover': {
-              backgroundColor: 'rgba(0, 0, 0, 0.04)',
+            "&:hover": {
+              backgroundColor: "rgba(0, 0, 0, 0.04)",
             },
             // Remove focus outline
-            '&.Mui-focusVisible': {
-              backgroundColor: 'rgba(0, 0, 0, 0.04)',
-            }
+            "&.Mui-focusVisible": {
+              backgroundColor: "rgba(0, 0, 0, 0.04)",
+            },
           }}
         >
           {/* Only show radio if showRadioSelection is true */}
@@ -167,15 +170,15 @@ export const AppDropdownField = ({
                 // Default (unchecked) state - use default theme color
                 color: theme.palette.action.disabled,
                 // Checked state - orange color
-                '&.Mui-checked': {
+                "&.Mui-checked": {
                   color: "#F98D31",
                 },
                 // Remove hover/focus effects on radio
-                '&:hover': {
-                  backgroundColor: 'transparent',
+                "&:hover": {
+                  backgroundColor: "transparent",
                 },
                 // Prevent pointer events to avoid interference
-                pointerEvents: 'none'
+                pointerEvents: "none",
               }}
             />
           )}

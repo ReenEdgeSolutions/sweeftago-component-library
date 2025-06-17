@@ -1,19 +1,19 @@
 "use client";
-import { Box, Typography, IconButton, Stack } from "@mui/material";
+import { Box, IconButton, Stack, Typography } from "@mui/material";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import deleteIcon from "../../assets/icons/cancel.png";
 import { useField } from "formik";
 import { useDropzone } from "react-dropzone";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { RowStack } from "../../../../RowStack";
-import { StyledImage } from "../../../../../components/StyledImage";
-import { pxToRem } from "../../../../../common/utils";
+import { StyledImage } from "../../../../StyledImage";
+import { pxToRem } from "../../../../../common";
 
 interface CustomFileUploadProps {
   name: string;
   accept: Record<string, string[]>;
+  handleUpload?: (file: File) => void;
   onFileMetaExtract?: (meta: { name: string; size: string; preview: string }) => void;
-  handleUpload?: (file: File) => void; 
 }
 
 export const AppFileField = ({
@@ -47,7 +47,9 @@ export const AppFileField = ({
       const file = acceptedFiles[0];
       helpers.setValue(file);
       if (handleUpload && file) {
-        handleUpload(file);
+        if (file) {
+          handleUpload?.(file);
+        }
       }
 
       const name = file ? file.name : "";
@@ -59,15 +61,29 @@ export const AppFileField = ({
       setPreview(previewUrl);
       setIsUploaded(true);
 
+      // Call the handleUpload prop
+      if (handleUpload) {
+        if (file) {
+          handleUpload(file);
+        }
+      }
+
       if (onFileMetaExtract) {
         onFileMetaExtract({ name, size, preview: previewUrl });
       }
     }
   };
 
+  const { getRootProps, getInputProps, isDragActive, fileRejections } = useDropzone({
+    accept,
+    multiple: false,
+    maxSize: 5 * 1024 * 1024, // 5MB in bytes
+    onDrop, // Use the local onDrop function
+  });
+
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    helpers.setValue(""); // Reset Formik field
+    helpers.setValue("");
     setFileName(null);
     setFileSize(null);
     if (preview) {
@@ -80,12 +96,6 @@ export const AppFileField = ({
       onFileMetaExtract({ name: "", size: "", preview: "" });
     }
   };
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept,
-    multiple: false,
-  });
 
   return (
     <Box sx={{ marginBottom: "24px" }}>
@@ -189,30 +199,46 @@ export const AppFileField = ({
           </Typography>
         </Box>
       ) : (
-        <Box
-          {...getRootProps()}
-          sx={{
-            border: "1px dashed #D5D5D5",
-            borderRadius: "4px",
-            padding: "24px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            minHeight: "100px",
-            backgroundColor: isDragActive ? "#f7f7f7" : "transparent",
-            "&:hover": { backgroundColor: "#f7f7f7" },
-          }}
-        >
-          <input {...getInputProps()} />
-          <CloudUploadIcon sx={{ fontSize: 40, color: "#D5D5D5", marginBottom: 2 }} />
-          <Typography variant="body1" color="textPrimary" align="center">
-            Click or drag to upload
-          </Typography>
-          <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 1 }}>
-            or browse your file
-          </Typography>
+        <Box>
+          <Box
+            {...getRootProps()}
+            sx={{
+              border: "1px dashed #D5D5D5",
+              borderRadius: "4px",
+              padding: "24px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              minHeight: "100px",
+              backgroundColor: isDragActive ? "#f7f7f7" : "transparent",
+              "&:hover": { backgroundColor: "#f7f7f7" },
+            }}
+          >
+            <input {...getInputProps()} />
+            <CloudUploadIcon sx={{ fontSize: 40, color: "#D5D5D5", marginBottom: 2 }} />
+            <Typography variant="body1" color="textPrimary" align="center">
+              {isDragActive ? "Drop the file here..." : "Click or drag to upload"}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 1 }}>
+              or browse your file
+            </Typography>
+          </Box>
+          {/* Error handling for file rejections */}
+          tsx
+          {fileRejections.length > 0 && (
+            <Typography
+              sx={{
+                color: "error.main",
+                fontSize: pxToRem(12),
+                mt: 1,
+                textAlign: "center",
+              }}
+            >
+              {fileRejections[0]?.errors?.[0]?.message || "File upload failed"}
+            </Typography>
+          )}
         </Box>
       )}
     </Box>

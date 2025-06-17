@@ -1,4 +1,5 @@
-import { Box, Stepper, Step, StepLabel } from "@mui/material";
+import { Box, Step, StepLabel, Stepper } from "@mui/material";
+import React from "react";
 
 interface AppStepperControllerProps {
   activeTab: number;
@@ -14,9 +15,8 @@ export const AppStepperController = ({
   activeTab,
   handleTabChange,
   completedSteps,
-  tabTitles
+  tabTitles,
 }: AppStepperControllerProps) => {
-
   const handleStepClick = (index: number) => {
     if (handleTabChange) {
       handleTabChange({} as React.SyntheticEvent, index);
@@ -24,40 +24,40 @@ export const AppStepperController = ({
   };
 
   return (
-    <Box sx={{ width: '100%', paddingX: 2, marginY: 3 }}>
+    <Box sx={{ width: "100%", paddingX: 2, marginY: 3 }}>
       <Stepper
         activeStep={activeTab}
         alternativeLabel
         sx={{
-          width: '100%',
-          '& .MuiStepConnector-line': {
+          width: "100%",
+          "& .MuiStepConnector-line": {
             height: 2,
-            backgroundColor: '#E0E0E0'
+            backgroundColor: "#E0E0E0",
           },
           '& .MuiStepConnector-root.Mui-active .MuiStepConnector-line': {
             backgroundColor: '#E0E0E0'
           },
           '& .MuiStepConnector-root.Mui-completed .MuiStepConnector-line': {
-            backgroundColor: ' #F98D31'
+            backgroundColor: '#F98D31'
           },
-          '& .MuiStep-root': {
+          "& .MuiStep-root": {
             padding: 0,
-            cursor: handleTabChange ? 'pointer' : 'default'
+            cursor: handleTabChange ? "pointer" : "default",
           },
-          '& .MuiStepLabel-label': {
-            fontSize: '13px',
-            color: '#757575',
+          "& .MuiStepLabel-label": {
+            fontSize: "13px",
+            color: "#757575",
             fontWeight: 500,
-            textTransform: 'uppercase',
-            letterSpacing: '0.5px',
+            textTransform: "uppercase",
+            letterSpacing: "0.5px",
             marginTop: 0.5,
             '&.Mui-active': {
               color: '#E0E0E0'
             },
-            '&.Mui-completed': {
-              color: '#F98D31'
-            }
-          }
+            "&.Mui-completed": {
+              color: "#F98D31",
+            },
+          },
         }}
       >
         {tabTitles.map((item, index) => (
