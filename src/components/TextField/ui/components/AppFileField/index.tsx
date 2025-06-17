@@ -226,7 +226,6 @@ export const AppFileField = ({
             </Typography>
           </Box>
           {/* Error handling for file rejections */}
-          tsx
           {fileRejections.length > 0 && (
             <Typography
               sx={{
