@@ -6,7 +6,7 @@ interface AppDeliveryCardsProps {
     id: number
     background: string
     cardLabel: string
-    cardValue: string
+    cardValue: string | number
   }[]
   isProfileComplete?: boolean
 }
