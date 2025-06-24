@@ -1,4 +1,4 @@
-import { Stack, Typography } from "@mui/material"
+import { Box, Stack, Typography } from "@mui/material"
 import { pxToRem } from "../../common/utils"
 import { LabelAndImg } from "../LabelAndImg"
 import { RowStack } from "../RowStack"
@@ -38,40 +38,48 @@ export const DeliveryRequestCard = ({
   bgColor,
   handleViewDetails,
 }: DeliveryRequestCardProps) => {
-  return(
+  return (
     <Stack
       sx={{
         width: "100%",
         backgroundColor: "transparent",
         borderRadius: "10px",
-        padding: "16px 24px",
+        padding: {xs:"16px 12px", sm: "16px 24px"},
         border: "1px solid #D6D4D1",
-        gap: "24px",
+        gap: {xs: "20px", sm: "24px"},
       }}
     >
-      <RowStack spacing="24px" alignItems="center">
+      <Stack
+        direction={{xs: "column", sm: "row"}}
+        spacing={{xs:"12px", sm: "24px"}}
+        alignItems={{xs: "flex-start", sm: "center"}}
+      >
         <RowStack spacing="16px">
-        <Typography
-            sx={{
-              padding: "4px 8px",
-              fontSize: pxToRem(12),
-              fontWeight: 400,
-              color: color,
-              backgroundColor: bgColor,
-            }}
-          >
-            {status}
-          </Typography>
+          <Box width="92px" display="flex" alignItems="center" justifyContent="center" >
+            <Typography
+              sx={{
+                padding: "4px 8px",
+                fontSize: pxToRem(12),
+                fontWeight: 400,
+                color: color,
+                backgroundColor: bgColor,
+                width: "100%",
+                textAlign: "center",
+              }}
+            >
+              {status}
+            </Typography>
+          </Box>
 
           <Typography
             sx={{
-              fontSize: pxToRem(16),
+              fontSize: {xs: pxToRem(14), sm: pxToRem(14)},
               fontWeight: 400,
               lineHeight: "140%",
               color: "#797979",
               textTransform: "capitalize",
               pr: "16px",
-              borderRight: "1px solid #D6D4D1",
+              borderRight: {xs:"none" ,sm: "1px solid #D6D4D1"},
             }}
           >
             {deliveryId}
@@ -94,13 +102,22 @@ export const DeliveryRequestCard = ({
             label={driver}
           />
         </RowStack>
-      </RowStack>
+      </Stack>
 
-      <RowStack justifyContent="space-between" alignItems={"center"}>
-        <RowStack>
+      <Stack
+        direction={{xs: "column", sm: "row"}}
+        spacing={{xs:"12px", md: "24px"}}
+        alignItems={{xs: "flex-start", sm: "center"}}
+        justifyContent={{xs: "flex-start", sm: "space-between"}}
+      >
+        <Stack
+          direction={{xs: "column", sm: "row"}}
+          spacing={{xs:"10px", sm: "24px"}}
+          alignItems={{xs: "flex-start", sm: "center"}}
+        >
           <Typography
             sx={{
-              fontSize: pxToRem(16),
+              fontSize: {xs: pxToRem(14),md:pxToRem(16)},
               fontWeight: 400,
               lineHeight: "140%",
               color: "#615D5D",
@@ -116,12 +133,13 @@ export const DeliveryRequestCard = ({
               width: "31px",
               height: "22px",
               margin: "0 24px",
+              display: {xs: "none", sm: "block"},
             }}
           />
 
           <Typography
             sx={{
-              fontSize: pxToRem(16),
+              fontSize: {xs: pxToRem(14),md:pxToRem(16)},
               fontWeight: 400,
               lineHeight: "140%",
               color: "#615D5D",
@@ -129,27 +147,29 @@ export const DeliveryRequestCard = ({
           >
             Dropoff : {dropOffLocation}
           </Typography>
-        </RowStack>
+        </Stack>
 
-        <AppButton
-          onClick={() => handleViewDetails(deliveryId)}
-          sx={{
-            backgroundColor: "transparent",
-            fontSize: pxToRem(16),
-            fontWeight: 500,
-            lineHeight: "150%",
-            color: "#F98D31",
-            p: 0,
-            textAlign: "right",
-            "&:hover": {
+        <Box alignSelf={{xs: "flex-end"}} ml="auto">
+          <AppButton
+            onClick={() => handleViewDetails(deliveryId)}
+            sx={{
               backgroundColor: "transparent",
-            },
-          }}
-          disableArrow
-        >
-          {'>>'}View Details
-        </AppButton>
-      </RowStack>
+              fontSize: {xs: pxToRem(14)},
+              fontWeight: 500,
+              lineHeight: "150%",
+              color: "#F98D31",
+              p: 0,
+              textAlign: "right",
+              "&:hover": {
+                backgroundColor: "transparent",
+              },
+            }}
+            disableArrow
+          >
+            {'>>'}View Details
+          </AppButton>
+        </Box>
+      </Stack>
     </Stack>
   )
 }

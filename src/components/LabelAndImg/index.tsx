@@ -18,16 +18,16 @@ export const LabelAndImg = ({
         src={icon}
         alt="icon"
         sx={{
-          width: "28px",
-          height: "28px",
+          width: {xs:"24px", md:"28px"},
+          height: {xs:"24px", md:"28px"},
         }}
       />
 
       <Typography
         sx={{
-          fontSize: pxToRem(14),
-          fontWeight: 500,
-          lineHeight: "130%",
+          fontSize: {xs:pxToRem(12), md: pxToRem(14)},
+          fontWeight: {xs:400, md: 500},
+          lineHeight: {xs:"140%", md: "130%"},
           color: "#615D5D",
         }}
       >

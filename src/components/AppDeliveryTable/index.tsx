@@ -1,4 +1,4 @@
-import { Box,  Paper} from "@mui/material";
+import { Box,  Paper, useMediaQuery, useTheme} from "@mui/material";
 import { AppDeliveryPanel, AppDeliveryPanelProps } from "../AppDeliveryPanel";
 import { CustomPagination, CustomPaginationProps } from "../CustomPagination";
 import { EmptyAddDeliveryState, EmptyAddDeliveryStateProps } from "../EmptyAddDeliveryState";
@@ -33,6 +33,8 @@ interface AppDeliveryTablePropsWithoutPanel extends BaseAppDeliveryTableProps {
 type AppDeliveryTableProps = AppDeliveryTablePropsWithPanel | AppDeliveryTablePropsWithoutPanel;
 
 export const AppDeliveryTable = (props: AppDeliveryTableProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const {
     children,
     handleTabChange,
@@ -74,7 +76,7 @@ export const AppDeliveryTable = (props: AppDeliveryTableProps) => {
           {children}
 
           {/* Pagination */}
-          {paginationProps && (
+          {!isMobile && paginationProps && (
             <CustomPagination {...paginationProps}/>
           )}
         </Box>

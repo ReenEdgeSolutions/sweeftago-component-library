@@ -1,5 +1,4 @@
 import { Box, IconButton, Stack, Typography, useTheme } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { ArrowBackIos } from "@mui/icons-material";
 import { pxToRem } from "../../common";
 import { ReactNode } from "react";
@@ -9,16 +8,17 @@ type AppBackAndChildrenProps = {
   desc: string;
   children: ReactNode;
   removeIcon?: boolean;
+  onBackClick?: () => void;
 }
 
 export function AppBackAndChildren({
   title,
   desc,
   children,
-  removeIcon = true
+  removeIcon = true,
+  onBackClick
 }: AppBackAndChildrenProps) {
   const theme = useTheme()
-  const router = useRouter();
 
   return (
     <Stack
@@ -27,7 +27,7 @@ export function AppBackAndChildren({
     >
       {removeIcon && (
         <IconButton
-          onClick={() => router.back()}
+          onClick={onBackClick}
           sx={{
             background: theme.palette.background.paper,
             width: "39px",
