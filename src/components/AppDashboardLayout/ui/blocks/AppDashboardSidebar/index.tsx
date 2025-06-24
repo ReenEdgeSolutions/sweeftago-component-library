@@ -101,7 +101,6 @@ export function AppDashboardSidebar({
         // Mobile styles - hide on mobile unless it's a drawer
         display: isMobile && !isMobileDrawer ? 'none' : 'flex',
       }}
-      divider={<Divider orientation="horizontal" flexItem />}
     >
       {/* Top section */}
       <Stack>
