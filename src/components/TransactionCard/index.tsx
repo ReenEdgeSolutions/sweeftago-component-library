@@ -59,7 +59,7 @@ export const TransactionCard = ({ transaction, handleCardClick }: TransactionCar
             color: '#111827',
           }}
         >
-          {transaction.refNumber}
+          {transaction.reference}
         </Typography>
 
 

@@ -301,108 +301,6 @@ export const deliveryData3 = [
   }
 ]
 
-export const individualTripData = [
-  {
-    id: 1,
-    background: "#BFFFE2",
-    cardLabel: "Total Trips",
-    cardValue: "20",
-  },
-  {
-    id: 2,
-    background: "#B2FAFF",
-    cardLabel: "Average Fulfillment Time",
-    cardValue: " 1-2hrs",
-  },
-  {
-    id: 3,
-    background: "#CAFD9E",
-    cardLabel: "Total Earned",
-    cardValue: " ₦5,000",
-  },
-  {
-    id: 4,
-    background: "#E9F692",
-    cardLabel: "Average Rating",
-    cardValue: " 4.8 ★",
-  }
-]
-
-export const deliveryData5 = [
-  {
-    id: 1,
-    background: " #BFFFE2",
-    cardLabel: "Total Riders",
-    cardValue: "200",
-  },
-  {
-    id: 2,
-    background: "#B2FAFF",
-    cardLabel: "Total Deliveries",
-    cardValue: "2000",
-  },
-  {
-    id: 3,
-    background: " #CAFD9E",
-    cardLabel: "Average Fulfillment Time",
-    cardValue: "1-2hrs",
-  },
-  {
-    id: 4,
-    background: "#F2FF9A",
-    cardLabel: "Total Earned",
-    cardValue: "₦500,000",
-  },
-]
-
-export const deliveryData6 = [
-  {
-    id: 1,
-    background: " #BFFFE2",
-    cardLabel: "Total Revenue",
-    cardValue: "#200,000",
-  },
-  {
-    id: 2,
-    background: "#E9F692",
-    cardLabel: "Platform Share ",
-    cardValue: "#20,000",
-  },
-  {
-    id: 3,
-    background: " #B2FAFF",
-    cardLabel: "Net Earnings",
-    cardValue: "#180,000",
-  },
-  {
-    id: 4,
-    background: "#CAFD9E",
-    cardLabel: "Total Deliveries",
-    cardValue: "800",
-  },
-]
-
-export const deliveryData4 = [
-  {
-    id: 1,
-    background: " #BFFFE2",
-    cardLabel: "Total Earnings",
-    cardValue: "₦15,000",
-  },
-  {
-    id: 2,
-    background: " #B2FAFF",
-    cardLabel: "Pending Payouts",
-    cardValue: " ₦60,000",
-  },
-  {
-    id: 3,
-    background: " #CAFD9E",
-    cardLabel: "Completed Trips    ",
-    cardValue: "50",
-  }
-]
-
 export const deliveryData7 = [
   {
     id: 1,
@@ -469,49 +367,6 @@ export const enhanceDeliveryData = (delivery: any): ExtendedDelivery => {
     paymentStatus: delivery.status === "Completed" ? "Paid" : delivery.status === "Canceled" ? "Refunded" : "Pending"
   };
 };
-
-// Sample transaction data interface
-export interface TransactionData {
-  id: string;
-  refNumber: string;
-  date: string;
-  amount: number;
-  status: 'successful' | 'failed' | 'refunded';
-  customerName: string;
-  customerEmail: string;
-  paymentMethod: string;
-  description: string;
-  currency: string;
-}
-
-// Sample transaction data
-export const sampleTransactions: TransactionData[] = Array.from({ length: 50 }, (_, index) => {
-  const statuses: ('successful' | 'failed' | 'refunded')[] = ['successful', 'failed', 'refunded'];
-  const paymentMethods = ['Card', 'Bank Transfer', 'Mobile Money', 'Wallet'];
-  const customers = [
-    { name: 'John Doe', email: 'john.doe@email.com' },
-    { name: 'Jane Smith', email: 'jane.smith@email.com' },
-    { name: 'Mike Johnson', email: 'mike.j@email.com' },
-    { name: 'Sarah Wilson', email: 'sarah.w@email.com' },
-    { name: 'David Brown', email: 'david.b@email.com' }
-  ];
-
-  const customer = customers[index % customers.length] || { name: 'Unknown', email: 'unknown@email.com' };
-  const status: 'successful' | 'failed' | 'refunded' = statuses[index % statuses.length] ?? 'failed';
-
-  return {
-    id: `txn-${index + 1}`,
-    refNumber: `RCT-240514-${String(index + 1).padStart(5, '0')}`,
-    date: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0] || "1970-01-01",
-    amount: Math.floor(Math.random() * 50000) + 5000,
-    status,
-    customerName: customer.name,
-    customerEmail: customer.email,
-    paymentMethod: paymentMethods[index % paymentMethods.length] || 'Card',
-    description: `Payment for order #${1000 + index}`,
-    currency: 'NGN'
-  };
-});
 
 export const cityData = [
   "Abia",
@@ -1128,4 +983,188 @@ export const financialData= [
     riderEarnings: "₦7,000",
     status: "Paid"
   }
+];
+
+interface Delivery {
+  id: string;
+  status: string;
+  amount: number;
+  timeAway: string;
+  driver: string;
+  pickup: string;
+  dropoff: string;
+}
+
+type AssignNewStatus = (deliveries: Delivery[], count?: number) => Delivery[];
+
+const assignNewStatus: AssignNewStatus = (deliveries, count = 5) => {
+  const updated = [...deliveries]; // Copy to avoid mutation
+
+  // Get only Scheduled deliveries
+  const scheduled = updated.filter(d => d.status === 'Scheduled');
+
+  // Pick 'count' random scheduled deliveries
+  const selected = scheduled
+    .sort(() => Math.random() - 0.5)
+    .slice(0, count);
+
+  // Create a set of IDs to update
+  const idsToUpdate = new Set(selected.map(d => d.id));
+
+  // Return final list with only status changed
+  return updated.map(delivery =>
+    idsToUpdate.has(delivery.id)
+      ? { ...delivery, status: 'New' }
+      : delivery
+  );
+};
+
+export const driverDeliveries = assignNewStatus(allDeliveries);
+
+export interface TransactionData {
+  id: string;
+  reference: string;
+  date: string;
+  amount: number;
+  paymentStatus: string;
+  status: string;
+  currency: string;
+}
+
+export const sampleTransactions: TransactionData[] = [
+  {
+    id: "txn_001",
+    reference: "REF123456A",
+    date: "2025-06-01",
+    amount: 15000,
+    paymentStatus: "Paid",
+    status: "successful",
+    currency: "NGN",
+  },
+  {
+    id: "txn_002",
+    reference: "REF123456B",
+    date: "2025-06-02",
+    amount: 25000,
+    paymentStatus: "Failed",
+    status: "failed",
+    currency: "NGN",
+  },
+  {
+    id: "txn_003",
+    reference: "REF123456C",
+    date: "2025-06-03",
+    amount: 10000,
+    paymentStatus: "Paid",
+    status: "successful",
+    currency: "NGN",
+  },
+  {
+    id: "txn_004",
+    reference: "REF123456D",
+    date: "2025-06-04",
+    amount: 20000,
+    paymentStatus: "Refunded",
+    status: "refunded",
+    currency: "NGN",
+  },
+  {
+    id: "txn_005",
+    reference: "REF123456E",
+    date: "2025-06-05",
+    amount: 5000,
+    paymentStatus: "Paid",
+    status: "successful",
+    currency: "NGN",
+  },
+  {
+    id: "txn_006",
+    reference: "REF123456F",
+    date: "2025-06-06",
+    amount: 18000,
+    paymentStatus: "Failed",
+    status: "failed",
+    currency: "NGN",
+  },
+  {
+    id: "txn_007",
+    reference: "REF123456G",
+    date: "2025-06-07",
+    amount: 30000,
+    paymentStatus: "Paid",
+    status: "successful",
+    currency: "NGN",
+  },
+  {
+    id: "txn_008",
+    reference: "REF123456H",
+    date: "2025-06-08",
+    amount: 7000,
+    paymentStatus: "Refunded",
+    status: "refunded",
+    currency: "NGN",
+  },
+  {
+    id: "txn_009",
+    reference: "REF123456I",
+    date: "2025-06-09",
+    amount: 12000,
+    paymentStatus: "Paid",
+    status: "successful",
+    currency: "NGN",
+  },
+  {
+    id: "txn_010",
+    reference: "REF123456J",
+    date: "2025-06-10",
+    amount: 22000,
+    paymentStatus: "Paid",
+    status: "successful",
+    currency: "NGN",
+  },
+  {
+    id: "txn_011",
+    reference: "REF123456K",
+    date: "2025-06-11",
+    amount: 16000,
+    paymentStatus: "Failed",
+    status: "failed",
+    currency: "NGN",
+  },
+  {
+    id: "txn_012",
+    reference: "REF123456L",
+    date: "2025-06-12",
+    amount: 14000,
+    paymentStatus: "Paid",
+    status: "successful",
+    currency: "NGN",
+  },
+  {
+    id: "txn_013",
+    reference: "REF123456M",
+    date: "2025-06-13",
+    amount: 8000,
+    paymentStatus: "Refunded",
+    status: "refunded",
+    currency: "NGN",
+  },
+  {
+    id: "txn_014",
+    reference: "REF123456N",
+    date: "2025-06-14",
+    amount: 9000,
+    paymentStatus: "Paid",
+    status: "successful",
+    currency: "NGN",
+  },
+  {
+    id: "txn_015",
+    reference: "REF123456O",
+    date: "2025-06-15",
+    amount: 11000,
+    paymentStatus: "Failed",
+    status: "failed",
+    currency: "NGN",
+  },
 ];
