@@ -1,21 +1,29 @@
-import { AppBar, IconButton, Toolbar, Typography, useMediaQuery, useTheme} from "@mui/material";
+import { alpha, AppBar, IconButton, Toolbar, Typography, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { RowStack } from "../../../../RowStack";
 import { Profile, ProfileProps } from "./ui/components";
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import whatsApp from '../../assets/icons/whatsapp.svg';
 import { StyledImage } from "../../../../StyledImage";
+import { pxToRem } from "../../../../../common";
+import { ReactNode } from "react";
 
 export type AppDashboardHeaderProps = {
   profileProps: ProfileProps;
   onChatToggle?: () => void;
-  onMobileMenuToggle?: () => void; // New prop for mobile menu
+  onMobileMenuToggle?: () => void;
+  showProfile?: boolean;
+  showHome?: boolean;
+  children?: ReactNode
 };
 
 export function AppDashboardHeader({
   profileProps,
   onChatToggle,
   onMobileMenuToggle,
+  showProfile = true,
+  showHome = true,
+  children
 }: AppDashboardHeaderProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -60,12 +68,13 @@ export function AppDashboardHeader({
 
 
               <Typography
-                variant="h6"
+                // variant="h6"
                 sx={{
-                  fontWeight: 500,
-                  fontSize: "16px",
+                  fontWeight: 400,
+                  fontSize: pxToRem(16),
                   display: { xs: "block", sm: "none" },
-                  color: "#252423"
+                  lineHeight: '24px',
+                  color: "#615D5D"
                 }}
               >
                 Home
@@ -109,34 +118,37 @@ export function AppDashboardHeader({
             }}
           >
             {/* Left side - Navigation title */}
-            <Typography
-              variant="h6"
-              sx={{
-                fontWeight: 400,
-                fontSize: "16px",
-                display: { xs: "none", sm: "block" },
-                color: "#615D5D"
-              }}
-            >
-              Home
-            </Typography>
+            {showHome && (
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 400,
+                  fontSize: "16px",
+                  display: { xs: "none", sm: "block" },
+                  color: "#615D5D"
+                }}
+              >
+                Home
+              </Typography>
+            )}
+            {!showHome && children}
 
             {/* Right side - chat button, notifications, profile */}
-            <RowStack spacing={"16px"} alignItems="center">
+            <RowStack spacing={"19px"} alignItems="center">
               {/* Chat toggle button */}
               <IconButton
                 onClick={onChatToggle}
                 sx={{
-                  backgroundColor: "#E4FCD3",
+                  backgroundColor: "#CFFFD2",
                   borderRadius: "10px",
                   padding: "14px 16px",
                   "&:hover": {
-                    backgroundColor: "#d3f5bf",
+                    backgroundColor: alpha("#CFFFD2", .8),
                   },
                 }}
               >
                 <RowStack spacing={1} alignItems="center">
-                  <WhatsAppIcon/>
+                  <WhatsAppIcon />
                   <Typography
                     sx={{
                       color: "#252423",
@@ -151,7 +163,9 @@ export function AppDashboardHeader({
               </IconButton>
 
               {/* Profile */}
-              <Profile {...profileProps} />
+              {showProfile && (
+                <Profile {...profileProps} />
+              )}
             </RowStack>
           </RowStack>
         </Toolbar>

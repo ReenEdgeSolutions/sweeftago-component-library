@@ -5,7 +5,7 @@ import { pxToRem } from "../../../../../common/utils"
 interface CardsProps {
   background: string
   cardLabel: string
-  cardValue: string
+  cardValue: string | number
   isProfileComplete?: boolean // Make it optional
 }
 
