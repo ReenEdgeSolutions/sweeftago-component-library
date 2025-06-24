@@ -5,10 +5,12 @@ import logoIcon from "./ui/assets/icons/logo-icon.png";
 import { SideLinks, SideLinksProps } from "../../components";
 import { StyledImage } from "../../../../StyledImage";
 import { MobileLogoutAndDeactivate, MobileProfileHeader } from "./ui/components";
+import { StyledLink } from "src/components/StyledLink";
 
 export type AppDashboardSidebarProps = {
   links?: SideLinksProps[];
   open: boolean;
+  hrefLink: string;
   // Mobile drawer mode
   isMobileDrawer?: boolean;
   onMobileClose?: () => void;
@@ -51,6 +53,7 @@ export function AppDashboardSidebar({
   mobileProfileProps,
   handleLogout,
   handleDeactivateAccount,
+  hrefLink
 }: AppDashboardSidebarProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -98,21 +101,26 @@ export function AppDashboardSidebar({
 
         {/* Logo - show when not mobile or when sidebar is open or in mobile drawer */}
         {(!isMobile) && (
-          <RowStack
-            sx={{ width: '100%'}}
-            justifyContent={(open) ? "flex-start" : "center"}
-            mb={"30px"}
-          >
-            {(open) ? (
-              <AppLogo sx={{width: "214px", height: "71.33px"}}/>
-            ) : (
-              <StyledImage
-                src={logoIcon}
-                alt="Logo"
-                sx={{ width: "35px", height: "35px"}}
-              />
-            )}
-          </RowStack>
+          <Stack spacing={3}>
+            <StyledLink href={hrefLink || "#"}>
+              <RowStack
+                sx={{ width: '100%'}}
+                justifyContent={(open) ? "flex-start" : "center"}
+                mb={"30px"}
+              >
+                {(open) ? (
+                  <AppLogo sx={{width: "214px", height: "71.33px"}}/>
+                ) : (
+                  <StyledImage
+                    src={logoIcon}
+                    alt="Logo"
+                    sx={{ width: "35px", height: "35px"}}
+                  />
+                )}
+              </RowStack>
+            </StyledLink>
+            <Divider orientation="horizontal" flexItem color='#D4D3CB' />
+          </Stack>
         )}
 
         {/* Navigation Links */}

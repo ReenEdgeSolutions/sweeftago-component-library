@@ -1,6 +1,7 @@
 import { CircularProgressProps, useTheme } from "@mui/material";
 import React, { useState } from "react";
 import type { AppButtonProps } from "../../../index";
+import { pxToRem } from "../../../../../common";
 
 export interface UseAppButtonReturn {
   styles: AppButtonProps["sx"];
@@ -34,6 +35,9 @@ export const useAppButton = ({
     background,
     color: textColor,
     border: `1px solid ${border}`,
+    fontSize: pxToRem(16),
+    fontWeight: 500,
+    // fontFamily: theme.font.body,
     transition: "all 0.2s ease-in-out",
     "&:hover": {
       background: `${hoverBackground} !important`,
@@ -41,7 +45,7 @@ export const useAppButton = ({
       border: `1px solid ${hoverBorder}`,
     },
     "&:disabled": {
-      background: variant === "contained" ? background : "#E0E0E0",
+      background: "#E0E0E0",
       color: "#615D5D",
       border: "1px solid transparent",
       opacity: 0.7,

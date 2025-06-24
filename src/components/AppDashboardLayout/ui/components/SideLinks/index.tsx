@@ -33,7 +33,7 @@ export function SideLinks({ sideIcon, sideLink, link, isSideBarOpen }: SideLinks
             },
             "& .icon-button img": {
               filter:
-                "invert(56%) sepia(76%) saturate(1690%) hue-rotate(346deg) brightness(95%) contrast(91%)",
+                "invert(11%) sepia(15%) saturate(343%) hue-rotate(340deg) brightness(96%) contrast(88%)",
             },
           },
         }}
@@ -47,8 +47,9 @@ export function SideLinks({ sideIcon, sideLink, link, isSideBarOpen }: SideLinks
               width: isSideBarOpen ? "20px" : "30px",
               height: "auto",
               filter: isActive
-                ? "invert(56%) sepia(76%) saturate(1690%) hue-rotate(346deg) brightness(95%) contrast(91%)" // for #F05A25
-                : "invert(58%) sepia(6%) saturate(0%) hue-rotate(251deg) brightness(94%) contrast(90%)", // #8C8C8C
+              // → #252423
+              ? 'invert(11%) sepia(15%) saturate(343%) hue-rotate(340deg) brightness(96%) contrast(88%)'
+              : 'invert(40%) sepia(0%) saturate(0%) hue-rotate(322deg) brightness(87%) contrast(90%)', // #979797
               transition: "filter 0.3s ease",
             },
           }}
@@ -57,8 +58,8 @@ export function SideLinks({ sideIcon, sideLink, link, isSideBarOpen }: SideLinks
             src={sideIcon}
             alt="side-icons"
             sx={{
-              width: "30px",
-              height: "30px",
+              width: "24px",
+              height: "24px",
             }}
           />
         </IconButton>
