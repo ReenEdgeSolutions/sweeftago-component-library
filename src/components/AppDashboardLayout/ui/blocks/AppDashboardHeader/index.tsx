@@ -65,8 +65,7 @@ export function AppDashboardHeader({
               >
                 <MenuIcon />
               </IconButton>
-
-
+              {showHome && (
               <Typography
                 // variant="h6"
                 sx={{
@@ -79,6 +78,8 @@ export function AppDashboardHeader({
               >
                 Home
               </Typography>
+              )}
+            {!showHome && children}
             </RowStack>
 
 

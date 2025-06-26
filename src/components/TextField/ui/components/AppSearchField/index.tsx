@@ -29,20 +29,16 @@ export const AppSearchField = ({
     }
   };
 
-  // Create the search icon button
   const searchIconButton = (
     <IconButton onClick={handleClick}>
       <StyledImage src={searchIcon} alt={"Search"} />
     </IconButton>
   );
 
-  // Determine which prop to use based on icon position
   const adornmentProps = iconPosition === "start"
     ? { startAdornment: searchIconButton }
     : { endAdornment: searchIconButton };
 
-  // Since we can't modify AppTextField directly, we'll use regular sx props
-  // and handle the borderRadius there
   const Field = (
     <AppTextField
       {...props}
@@ -75,11 +71,10 @@ export const AppSearchField = ({
     return Field;
   }
 
-  // Here we're returning the Box with 100% width to match the design
   return (
     <Box
       sx={{
-        width: "100%", // Changed from 45% to 100%
+        width: "100%",
         ...sx,
       }}
       {...restBoxProps}

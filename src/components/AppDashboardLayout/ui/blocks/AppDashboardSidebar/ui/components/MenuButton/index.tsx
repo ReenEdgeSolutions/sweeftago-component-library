@@ -1,9 +1,5 @@
 import { IconButton } from "@mui/material";
-import { StyledImage } from "../../../../../../../StyledImage";
-
-
-import sideMenuClosedIcon from "../../assets/icons/side-menu-closed.svg";
-import sideMenuOpenedIcon from "../../assets/icons/side-menu-opened.svg";
+import { ArrowForwardIos } from "@mui/icons-material";
 
 export type MenuButtonProps = {
   onClick: () => void;
@@ -18,15 +14,27 @@ export const MenuButton = ({ onClick, isMenuOpen }: MenuButtonProps) => {
       sx={{
         padding: 0,
         position: "absolute",
-        top: "75px",
-        left: isMenuOpen ? "290px" : "70px",
-        width: "30px",
-        height: "30px",
+        top: "87px",
+        left: isMenuOpen ? "306px" : "85px",
+        width: "27px",
+        height: "27px",
+        borderRadius: "50%",
+        backgroundColor: "#F5F5F5",
+        transition: "transform 0.3s ease",
         zIndex: (theme) => theme.zIndex.appBar + 2,
-        borderRadius: "0",
+        "&:hover": {
+          backgroundColor: "#faf7f7",
+        },
+        border: '1px solid rgb(214, 212, 212)'
       }}
     >
-      <StyledImage src={isMenuOpen ? sideMenuOpenedIcon : sideMenuClosedIcon} alt={"Menu"} />
+      <ArrowForwardIos
+        sx={{
+          fontSize: "15px",
+          transform: isMenuOpen ? "rotate(180deg)" : "rotate(0deg)",
+          transition: "transform 0.3s ease",
+        }}
+      />
     </IconButton>
   );
 };

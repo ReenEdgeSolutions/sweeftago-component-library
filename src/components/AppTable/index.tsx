@@ -247,10 +247,10 @@ export const AppTable = <T extends GridRow>({
           hideFooterSelectedRowCount
           hideFooterPagination
           checkboxSelection={selectable}
-          disableRowSelectionOnClick={disableRowClick}
           rowSelectionModel={selectionModel}
           onRowSelectionModelChange={handleSelectionChange}
           pageSizeOptions={pageSizeOptions}
+          disableRowSelectionOnClick={true}
           rowHeight={68}
           onRowClick={handleRowClick}
           slots={{
