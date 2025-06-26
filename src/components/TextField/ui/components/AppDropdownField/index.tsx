@@ -1,8 +1,9 @@
-import { MenuItem, Radio, useTheme } from "@mui/material";
+import { MenuItem, Radio, useTheme, Box } from "@mui/material";
 import { AppTextField, AppTextFieldProps } from "../AppTextField";
+import { AppSearchField } from "../AppSearchField";
 import { KeyboardArrowDown } from "@mui/icons-material";
 import { useField } from "formik";
-import React from "react";
+import React, { useState, useMemo } from "react";
 
 export type AppDropdownFieldProps = Omit<
   AppTextFieldProps,
@@ -10,12 +11,14 @@ export type AppDropdownFieldProps = Omit<
 > & {
   name: string;
   dropdownData: string[];
-  onChange?: (e: React.ChangeEvent<{ value: unknown }>) => void;
+  onChange?: (event: React.ChangeEvent<{ value: unknown }>) => void;
   showRadioSelection?: boolean;
   maxHeight?: number | string;
-  enableScroll?: boolean;
   onDropdownOpen?: () => void;
   onDropdownClose?: () => void;
+  enableSearch?: boolean;
+  searchPlaceholder?: string;
+  onSearchChange?: (searchTerm: string) => void;
 };
 
 export const AppDropdownField = ({
@@ -25,60 +28,110 @@ export const AppDropdownField = ({
   placeholder,
   showRadioSelection = false,
   maxHeight = 300,
-  enableScroll = false,
-  onDropdownOpen, // Extract custom props
-  onDropdownClose, // Extract custom props
-  ...rest // Now rest won't contain custom props
+  onDropdownOpen,
+  onDropdownClose,
+  enableSearch = false,
+  searchPlaceholder = "Search...",
+  onSearchChange,
+  ...rest
 }: AppDropdownFieldProps) => {
   const theme = useTheme();
-  // Connect to Formik
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
   const [field, meta] = useField<string>(name);
   const hasError = Boolean(meta.touched && meta.error);
-
-  // Check if field has a value for proper placeholder display
   const hasValue = field.value !== "" && field.value !== undefined;
+
+  const filteredDropdownData = useMemo(() => {
+    if (!enableSearch || !searchTerm) return dropdownData;
+
+    const term = searchTerm.toLowerCase();
+
+    const startsWithMatches = dropdownData.filter((option) =>
+      option.toLowerCase().startsWith(term)
+    );
+
+    const includesMatches = dropdownData.filter(
+      (option) =>
+        !option.toLowerCase().startsWith(term) &&
+        option.toLowerCase().includes(term)
+    );
+
+    return [...startsWithMatches, ...includesMatches];
+  }, [dropdownData, searchTerm, enableSearch]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+    onSearchChange?.(value);
+  };
+
+  const handleDropdownClose = () => {
+    setSearchTerm("");
+    onDropdownClose?.();
+  };
+
+  const handleDropdownChange = (e: React.ChangeEvent<{ value: unknown }>) => {
+    field.onChange(e);
+    onChange?.(e);
+  };
 
   return (
     <AppTextField
       select
       {...field}
-      {...rest} // Safe to spread now - no custom props
+      {...rest}
       error={hasError}
       helperText={hasError ? meta.error : rest.helperText}
-      onChange={(e) => {
-        field.onChange(e);
-        if (onChange) {
-          onChange(e as React.ChangeEvent<{ value: unknown }>);
-        }
-      }}
+      onChange={handleDropdownChange}
       SelectProps={{
         IconComponent: KeyboardArrowDown,
         displayEmpty: true,
-        onOpen: () => {
-          onDropdownOpen?.(); // Use extracted prop directly
-        },
-        onClose: () => {
-          onDropdownClose?.(); // Use extracted prop directly
-        },
+        onOpen: onDropdownOpen,
+        onClose: handleDropdownClose,
         renderValue: (selected) => {
           if (!selected || selected === "") {
             return placeholder;
           }
-          // Always return just the text value, never the radio button
           return selected as string;
         },
-        // Only add MenuProps if scroll is enabled - otherwise keep original behavior
-        ...(enableScroll && {
-          MenuProps: {
-            PaperProps: {
+        MenuProps: {
+          PaperProps: {
+            sx: {
+              maxHeight: enableSearch
+                ? typeof maxHeight === "number"
+                  ? maxHeight + 60
+                  : maxHeight
+                : maxHeight,
+              overflowY: enableSearch ? "visible" : "auto",
+              padding: enableSearch ? "8px" : "16px",
+              borderRadius: "10px",
+              transition: "all 0.3s ease",
+              ...(!enableSearch && {
+                "&::-webkit-scrollbar": {
+                  width: "6px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  background: "#f1f1f1",
+                  borderRadius: "3px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  background: "#c1c1c1",
+                  borderRadius: "3px",
+                },
+                "&::-webkit-scrollbar-thumb:hover": {
+                  background: "#a8a8a8",
+                },
+              }),
+            },
+          },
+          transitionDuration: 300,
+          ...(enableSearch && {
+            MenuListProps: {
               sx: {
+                padding: 0,
                 maxHeight: maxHeight,
                 overflowY: "auto",
-                padding: "16px",
-                borderRadius: "10px",
-                // Smooth dropdown animation
-                transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                // Custom scrollbar styling
                 "&::-webkit-scrollbar": {
                   width: "6px",
                 },
@@ -95,16 +148,13 @@ export const AppDropdownField = ({
                 },
               },
             },
-            // Add smooth transition to the menu itself
-            transitionDuration: 300,
-          },
-        }),
+          }),
+        },
         sx: {
           ".MuiSvgIcon-root": {
             color: theme.palette.text.primary,
-            transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+            transition: "transform 0.3s ease-in-out",
           },
-          // Remove outline and maintain consistent border with default color
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
             borderColor: "#D5D5D5",
             borderWidth: "1px",
@@ -115,7 +165,6 @@ export const AppDropdownField = ({
           "& .MuiOutlinedInput-notchedOutline": {
             borderColor: "#D5D5D5",
           },
-          // Apply styles when placeholder is showing
           ...(hasValue
             ? {}
             : {
@@ -123,43 +172,74 @@ export const AppDropdownField = ({
                 fontStyle: "italic",
               }),
         },
-        ...rest.SelectProps, // Safe to spread SelectProps since custom props are filtered out
+        ...rest.SelectProps,
       }}
     >
-      {/* Add empty option for placeholder - appears when nothing is selected */}
-      {/* Only show if NOT using radio selection */}
+      {enableSearch && (
+        <Box
+          sx={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1,
+            backgroundColor: "white",
+            padding: "8px",
+            borderBottom: "1px solid #e0e0e0",
+            marginBottom: "4px",
+          }}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          <AppSearchField
+            placeholder={searchPlaceholder}
+            value={searchTerm}
+            onChange={handleSearchChange}
+            useCustomContainer={true}
+            size="small"
+            sx={{
+              "& .MuiInputBase-root": {
+                borderRadius: "8px",
+                backgroundColor: "#F5F5F5",
+                fontSize: "14px",
+              },
+            }}
+            onKeyDown={(e) => e.stopPropagation()}
+            onClick={(e) => e.stopPropagation()}
+          />
+        </Box>
+      )}
+
       {!showRadioSelection && (
         <MenuItem disabled value="">
           <em>{placeholder}</em>
         </MenuItem>
       )}
-      {dropdownData.map((option) => (
+
+      {enableSearch && searchTerm && filteredDropdownData.length === 0 && (
+        <MenuItem disabled>
+          <em>No results found</em>
+        </MenuItem>
+      )}
+
+      {filteredDropdownData.map((option, index) => (
         <MenuItem
-          key={option}
+          key={index}
           value={option}
           sx={{
-            // Only add radio styling if showRadioSelection is true
             ...(showRadioSelection && {
               display: "flex",
               alignItems: "center",
               gap: 1,
               pl: 2,
-              // Maintain padding within the scrollable area
               mx: 0,
-              // Smooth hover effect
               transition: "background-color 0.2s ease",
             }),
-            // Remove default hover background for consistent styling
             "&:hover": {
               backgroundColor: "rgba(0, 0, 0, 0.04)",
             },
-            // Remove focus outline
             "&.Mui-focusVisible": {
               backgroundColor: "rgba(0, 0, 0, 0.04)",
             },
           }}
         >
-          {/* Only show radio if showRadioSelection is true */}
           {showRadioSelection && (
             <Radio
               checked={field.value === option}
@@ -167,17 +247,13 @@ export const AppDropdownField = ({
               sx={{
                 padding: 0,
                 marginRight: 1,
-                // Default (unchecked) state - use default theme color
                 color: theme.palette.action.disabled,
-                // Checked state - orange color
                 "&.Mui-checked": {
                   color: "#F98D31",
                 },
-                // Remove hover/focus effects on radio
                 "&:hover": {
                   backgroundColor: "transparent",
                 },
-                // Prevent pointer events to avoid interference
                 pointerEvents: "none",
               }}
             />

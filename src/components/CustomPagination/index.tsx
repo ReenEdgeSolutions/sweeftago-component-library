@@ -24,6 +24,8 @@ export const CustomPagination = ({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
 
+  if (totalItems === 0) return null;
+
   return(
     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
       <Stack direction="row" spacing={2} alignItems="center">

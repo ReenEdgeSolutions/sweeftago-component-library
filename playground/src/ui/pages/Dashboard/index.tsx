@@ -1,5 +1,5 @@
 "use client"
-import { AppDashboardLayout, AppTitleAndLabel } from "@component-library"
+import { AppDashboardLayout, AppTitleAndLabel,AppBreadCrumbs } from "@component-library"
 import homeIcon from "./ui/assets/icons/home.svg"
 import earnings from "./ui/assets/icons/money.svg";
 import route from "./ui/assets/icons/location.svg"
@@ -47,18 +47,32 @@ export const DashboardLayout = () => {
     profileClick: handleProfileClick
   }
 
+  const HeaderContent = () => {
+    return (
+        <AppBreadCrumbs
+        breadcrumbsData={[
+          {text: 'Financials', href: '#'},
+          {text: 'Financials', href: '#'},
+        ]}
+      />
+    )
+  }
 
   return(
     <AppDashboardLayout
       headerProps={{
         profileProps: profileData,
         onChatToggle: () => console.log("Chat toggled"),
+        children: <HeaderContent />,
+        showHome: false
       }}
+      //@ts-expect-error SidebarProps type mismatch due to missing optional properties
       sidebarProps={{
         links: sidebarLinks,
         handleLogout: () => console.log("logout"),
         handleDeactivateAccount: () => console.log("deactivate account"),
         showSideLinks: isMobile ? true : false,
+
         // ratingItems: ratingItems,
         // showProfileRating: true,
         // ratePercent: calculateRatePercent(),
@@ -80,7 +94,7 @@ export const DashboardLayout = () => {
             showSavedDraft={true}
           />
 
-          <LogisticsFinancials/>
+
 
           <VendorDashboardInfo isProfileComplete={true}/>
         </Stack> */}

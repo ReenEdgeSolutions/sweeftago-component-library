@@ -22,15 +22,16 @@ export function AppDashboardLayout({
   sidebarProps,
 }: AppDashboardLayoutProps) {
   const theme = useTheme();
+  const isBelowLg = useMediaQuery(theme.breakpoints.down("lg"));
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
+  const [sidebarOpen, setSidebarOpen] = useState(!isBelowLg);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
   useEffect(() => {
-    setSidebarOpen(!isMobile);
+    setSidebarOpen(!isBelowLg);
     setMobileDrawerOpen(false);
-  }, [isMobile]);
+  }, [isBelowLg]);
 
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);

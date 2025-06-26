@@ -1,4 +1,4 @@
-import { CSSObject, Divider, Stack, Theme, useTheme, useMediaQuery, } from "@mui/material";
+import { CSSObject, Stack, Theme, useTheme, useMediaQuery, } from "@mui/material";
 import { AppLogo } from "../../../../AppLogo";
 import { RowStack } from "../../../../RowStack";
 import logoIcon from "./ui/assets/icons/logo-icon.png";
@@ -130,7 +130,6 @@ export function AppDashboardSidebar({
                 )}
               </RowStack>
             </StyledLink>
-            <Divider orientation="horizontal" flexItem color='#D4D3CB' />
           </Stack>
         )}
 
