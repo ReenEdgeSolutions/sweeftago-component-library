@@ -9,12 +9,14 @@ export type AppDashboardHeaderProps = {
   profileProps: ProfileProps;
   onChatToggle?: () => void;
   children: React.ReactNode;
+  headerChildren: React.ReactNode;
 };
 
 export function LogisticsProfileLayout({
   profileProps,
   onChatToggle,
   children,
+  headerChildren
 }: AppDashboardHeaderProps) {
   return (
     <Box
@@ -68,7 +70,7 @@ export function LogisticsProfileLayout({
                 color: "#615D5D"
               }}
             >
-              Home
+              { headerChildren }
             </Typography>
 
             {/* Right side - chat button, notifications, profile */}
