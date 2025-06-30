@@ -22,7 +22,7 @@ export function AppDashboardHeader({
   onChatToggle,
   onMobileMenuToggle,
   showProfile = true,
-  showHome = true,
+  showHome,
   children
 }: AppDashboardHeaderProps) {
   const theme = useTheme();
