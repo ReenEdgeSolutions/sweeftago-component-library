@@ -54,22 +54,37 @@ export const useDetailsStatus = (status: string): { color: string } => {
 }
 
 
-export const transanctionStatus = (status: string): { color: string; backgroundColor: string } => {
+export const transanctionStatus = (status: string) => {
   switch (status) {
-    case 'successful':
+    case 'Successful':
       return {
         color: '#0B671C',
         backgroundColor: '#D2FFAB'
       };
-    case 'failed':
+    case 'Completed':
+      return {
+        color: '#0B671C',
+        backgroundColor: '#D2FFAB'
+      };
+    case 'Failed':
       return {
         color: '#F93232',
         backgroundColor: '#FFDADA'
       };
-    case 'refunded':
+    case 'Cancelled':
+      return {
+        color: '#F93232',
+        backgroundColor: '#FFDADA'
+      };
+    case 'Pending':
       return {
         color: '#192E38',
         backgroundColor: '#CDEFFF'
+      };
+    case 'UnKnown':
+      return {
+        color: '#FFD700',
+        backgroundColor: '#FFFFE0'
       };
     default:
       return {

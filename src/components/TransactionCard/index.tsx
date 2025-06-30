@@ -23,13 +23,24 @@ export const TransactionCard = ({ transaction, handleCardClick }: TransactionCar
     }).format(amount);
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
-  };
+    /**
+   * Formats an ISO timestamp into "YYYY-MM-DD HH:mm:ss"
+   * @param isoString an ISO-8601 timestamp, e.g. "2025-06-22T14:51:55.291242Z"
+   */
+ function formatIsoToDateTime(isoString: string): string {
+    const date = new Date(isoString);
+
+    const pad = (n: number) => n.toString().padStart(2, "0");
+
+    const year = date.getUTCFullYear();
+    const month = pad(date.getUTCMonth() + 1);
+    const day = pad(date.getUTCDate());
+    const hours = pad(date.getUTCHours());
+    const minutes = pad(date.getUTCMinutes());
+    const seconds = pad(date.getUTCSeconds());
+
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
 
   return (
     <Box
@@ -54,12 +65,15 @@ export const TransactionCard = ({ transaction, handleCardClick }: TransactionCar
       <RowStack sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography
           sx={{
-            fontSize: {xs:pxToRem(14),sm: pxToRem(16)},
-            fontWeight: {xs:400, sm: 600},
+            fontSize: pxToRem(16),
+            fontWeight: 600,
             color: '#111827',
+            mb: 1,
           }}
         >
-          {transaction.reference}
+          {transaction.referenceNumber.length > 10
+            ? `...${transaction.referenceNumber.slice(-10)}`
+            : transaction.referenceNumber}
         </Typography>
 
 
@@ -81,7 +95,7 @@ export const TransactionCard = ({ transaction, handleCardClick }: TransactionCar
       <RowStack justifyContent="space-between" alignItems="center">
         <LabelAndImg
           icon={dateIcon}
-          label={formatDate(transaction.date)}
+          label={formatIsoToDateTime(transaction.transactionDate)}
         />
 
         <LabelAndImg

@@ -355,7 +355,7 @@ export const enhanceDeliveryData = (delivery: any): ExtendedDelivery => {
   return {
     ...delivery,
     itemType: "Bag", // Default value, you can customize this
-    deliveryDate: "April 30, 2025", // You can format this based on actual date
+    deliveryDate: "April 30, 2025", // You can format this based on actual transactionDate
     contactName: delivery.driver !== "N/A" ? delivery.driver.split(' ')[0] + " Okoye" : "James Okoye",
     contactPickupAddress: delivery.pickup,
     contactPhone: "08055568925", // Default phone, you can customize
@@ -550,7 +550,7 @@ export const deliveriesData = [
   {
     id: 1,
     deliveryID: "Del00000001",
-    date: "Apr 01, 2025",
+    transactionDate: "Apr 01, 2025",
     rider: "Kayode Douglass",
     pickUpLocation: "Lekki",
     dropOffLocation: "Ogba",
@@ -564,7 +564,7 @@ export const deliveriesData = [
   {
     id: 2,
     deliveryID: "Del00000003",
-    date: "Apr 03, 2025",
+    transactionDate: "Apr 03, 2025",
     rider: "Sandra Peters",
     pickUpLocation: "Ikeja",
     dropOffLocation: "Agege",
@@ -578,7 +578,7 @@ export const deliveriesData = [
   {
     id: 3,
     deliveryID: "Del00000004",
-    date: "Apr 04, 2025",
+    transactionDate: "Apr 04, 2025",
     rider: "Michael Ajayi",
     pickUpLocation: "Surulere",
     dropOffLocation: "Ikorodu",
@@ -592,7 +592,7 @@ export const deliveriesData = [
   {
     id: 4,
     deliveryID: "Del00000005",
-    date: "Apr 05, 2025",
+    transactionDate: "Apr 05, 2025",
     rider: "Chioma Nwachukwu",
     pickUpLocation: "Yaba",
     dropOffLocation: "Badagry",
@@ -606,7 +606,7 @@ export const deliveriesData = [
   {
     id: 5,
     deliveryID: "Del00000006",
-    date: "Apr 06, 2025",
+    transactionDate: "Apr 06, 2025",
     rider: "Emeka Obi",
     pickUpLocation: "Ikoyi",
     dropOffLocation: "Epe",
@@ -620,7 +620,7 @@ export const deliveriesData = [
   {
     id: 6,
     deliveryID: "Del00000007",
-    date: "Apr 07, 2025",
+    transactionDate: "Apr 07, 2025",
     rider: "Fatima Bello",
     pickUpLocation: "Ajah",
     dropOffLocation: "Lagos Island",
@@ -634,7 +634,7 @@ export const deliveriesData = [
   {
     id: 7,
     deliveryID: "Del00000008",
-    date: "Apr 08, 2025",
+    transactionDate: "Apr 08, 2025",
     rider: "John Mark",
     pickUpLocation: "Maryland",
     dropOffLocation: "Apapa",
@@ -648,7 +648,7 @@ export const deliveriesData = [
   {
     id: 8,
     deliveryID: "Del00000009",
-    date: "Apr 09, 2025",
+    transactionDate: "Apr 09, 2025",
     rider: "Ngozi Eze",
     pickUpLocation: "Gbagada",
     dropOffLocation: "Shomolu",
@@ -662,7 +662,7 @@ export const deliveriesData = [
   {
     id: 9,
     deliveryID: "Del00000011",
-    date: "Apr 11, 2025",
+    transactionDate: "Apr 11, 2025",
     rider: "Mary Uche",
     pickUpLocation: "Festac",
     dropOffLocation: "Eti-Osa",
@@ -676,7 +676,7 @@ export const deliveriesData = [
   {
     id: 10,
     deliveryID: "Del00000012",
-    date: "Apr 12, 2025",
+    transactionDate: "Apr 12, 2025",
     rider: "Ahmed Suleiman",
     pickUpLocation: "Mushin",
     dropOffLocation: "Alimosho",
@@ -690,7 +690,7 @@ export const deliveriesData = [
   {
     id: 11,
     deliveryID: "Del00000013",
-    date: "Apr 13, 2025",
+    transactionDate: "Apr 13, 2025",
     rider: "Blessing Adeyemi",
     pickUpLocation: "Ketu",
     dropOffLocation: "Ifako-Ijaiye",
@@ -704,7 +704,7 @@ export const deliveriesData = [
   {
     id: 12,
     deliveryID: "Del00000014",
-    date: "Apr 14, 2025",
+    transactionDate: "Apr 14, 2025",
     rider: "Ibrahim Musa",
     pickUpLocation: "Berger",
     dropOffLocation: "Ojo",
@@ -718,7 +718,7 @@ export const deliveriesData = [
   {
     id: 13,
     deliveryID: "Del00000015",
-    date: "Apr 15, 2025",
+    transactionDate: "Apr 15, 2025",
     rider: "Rita Dominic",
     pickUpLocation: "Ojodu",
     dropOffLocation: "Amuwo-Odofin",
@@ -732,7 +732,7 @@ export const deliveriesData = [
   {
     id: 14,
     deliveryID: "Del00000010",
-    date: "Apr 10, 2025",
+    transactionDate: "Apr 10, 2025",
     rider: "Tunde Bakare",
     pickUpLocation: "Alaba",
     dropOffLocation: "Kosofe",
@@ -753,7 +753,7 @@ export const tripsData = [
     pickUpLocation: "17, Shadiyson, Ajah, Lagos",
     dropOffLocation: "14, Alhaji Roshwood, Lekki Lagos",
     status: "Scheduled",
-    date: "Apr 2, 2025",
+    transactionDate: "Apr 2, 2025",
     earnings: "₦60,000",
     recieversName: "Adebayo Johnson",
     recieversPhone: "+234 803 123 4567",
@@ -765,7 +765,7 @@ export const tripsData = [
     pickUpLocation: "23, Victoria Island, Lagos",
     dropOffLocation: "45, Ikeja GRA, Lagos",
     status: "Intransit",
-    date: "Apr 2, 2025",
+    transactionDate: "Apr 2, 2025",
     earnings: "₦45,000",
     recieversName: "Fatima Abdullahi",
     recieversPhone: "+234 807 987 6543",
@@ -777,7 +777,7 @@ export const tripsData = [
     pickUpLocation: "12, Allen Avenue, Ikeja, Lagos",
     dropOffLocation: "78, Surulere, Lagos",
     status: "Delivered",
-    date: "Apr 1, 2025",
+    transactionDate: "Apr 1, 2025",
     earnings: "₦35,000",
     recieversName: "Chinedu Okafor",
     recieversPhone: "+234 816 456 7890",
@@ -789,7 +789,7 @@ export const tripsData = [
     pickUpLocation: "56, Gbagada, Lagos",
     dropOffLocation: "23, Maryland, Lagos",
     status: "New",
-    date: "Apr 3, 2025",
+    transactionDate: "Apr 3, 2025",
     earnings: "₦50,000",
     recieversName: "Amina Bello",
     recieversPhone: "+234 701 234 5678",
@@ -801,7 +801,7 @@ export const tripsData = [
     pickUpLocation: "34, Festac Town, Lagos",
     dropOffLocation: "12, Apapa, Lagos",
     status: "Cancelled",
-    date: "Apr 1, 2025",
+    transactionDate: "Apr 1, 2025",
     earnings: "₦0",
     recieversName: "Tunde Adeyemi",
     recieversPhone: "+234 809 876 5432",
@@ -813,7 +813,7 @@ export const tripsData = [
     pickUpLocation: "67, Ikoyi, Lagos",
     dropOffLocation: "89, Yaba, Lagos",
     status: "Intransit",
-    date: "Apr 2, 2025",
+    transactionDate: "Apr 2, 2025",
     earnings: "₦55,000",
     recieversName: "Blessing Okoro",
     recieversPhone: "+234 813 345 6789",
@@ -825,7 +825,7 @@ export const tripsData = [
     pickUpLocation: "45, Ojodu, Lagos",
     dropOffLocation: "23, Ogba, Lagos",
     status: "Delivered",
-    date: "Mar 31, 2025",
+    transactionDate: "Mar 31, 2025",
     earnings: "₦30,000",
     recieversName: "Ibrahim Musa",
     recieversPhone: "+234 708 123 9876",
@@ -837,7 +837,7 @@ export const tripsData = [
     pickUpLocation: "78, Magodo, Lagos",
     dropOffLocation: "34, Ketu, Lagos",
     status: "New",
-    date: "Apr 3, 2025",
+    transactionDate: "Apr 3, 2025",
     earnings: "₦42,000",
     recieversName: "Grace Osagie",
     recieversPhone: "+234 805 654 3210",
@@ -849,7 +849,7 @@ export const tripsData = [
     pickUpLocation: "12, Mushin, Lagos",
     dropOffLocation: "56, Oshodi, Lagos",
     status: "Scheduled",
-    date: "Apr 4, 2025",
+    transactionDate: "Apr 4, 2025",
     earnings: "₦38,000",
     recieversName: "Emeka Nwankwo",
     recieversPhone: "+234 814 987 1234",
@@ -861,7 +861,7 @@ export const tripsData = [
     pickUpLocation: "90, Isolo, Lagos",
     dropOffLocation: "45, Alaba, Lagos",
     status: "Delivered",
-    date: "Apr 1, 2025",
+    transactionDate: "Apr 1, 2025",
     earnings: "₦48,000",
     recieversName: "Khadijah Sanni",
     recieversPhone: "+234 703 567 8901",
@@ -873,7 +873,7 @@ export const tripsData = [
     pickUpLocation: "23, Berger, Lagos",
     dropOffLocation: "67, Ojota, Lagos",
     status: "Cancelled",
-    date: "Apr 2, 2025",
+    transactionDate: "Apr 2, 2025",
     earnings: "₦0",
     recieversName: "Samuel Osei",
     recieversPhone: "+234 810 432 1098",
@@ -885,7 +885,7 @@ export const tripsData = [
     pickUpLocation: "56, Palmgroove, Lagos",
     dropOffLocation: "12, Bariga, Lagos",
     status: "Intransit",
-    date: "Apr 2, 2025",
+    transactionDate: "Apr 2, 2025",
     earnings: "₦44,000",
     recieversName: "Olumide Adebayo",
     recieversPhone: "+234 806 210 9876",
@@ -897,7 +897,7 @@ export const tripsData = [
     pickUpLocation: "34, Ogudu, Lagos",
     dropOffLocation: "78, Kosofe, Lagos",
     status: "New",
-    date: "Apr 3, 2025",
+    transactionDate: "Apr 3, 2025",
     earnings: "₦52,000",
     recieversName: "Ngozi Ike",
     recieversPhone: "+234 817 789 0123",
@@ -909,7 +909,7 @@ export const tripsData = [
     pickUpLocation: "89, Agege, Lagos",
     dropOffLocation: "23, Ifako, Lagos",
     status: "Scheduled",
-    date: "Apr 4, 2025",
+    transactionDate: "Apr 4, 2025",
     earnings: "₦41,000",
     recieversName: "Yusuf Garba",
     recieversPhone: "+234 702 345 6789",
@@ -921,7 +921,7 @@ export const tripsData = [
     pickUpLocation: "45, Ikotun, Lagos",
     dropOffLocation: "67, Egbeda, Lagos",
     status: "Delivered",
-    date: "Apr 1, 2025",
+    transactionDate: "Apr 1, 2025",
     earnings: "₦39,000",
     recieversName: "Chioma Okonkwo",
     recieversPhone: "+234 815 098 7654",
@@ -935,7 +935,7 @@ export const tripsData = [
 export const financialData= [
   {
     id: "1",
-    date: "May 5, 2025",
+    transactionDate: "May 5, 2025",
     deliveryID: "Del44555522",
     rider: "Alayo Martins",
     totalCharge: "₦10,000",
@@ -945,7 +945,7 @@ export const financialData= [
   },
   {
     id: "2",
-    date: "May 5, 2025",
+    transactionDate: "May 5, 2025",
     deliveryID: "Del44555522",
     rider: "Alayo Martins",
     totalCharge: "₦10,000",
@@ -955,7 +955,7 @@ export const financialData= [
   },
   {
     id: "3",
-    date: "May 25, 2025",
+    transactionDate: "May 25, 2025",
     deliveryID: "Del44555522",
     rider: "Alayo Martins",
     totalCharge: "₦10,000",
@@ -965,7 +965,7 @@ export const financialData= [
   },
   {
     id: "4",
-    date: "May 5, 2025",
+    transactionDate: "May 5, 2025",
     deliveryID: "Del44555522",
     rider: "Alayo Martins",
     totalCharge: "₦10,000",
@@ -975,7 +975,7 @@ export const financialData= [
   },
   {
     id: "5",
-    date: "May 5, 2025",
+    transactionDate: "May 5, 2025",
     deliveryID: "Del44555522",
     rider: "Alayo Martins",
     totalCharge: "₦10,000",
@@ -1023,8 +1023,8 @@ export const driverDeliveries = assignNewStatus(allDeliveries);
 
 export interface TransactionData {
   id: string;
-  reference: string;
-  date: string;
+  referenceNumber: string;
+  transactionDate: string;
   amount: number;
   paymentStatus: string;
   status: string;
@@ -1034,8 +1034,8 @@ export interface TransactionData {
 export const sampleTransactions: TransactionData[] = [
   {
     id: "txn_001",
-    reference: "REF123456A",
-    date: "2025-06-01",
+    referenceNumber: "REF123456A",
+    transactionDate: "2025-06-01",
     amount: 15000,
     paymentStatus: "Paid",
     status: "successful",
@@ -1043,8 +1043,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_002",
-    reference: "REF123456B",
-    date: "2025-06-02",
+    referenceNumber: "REF123456B",
+    transactionDate: "2025-06-02",
     amount: 25000,
     paymentStatus: "Failed",
     status: "failed",
@@ -1052,8 +1052,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_003",
-    reference: "REF123456C",
-    date: "2025-06-03",
+    referenceNumber: "REF123456C",
+    transactionDate: "2025-06-03",
     amount: 10000,
     paymentStatus: "Paid",
     status: "successful",
@@ -1061,8 +1061,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_004",
-    reference: "REF123456D",
-    date: "2025-06-04",
+    referenceNumber: "REF123456D",
+    transactionDate: "2025-06-04",
     amount: 20000,
     paymentStatus: "Refunded",
     status: "refunded",
@@ -1070,8 +1070,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_005",
-    reference: "REF123456E",
-    date: "2025-06-05",
+    referenceNumber: "REF123456E",
+    transactionDate: "2025-06-05",
     amount: 5000,
     paymentStatus: "Paid",
     status: "successful",
@@ -1079,8 +1079,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_006",
-    reference: "REF123456F",
-    date: "2025-06-06",
+    referenceNumber: "REF123456F",
+    transactionDate: "2025-06-06",
     amount: 18000,
     paymentStatus: "Failed",
     status: "failed",
@@ -1088,8 +1088,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_007",
-    reference: "REF123456G",
-    date: "2025-06-07",
+    referenceNumber: "REF123456G",
+    transactionDate: "2025-06-07",
     amount: 30000,
     paymentStatus: "Paid",
     status: "successful",
@@ -1097,8 +1097,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_008",
-    reference: "REF123456H",
-    date: "2025-06-08",
+    referenceNumber: "REF123456H",
+    transactionDate: "2025-06-08",
     amount: 7000,
     paymentStatus: "Refunded",
     status: "refunded",
@@ -1106,8 +1106,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_009",
-    reference: "REF123456I",
-    date: "2025-06-09",
+    referenceNumber: "REF123456I",
+    transactionDate: "2025-06-09",
     amount: 12000,
     paymentStatus: "Paid",
     status: "successful",
@@ -1115,8 +1115,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_010",
-    reference: "REF123456J",
-    date: "2025-06-10",
+    referenceNumber: "REF123456J",
+    transactionDate: "2025-06-10",
     amount: 22000,
     paymentStatus: "Paid",
     status: "successful",
@@ -1124,8 +1124,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_011",
-    reference: "REF123456K",
-    date: "2025-06-11",
+    referenceNumber: "REF123456K",
+    transactionDate: "2025-06-11",
     amount: 16000,
     paymentStatus: "Failed",
     status: "failed",
@@ -1133,8 +1133,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_012",
-    reference: "REF123456L",
-    date: "2025-06-12",
+    referenceNumber: "REF123456L",
+    transactionDate: "2025-06-12",
     amount: 14000,
     paymentStatus: "Paid",
     status: "successful",
@@ -1142,8 +1142,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_013",
-    reference: "REF123456M",
-    date: "2025-06-13",
+    referenceNumber: "REF123456M",
+    transactionDate: "2025-06-13",
     amount: 8000,
     paymentStatus: "Refunded",
     status: "refunded",
@@ -1151,8 +1151,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_014",
-    reference: "REF123456N",
-    date: "2025-06-14",
+    referenceNumber: "REF123456N",
+    transactionDate: "2025-06-14",
     amount: 9000,
     paymentStatus: "Paid",
     status: "successful",
@@ -1160,8 +1160,8 @@ export const sampleTransactions: TransactionData[] = [
   },
   {
     id: "txn_015",
-    reference: "REF123456O",
-    date: "2025-06-15",
+    referenceNumber: "REF123456O",
+    transactionDate: "2025-06-15",
     amount: 11000,
     paymentStatus: "Failed",
     status: "failed",
