@@ -1,3 +1,8 @@
+interface StatusStyle {
+  color: string;
+  backgroundColor: string;
+}
+
 export const getStatusStyles = (status: string): { backgroundColor: string; color: string } => {
   switch (status.toLowerCase()) {
     case "scheduled":
@@ -54,7 +59,7 @@ export const useDetailsStatus = (status: string): { color: string } => {
 }
 
 
-export const transanctionStatus = (status: string) => {
+export const transanctionStatus = (status: string): StatusStyle => {
   switch (status) {
     case 'Successful':
       return {
