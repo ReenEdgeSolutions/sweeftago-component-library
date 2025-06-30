@@ -17,8 +17,8 @@ export const TransactionCard = ({ transaction, handleCardClick }: TransactionCar
 
   const formatAmount = (amount: number) => {
     return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: transaction.currency,
+      // style: 'currency',
+      // currency: transaction.currency,
       minimumFractionDigits: 0,
     }).format(amount);
   };
