@@ -27,7 +27,6 @@ export function LabelComponent({
         fontWeight: 400,
         fontSize: pxToRem(16),
         lineHeight: '140%',
-        textTransform: 'lowercase !important',
        }}
       >{tabTitle}</Typography>
     </RowStack>
