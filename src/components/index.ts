@@ -45,3 +45,4 @@ export * from './AppTab';
 export * from "./CustomPagination";
 export * from "./AppBreadCrumbs";
 export * from "./TransactionCard";
+export * from "./CustomPagination";

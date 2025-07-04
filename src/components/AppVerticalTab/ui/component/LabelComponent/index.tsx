@@ -28,7 +28,7 @@ export function LabelComponent({
         fontSize: pxToRem(16),
         lineHeight: '140%',
        }}
-      >{tabTitle}</Typography>
+      >{tabTitle.charAt(0).toUpperCase() + tabTitle.slice(1)}</Typography>
     </RowStack>
   )
 }
