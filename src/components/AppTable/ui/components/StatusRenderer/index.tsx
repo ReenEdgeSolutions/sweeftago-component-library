@@ -13,10 +13,12 @@ import { colorMap, pxToRem } from "../../../../../common";
   | 'Cancelled'
   | 'Scheduled'
   | 'Ongoing'
-  | 'New';
+  | 'New'
+  | 'Completed';
+
 
   interface StatusTextProps {
-    status?: StatusType; 
+    status?: StatusType;
   }
 
   export const StatusRenderer = ({ status }: StatusTextProps) => {

@@ -12,4 +12,5 @@ export const colorMap: Record<StatusType, string> = {
   Scheduled: '#FF9800',
   Ongoing: '#11B0FF',
   New: '#877615',
+  Completed: '#37BD57',
 };
