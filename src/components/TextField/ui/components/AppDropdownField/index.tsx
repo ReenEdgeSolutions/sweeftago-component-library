@@ -191,8 +191,7 @@ export const AppDropdownField = ({
             ...(hasValue
               ? {}
               : {
-                  color: "text.secondary",
-                  fontStyle: "italic",
+                  color: "text.secondary"
                 }),
           },
           ...rest.SelectProps,
