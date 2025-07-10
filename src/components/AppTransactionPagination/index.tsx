@@ -1,4 +1,4 @@
-import { Box, SelectChangeEvent, useTheme, useMediaQuery} from "@mui/material";
+import { Box, useTheme, useMediaQuery} from "@mui/material";
 import { Form, Formik } from "formik";
 import { AppDropdownField } from "../TextField";
 import { TransactionData } from "../../common";
@@ -18,9 +18,9 @@ export interface FilterSortData {
 interface AppTransactionPaginationProps {
   children: React.ReactNode;
   itemsPerPage: number;
-  handleItemsPerPageChange: (event: SelectChangeEvent<number>) => void
+  handleItemsPerPageChange: (itemsPerPage: number) => void;
+  handlePageChange: (page: number) => void;
   currentPage: number;
-  handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
   totalItems: number;
   totalPages: number;
   statusFilterData: FilterSortData[];
@@ -137,15 +137,16 @@ export const AppTransactionPagination = ({
 
       {/* Pagination */}
       {!isXs && (
-        <CustomPagination
-          itemsPerPage={itemsPerPage}
-          handleItemsPerPageChange={handleItemsPerPageChange}
-          currentPage={currentPage}
-          handlePageChange={handlePageChange}
-          totalItems={totalItems}
-          totalPages={totalPages}
-          pageIndex={[6,12,18,24]}
-        />
+        <Box mt={"20px"}>
+          <CustomPagination
+            itemsPerPage={itemsPerPage}
+            handleItemsPerPageChange={handleItemsPerPageChange}
+            currentPage={currentPage}
+            handlePageChange={handlePageChange}
+            totalItems={totalItems}
+            totalPages={totalPages}
+          />
+        </Box>
       )}
     </Box>
   );

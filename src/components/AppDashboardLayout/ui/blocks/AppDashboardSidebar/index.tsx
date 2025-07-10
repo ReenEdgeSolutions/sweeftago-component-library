@@ -6,11 +6,14 @@ import { SideLinks, SideLinksProps } from "../../components";
 import { StyledImage } from "../../../../StyledImage";
 import { StyledLink } from "../../../../StyledLink";
 import { MobileLogoutAndDeactivate, MobileProfileHeader, ProfileRating } from "./ui/components";
+import RateReviewIcon from '@mui/icons-material/RateReview';
+import { StaticImageData } from "next/image";
 
 export type AppDashboardSidebarProps = {
   links?: SideLinksProps[];
   open: boolean;
   hrefLink: string;
+  rateIcon?: string | React.ElementType | StaticImageData;
   // Mobile drawer mode
   isMobileDrawer?: boolean;
   onMobileClose?: () => void;
@@ -65,7 +68,8 @@ export function AppDashboardSidebar({
   showSideLinks = true,
   ratePercent,
   ratingItems,
-  showProfileRating
+  showProfileRating,
+  rateIcon = () => <RateReviewIcon sx={{width: "24px", height: "24px"}}/>
 }: AppDashboardSidebarProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -139,6 +143,7 @@ export function AppDashboardSidebar({
             ratingItems={ratingItems ?? []}
             open = { open }
             isMobile={isMobile}
+            rateIcon={rateIcon}
           />
         )}
 

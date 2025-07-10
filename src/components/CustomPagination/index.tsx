@@ -4,9 +4,9 @@ import { pxToRem } from "../../common";
 
 export interface CustomPaginationProps {
   itemsPerPage: number;
-  handleItemsPerPageChange: (event: SelectChangeEvent<number>) => void;
+  handleItemsPerPageChange: (itemsPerPage: number) => void;
   currentPage: number;
-  handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+  handlePageChange: (page: number) => void;
   totalItems: number;
   totalPages: number;
   pageIndex?: number[];
@@ -24,7 +24,14 @@ export const CustomPagination = ({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
 
-  if (totalItems === 0) return null;
+  const handleMuiPageChange = (_: React.ChangeEvent<unknown>, value: number) => {
+    handlePageChange(value);
+  };
+
+  const handleMuiItemsPerPageChange = (event: SelectChangeEvent<number>) => {
+    const newPageSize = event.target.value as number;
+    handleItemsPerPageChange(newPageSize);
+  };
 
   return(
     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -42,7 +49,7 @@ export const CustomPagination = ({
 
         <Select
           value={itemsPerPage}
-          onChange={handleItemsPerPageChange}
+          onChange={handleMuiItemsPerPageChange}
           size="small"
           displayEmpty
           IconComponent={KeyboardArrowDown}
@@ -51,26 +58,22 @@ export const CustomPagination = ({
             color: "#797979",
             backgroundColor: '#fff',
             borderRadius: '4px',
-            minWidth: '60px', // Add minimum width to accommodate icon
-            // Style the select input
+            minWidth: '60px',
             '& .MuiSelect-select': {
-              padding: '6px 32px 6px 12px !important', // Add right padding for icon
+              padding: '6px 32px 6px 12px !important',
               minHeight: 'unset !important',
               height: 'auto',
               display: 'flex',
               alignItems: 'center',
             },
-            // Position the dropdown icon inside the box
             '& .MuiSelect-icon': {
-              right: '8px', // Position icon inside the box
+              right: '8px',
               color: '#797979',
             },
-            // Remove default outlined input padding
             '& .MuiOutlinedInput-input': {
               padding: '0 !important',
               px: '10px !important',
             },
-            // Keep border color consistent and remove outline
             '& .MuiOutlinedInput-notchedOutline': {
               borderColor: '#D6D4D1',
             },
@@ -115,7 +118,7 @@ export const CustomPagination = ({
       <Pagination
         count={totalPages}
         page={currentPage}
-        onChange={handlePageChange}
+        onChange={handleMuiPageChange}
         color="primary"
         sx={{
           '& .MuiPaginationItem-root': {

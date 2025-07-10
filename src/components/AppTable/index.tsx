@@ -208,7 +208,7 @@ export const AppTable = <T extends GridRow>({
     const loadData = async () => {
       setLoading(true);
       const { page, pageSize } = paginationModel;
-      const data = await fetchData(page + 1, pageSize, sortModel);
+      const data = await fetchData(page, pageSize, sortModel);
       setRows(data.rows);
       setRowCount(data.totalRows);
       setLoading(false);
@@ -331,9 +331,9 @@ export const AppTable = <T extends GridRow>({
         <Box sx={{ mt: 3, mb: 3 }}>
           <CustomPagination
             itemsPerPage={itemsPerPage}
-            handleItemsPerPageChange={(event) => handleItemsPerPageChange(Number(event.target.value))}
+            handleItemsPerPageChange={handleItemsPerPageChange}
             currentPage={currentPage}
-            handlePageChange={(_, value) => handlePageChange(value)}
+            handlePageChange={handlePageChange}
             totalItems={totalItems}
             totalPages={totalPages}
           />

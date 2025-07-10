@@ -1,6 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material"
 import { pxToRem } from "../../../../../../../../common"
 import { StyledRating } from "../StyledRating"
+import { StaticImageData } from "next/image"
 
 interface ProfileRatingProps {
   ratePercent: number
@@ -11,13 +12,15 @@ interface ProfileRatingProps {
   }[]
   open: boolean
   isMobile: boolean
+  rateIcon: string | StaticImageData | React.ElementType;
 }
 
 export const ProfileRating = ({
   ratePercent,
   ratingItems,
   open,
-  isMobile
+  isMobile,
+  // rateIcon
 }: ProfileRatingProps) => {
   return (
     <Stack
@@ -87,6 +90,7 @@ export const ProfileRating = ({
             isInfoCompleted={item.isCompleted}
             percentage={item.percentage}
             open={open}
+            // rateIcons={rateIcon}
           />
         ))}
       </Stack>
