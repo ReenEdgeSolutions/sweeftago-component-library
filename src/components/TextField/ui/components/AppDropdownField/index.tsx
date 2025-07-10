@@ -2,11 +2,12 @@ import {
   MenuItem,
   Radio,
   useTheme,
-  Box
+  Box,
+  CircularProgress,
 } from "@mui/material";
 import {
   AppTextField,
-  AppTextFieldProps
+  AppTextFieldProps,
 } from "../AppTextField";
 import { AppSearchField } from "../AppSearchField";
 import { KeyboardArrowDown } from "@mui/icons-material";
@@ -15,7 +16,7 @@ import React, {
   useState,
   useMemo,
   useRef,
-  useEffect
+  useEffect,
 } from "react";
 
 export type AppDropdownFieldProps = Omit<
@@ -33,7 +34,8 @@ export type AppDropdownFieldProps = Omit<
   searchPlaceholder?: string;
   onSearchChange?: (searchTerm: string) => void;
   onScrollEnd?: () => void;
-  maxDropdownWidth?: number | string; // ✅ Custom control
+  maxDropdownWidth?: number | string;
+  loading?: boolean; // ✅ Added loading support
 };
 
 export const AppDropdownField = ({
@@ -50,10 +52,28 @@ export const AppDropdownField = ({
   onSearchChange,
   onScrollEnd,
   maxDropdownWidth,
+  loading = false,
   ...rest
 }: AppDropdownFieldProps) => {
   const theme = useTheme();
   const [searchTerm, setSearchTerm] = useState<string>("");
+
+  if (!name || !Array.isArray(dropdownData)) {
+    return (
+      <AppTextField
+        select
+        fullWidth
+        disabled
+        placeholder={placeholder}
+        {...rest}
+      >
+        <MenuItem disabled value="">
+          <em>No data available</em>
+        </MenuItem>
+      </AppTextField>
+    );
+  }
+
   const [field, meta] = useField<string>(name);
   const hasError = Boolean(meta.touched && meta.error);
   const hasValue = field.value !== "" && field.value !== undefined;
@@ -67,21 +87,27 @@ export const AppDropdownField = ({
     }
   }, [inputRef.current]);
 
+  const safeDropdownData = useMemo(() => {
+    return dropdownData.filter(
+      (item): item is string => typeof item === "string" && item.trim().length > 0
+    );
+  }, [dropdownData]);
+
   const filteredDropdownData = useMemo(() => {
-    if (!enableSearch || !searchTerm) return dropdownData;
+    if (!enableSearch || !searchTerm) return safeDropdownData;
 
     const term = searchTerm.toLowerCase();
-    const startsWithMatches = dropdownData.filter((option) =>
+    const startsWithMatches = safeDropdownData.filter((option) =>
       option.toLowerCase().startsWith(term)
     );
-    const includesMatches = dropdownData.filter(
+    const includesMatches = safeDropdownData.filter(
       (option) =>
         !option.toLowerCase().startsWith(term) &&
         option.toLowerCase().includes(term)
     );
 
     return [...startsWithMatches, ...includesMatches];
-  }, [dropdownData, searchTerm, enableSearch]);
+  }, [safeDropdownData, searchTerm, enableSearch]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -119,7 +145,7 @@ export const AppDropdownField = ({
           MenuProps: {
             PaperProps: {
               sx: {
-                width: maxDropdownWidth || inputWidth || 300, // ✅ use measured width
+                width: maxDropdownWidth || inputWidth || 300,
                 maxHeight: enableSearch
                   ? typeof maxHeight === "number"
                     ? maxHeight + 60
@@ -216,37 +242,47 @@ export const AppDropdownField = ({
           </MenuItem>
         )}
 
-        {filteredDropdownData.map((option, index) => (
-          <MenuItem
-            key={index}
-            value={option}
-            sx={{
-              ...(showRadioSelection && {
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                pl: 2,
-              }),
-            }}
-          >
-            {showRadioSelection && (
-              <Radio
-                checked={field.value === option}
-                size="small"
-                sx={{
-                  padding: 0,
-                  marginRight: 1,
-                  color: theme.palette.action.disabled,
-                  "&.Mui-checked": {
-                    color: "#F98D31",
-                  },
-                  pointerEvents: "none",
-                }}
-              />
-            )}
-            {option}
+        {filteredDropdownData.map((option, index) =>
+          typeof option === "string" ? (
+            <MenuItem
+              key={index}
+              value={option}
+              sx={{
+                ...(showRadioSelection && {
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                  pl: 2,
+                }),
+              }}
+            >
+              {showRadioSelection && (
+                <Radio
+                  checked={field.value === option}
+                  size="small"
+                  sx={{
+                    padding: 0,
+                    marginRight: 1,
+                    color: theme.palette.action.disabled,
+                    "&.Mui-checked": {
+                      color: "#F98D31",
+                    },
+                    pointerEvents: "none",
+                  }}
+                />
+              )}
+              {option}
+            </MenuItem>
+          ) : null
+        )}
+
+        {loading && (
+          <MenuItem disabled>
+            <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
+              <CircularProgress size={18} />
+            </Box>
           </MenuItem>
-        ))}
+        )}
       </AppTextField>
     </Box>
   );
