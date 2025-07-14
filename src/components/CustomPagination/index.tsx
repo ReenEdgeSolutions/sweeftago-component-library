@@ -1,5 +1,5 @@
-import { Box, MenuItem, Pagination, Select, SelectChangeEvent, Stack, Typography } from "@mui/material";
-import { KeyboardArrowDown } from "@mui/icons-material";
+import { Box, MenuItem, Select, SelectChangeEvent, Stack, Typography, IconButton } from "@mui/material";
+import { KeyboardArrowDown, KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { pxToRem } from "../../common";
 
 export interface CustomPaginationProps {
@@ -19,19 +19,33 @@ export const CustomPagination = ({
   handlePageChange,
   totalItems,
   totalPages,
-  pageIndex = [3, 5, 10, 25]
+  pageIndex = [5,10,20, 50]
 }: CustomPaginationProps) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
-
-  const handleMuiPageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    handlePageChange(value);
-  };
 
   const handleMuiItemsPerPageChange = (event: SelectChangeEvent<number>) => {
     const newPageSize = event.target.value as number;
     handleItemsPerPageChange(newPageSize);
   };
+
+  const getVisiblePages = () => {
+    if (totalPages <= 3) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+
+    let start = Math.max(1, currentPage - 1);
+    const end = Math.min(totalPages, start + 2);
+
+    // Adjust if we're near the end
+    if (end - start < 2) {
+      start = Math.max(1, end - 2);
+    }
+
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  };
+
+  const visiblePages = getVisiblePages();
 
   return(
     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -115,22 +129,59 @@ export const CustomPagination = ({
         </Typography>
       </Stack>
 
-      <Pagination
-        count={totalPages}
-        page={currentPage}
-        onChange={handleMuiPageChange}
-        color="primary"
-        sx={{
-          '& .MuiPaginationItem-root': {
-            '&.Mui-selected': {
-              backgroundColor: '#F98D31',
-              '&:hover': {
-                backgroundColor: '#F98D31'
-              },
+      {/* Custom Pagination */}
+      <Stack direction="row" spacing={1} alignItems="center">
+        <IconButton
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          sx={{
+            width: 32,
+            height: 32,
+            color: currentPage === 1 ? '#ccc' : '#666',
+            '&:hover': {
+              backgroundColor: 'rgba(0, 0, 0, 0.04)',
             },
-          },
-        }}
-      />
+          }}
+        >
+          <KeyboardArrowLeft />
+        </IconButton>
+
+        {visiblePages.map((page) => (
+          <IconButton
+            key={page}
+            onClick={() => handlePageChange(page)}
+            sx={{
+              width: 32,
+              height: 32,
+              borderRadius: '50%',
+              fontSize: '14px',
+              fontWeight: 500,
+              color: page === currentPage ? '#fff' : '#666',
+              backgroundColor: page === currentPage ? '#F98D31' : 'transparent',
+              '&:hover': {
+                backgroundColor: page === currentPage ? '#F98D31' : 'rgba(0, 0, 0, 0.04)',
+              },
+            }}
+          >
+            {page}
+          </IconButton>
+        ))}
+
+        <IconButton
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          sx={{
+            width: 32,
+            height: 32,
+            color: currentPage === totalPages ? '#ccc' : '#666',
+            '&:hover': {
+              backgroundColor: 'rgba(0, 0, 0, 0.04)',
+            },
+          }}
+        >
+          <KeyboardArrowRight />
+        </IconButton>
+      </Stack>
     </Box>
   )
 }

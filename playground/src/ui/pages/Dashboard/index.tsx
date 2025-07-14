@@ -7,6 +7,7 @@ import support from "./ui/assets/icons/help-center.png"
 import profileImg from "./ui/assets/icons/profile.png"
 import { Box,  useMediaQuery, useTheme } from "@mui/material";
 import { MobileLogisticsCard } from "../MobileLogisticsCard";
+import { VendorDashboardInfo } from "../DeliveryTable";
 
 const sidebarLinks = [
   {
@@ -106,6 +107,8 @@ export const DashboardLayout = () => {
           setIsPickUpDetailsCompleted={setIsPickUpDetailsCompleted}
         /> */}
 
+        <VendorDashboardInfo isProfileComplete={true}/>
+
         <MobileLogisticsCard
           profile={{
             ProfilePhoto: profileImg.src,
@@ -119,7 +122,7 @@ export const DashboardLayout = () => {
             status: "Active",
             earnings: "$5000",
             lastTrip: "2 days ago",
-            bgColor: "#0AA55D"
+            // bgColor: "#0AA55D"
           }}
           onViewProfileClick={() => console.log("View Profile Clicked")}
         />
