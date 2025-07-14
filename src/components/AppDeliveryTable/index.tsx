@@ -58,7 +58,7 @@ export const AppDeliveryTable = (props: AppDeliveryTableProps) => {
       )}
 
       {/* Tabs */}
-      <Paper elevation={0} sx={{ mb: 3, mt:"24px"}} >
+      <Paper elevation={0} sx={{ mb: "15px", mt:"24px"}} >
         <AppTab
           currentTab={currentTab}
           handleTabChange={handleTabChange}

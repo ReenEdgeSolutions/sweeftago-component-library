@@ -1,12 +1,11 @@
-import { RowStack, StyledImage } from "@component-library";
+import { RowStack} from "@component-library";
 import { Stack, Typography, Box } from "@mui/material"
-import rating from "../../assets/icons/rating.svg";
 
 export interface TitleAndTextProps {
   title: string;
   text: string;
   showRating?: boolean;
-  bgColor: string
+  bgColor?: string
 }
 
 export const TitleAndText = ({

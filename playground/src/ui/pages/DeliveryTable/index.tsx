@@ -72,7 +72,7 @@ export const VendorDashboardInfo = (isProfileComplete: {isProfileComplete: boole
     setCurrentPage(1); // Reset to first page when changing tabs
   };
 
-  const handlePageChange = (_: React.ChangeEvent<unknown>, page: number) => {
+  const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
@@ -120,9 +120,9 @@ export const VendorDashboardInfo = (isProfileComplete: {isProfileComplete: boole
         paginationProps={{
           currentPage,
           totalPages,
-          handlePageChange,
+          handlePageChange: (page) => handlePageChange(page),
           itemsPerPage,
-          handleItemsPerPageChange,
+          handleItemsPerPageChange: (itemsPerPage: number) => handleItemsPerPageChange({ target: { value: itemsPerPage } } as SelectChangeEvent<number>),
           totalItems,
         }}
         emptyAddDeliveryStateProps={{
