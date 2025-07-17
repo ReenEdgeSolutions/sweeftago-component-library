@@ -1,5 +1,4 @@
 import {
-  Paper,
   Stack,
   Typography,
   Box,
@@ -31,17 +30,16 @@ export const DashboardMultiStepTab = ({
 }: DashboardMultiStepTabProps) => {
 
   return (
-    <Paper
+    <Box
       sx={{
-        padding: { xs: '20px', md: '32px' },
         width: '100%',
-        maxWidth: "750px",
+        maxWidth: "800px",
         margin: '0 auto',
         borderRadius: '10px',
         display: 'flex',
         flexDirection: 'column',
         gap: "32px",
-        backgroundColor: 'white',
+        backgroundColor: 'inherit',
       }}
     >
       {showTitleAndDesc && (
@@ -53,7 +51,7 @@ export const DashboardMultiStepTab = ({
 
       <Grid container spacing={2}>
         {/* Left-side Stepper */}
-        <Grid size={{xs: 12, md: 5}}>
+        <Grid size={{xs: 12, md: 4}}>
           <Box sx={{ paddingLeft: { md: 2 } }}>
             <DashboardStepperController
               activeTab={activeTab}
@@ -63,7 +61,7 @@ export const DashboardMultiStepTab = ({
             />
           </Box>
         </Grid>
-        
+
         {/* Right-side Content */}
         <Grid size={{xs: 12, md: 7}}>
           <Stack spacing="24px">
@@ -83,6 +81,6 @@ export const DashboardMultiStepTab = ({
           </Stack>
         </Grid>
       </Grid>
-    </Paper>
+    </Box>
   );
 };

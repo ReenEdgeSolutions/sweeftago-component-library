@@ -14,7 +14,12 @@ import { colorMap, pxToRem } from "../../../../../common";
   | 'Scheduled'
   | 'Ongoing'
   | 'New'
-  | 'Completed';
+  | 'Completed'
+  | 'Suspended'
+  | 'Dispute'
+  | 'Accepted'
+  | 'Deactivated'
+  | 'All';
 
 
   interface StatusTextProps {

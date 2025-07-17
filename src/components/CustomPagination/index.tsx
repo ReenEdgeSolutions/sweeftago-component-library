@@ -48,7 +48,7 @@ export const CustomPagination = ({
   const visiblePages = getVisiblePages();
 
   return(
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <Box sx={{ width: "100%", display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
       <Stack direction="row" spacing={2} alignItems="center">
         <Typography
           sx={{
@@ -61,6 +61,7 @@ export const CustomPagination = ({
           Items per page
         </Typography>
 
+
         <Select
           value={itemsPerPage}
           onChange={handleMuiItemsPerPageChange}
@@ -68,11 +69,11 @@ export const CustomPagination = ({
           displayEmpty
           IconComponent={KeyboardArrowDown}
           sx={{
-            fontStyle: itemsPerPage ? 'normal' : 'italic',
+            fontStyle: 'normal',
             color: "#797979",
-            backgroundColor: '#fff',
+            backgroundColor: 'inherit',
             borderRadius: '4px',
-            minWidth: '60px',
+            minWidth:  "60px",
             '& .MuiSelect-select': {
               padding: '6px 32px 6px 12px !important',
               minHeight: 'unset !important',
@@ -119,7 +120,10 @@ export const CustomPagination = ({
 
         <Typography
           sx={{
-            fontSize: pxToRem(14),
+            fontSize: {
+              xm: pxToRem(12),
+              md: pxToRem(14)
+            },
             fontWeight: 400,
             color: '#797979',
             lineHeight: '140%',
@@ -135,8 +139,8 @@ export const CustomPagination = ({
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           sx={{
-            width: 32,
-            height: 32,
+            width:{xs: 24, md: 32},
+            height: {xs: 24, md: 32},
             color: currentPage === 1 ? '#ccc' : '#666',
             '&:hover': {
               backgroundColor: 'rgba(0, 0, 0, 0.04)',
@@ -151,11 +155,14 @@ export const CustomPagination = ({
             key={page}
             onClick={() => handlePageChange(page)}
             sx={{
-              width: 32,
-              height: 32,
+              width: {xs: 24, md: 32},
+              height: {xs: 24, md: 32},
               borderRadius: '50%',
-              fontSize: '14px',
-              fontWeight: 500,
+              fontSize: {
+                xs: pxToRem(12),
+                md: pxToRem(14)
+              },
+              fontWeight: {xs: 400, md: 500},
               color: page === currentPage ? '#fff' : '#666',
               backgroundColor: page === currentPage ? '#F98D31' : 'transparent',
               '&:hover': {
@@ -171,8 +178,8 @@ export const CustomPagination = ({
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           sx={{
-            width: 32,
-            height: 32,
+            width: {xs: 24, md: 32},
+            height: {xs: 24, md: 32},
             color: currentPage === totalPages ? '#ccc' : '#666',
             '&:hover': {
               backgroundColor: 'rgba(0, 0, 0, 0.04)',

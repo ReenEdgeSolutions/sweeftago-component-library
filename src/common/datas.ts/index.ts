@@ -13,4 +13,9 @@ export const colorMap: Record<StatusType, string> = {
   Ongoing: '#11B0FF',
   New: '#877615',
   Completed: '#37BD57',
+  Suspended: '#9E9E9E',
+  Dispute: '#877615',
+  Accepted: '#4CAF50',
+  All: '#9E9E9E',
+  Deactivated: '#F93232',
 };

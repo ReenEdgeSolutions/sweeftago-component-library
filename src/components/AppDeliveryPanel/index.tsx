@@ -74,23 +74,6 @@ export const AppDeliveryPanel = ({
         handleMenuClose();
       }
     }] : []),
-    // ...(showRequestsBtn ? [{
-    //   text: requestsBtnText || 'New Request',
-    //   icon: <Box sx={{
-    //     width: '20px',
-    //     height: '20px',
-    //     display: 'flex',
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    //     fontSize: '16px',
-    //     fontWeight: 'bold',
-    //     color: '#F98D31'
-    //   }}>+</Box>,
-    //   onClick: () => {
-    //     handleRequestsBtnClick?.();
-    //     handleMenuClose();
-    //   }
-    // }] : []),
     {
       text: 'Export',
       icon: <StyledImage
