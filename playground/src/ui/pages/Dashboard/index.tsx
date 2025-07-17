@@ -6,7 +6,6 @@ import route from "./ui/assets/icons/location.svg"
 import support from "./ui/assets/icons/help-center.png"
 import profileImg from "./ui/assets/icons/profile.png"
 import { Box,  useMediaQuery, useTheme } from "@mui/material";
-import { MobileLogisticsCard } from "../MobileLogisticsCard";
 import { VendorDashboardInfo } from "../DeliveryTable";
 
 const sidebarLinks = [
@@ -109,23 +108,21 @@ export const DashboardLayout = () => {
 
         <VendorDashboardInfo isProfileComplete={true}/>
 
-        <MobileLogisticsCard
+        {/* <MobileLogisticsCard
           profile={{
             ProfilePhoto: profileImg.src,
             profileName: "Shola Gibson",
             ID: "ID:14567890",
             isVerified: true,
             onMoreOptionsClick: () => console.log("More options clicked"),
-          }}
-
-          cardArticles={{
-            status: "Active",
-            earnings: "$5000",
+            phoneNumber: "+234 123 4567",
             lastTrip: "2 days ago",
-            // bgColor: "#0AA55D"
+            statusText: "Active",
+            statusTextColor: "#0AA55D",
+            statusBackgroundColor: "#E6F9F0",
           }}
           onViewProfileClick={() => console.log("View Profile Clicked")}
-        />
+        /> */}
       </Box>
     </AppDashboardLayout>
   )

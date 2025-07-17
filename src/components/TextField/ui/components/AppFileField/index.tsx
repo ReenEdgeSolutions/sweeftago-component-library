@@ -22,15 +22,35 @@ export const AppFileField = ({
   onFileMetaExtract,
   handleUpload,
 }: CustomFileUploadProps) => {
-  const [, , helpers] = useField(name);
+  const [field, , helpers] = useField(name);
   const [fileName, setFileName] = useState<string | null>(null);
   const [fileSize, setFileSize] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isUploaded, setIsUploaded] = useState<boolean>(false);
 
   useEffect(() => {
+    if (field.value && typeof field.value === 'string' && field.value.startsWith('http')) {
+      setPreview(field.value);
+      setFileName(field.value.split('/').pop() || 'Uploaded Image');
+      setFileSize('Unknown size');
+      setIsUploaded(true);
+    } else if (field.value instanceof File) {
+      const previewUrl = URL.createObjectURL(field.value);
+      setPreview(previewUrl);
+      setFileName(field.value.name);
+      setFileSize(formatFileSize(field.value.size));
+      setIsUploaded(true);
+    } else {
+      setPreview(null);
+      setFileName(null);
+      setFileSize(null);
+      setIsUploaded(false);
+    }
+  }, [field.value]);
+
+  useEffect(() => {
     return () => {
-      if (preview) {
+      if (preview && preview.startsWith('blob:')) {
         URL.revokeObjectURL(preview);
       }
     };
@@ -46,27 +66,19 @@ export const AppFileField = ({
     if (acceptedFiles && acceptedFiles.length > 0) {
       const file = acceptedFiles[0];
       helpers.setValue(file);
+
       if (handleUpload && file) {
-        if (file) {
-          handleUpload?.(file);
-        }
+        handleUpload(file);
       }
 
-      const name = file ? file.name : "";
-      const size = file ? formatFileSize(file.size) : "0 B";
+      const name = file ? file.name : "Unknown file";
+      const size = file ? formatFileSize(file.size) : "Unknown size";
       const previewUrl = file ? URL.createObjectURL(file) : "";
 
       setFileName(name);
       setFileSize(size);
       setPreview(previewUrl);
       setIsUploaded(true);
-
-      // Call the handleUpload prop
-      if (handleUpload) {
-        if (file) {
-          handleUpload(file);
-        }
-      }
 
       if (onFileMetaExtract) {
         onFileMetaExtract({ name, size, preview: previewUrl });
@@ -78,7 +90,7 @@ export const AppFileField = ({
     accept,
     multiple: false,
     maxSize: 5 * 1024 * 1024, // 5MB in bytes
-    onDrop, // Use the local onDrop function
+    onDrop,
   });
 
   const handleDelete = (e: React.MouseEvent) => {
@@ -86,10 +98,10 @@ export const AppFileField = ({
     helpers.setValue("");
     setFileName(null);
     setFileSize(null);
-    if (preview) {
+    if (preview && preview.startsWith('blob:')) {
       URL.revokeObjectURL(preview);
-      setPreview(null);
     }
+    setPreview(null);
     setIsUploaded(false);
 
     if (onFileMetaExtract) {

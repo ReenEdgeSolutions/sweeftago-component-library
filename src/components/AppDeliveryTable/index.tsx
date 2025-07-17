@@ -1,8 +1,9 @@
-import { Box,  Paper, useMediaQuery, useTheme} from "@mui/material";
+import { Box,  Paper, useMediaQuery, useTheme } from "@mui/material";
 import { AppDeliveryPanel, AppDeliveryPanelProps } from "../AppDeliveryPanel";
 import { CustomPagination, CustomPaginationProps } from "../CustomPagination";
 import { EmptyAddDeliveryState, EmptyAddDeliveryStateProps } from "../EmptyAddDeliveryState";
 import { AppTab } from "../AppTab";
+import { MobilePaginationDrawer } from "../MobilePaginationDrawal";
 
 // Base props that are always required
 interface BaseAppDeliveryTableProps {
@@ -33,8 +34,6 @@ interface AppDeliveryTablePropsWithoutPanel extends BaseAppDeliveryTableProps {
 type AppDeliveryTableProps = AppDeliveryTablePropsWithPanel | AppDeliveryTablePropsWithoutPanel;
 
 export const AppDeliveryTable = (props: AppDeliveryTableProps) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const {
     children,
     handleTabChange,
@@ -45,6 +44,9 @@ export const AppDeliveryTable = (props: AppDeliveryTableProps) => {
     paginationProps,
     emptyAddDeliveryStateProps
   } = props;
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   // Type guard to access appDeliveryPanel safely
   const appDeliveryPanel = 'appDeliveryPanel' in props ? props.appDeliveryPanel : undefined;
@@ -76,8 +78,16 @@ export const AppDeliveryTable = (props: AppDeliveryTableProps) => {
           {children}
 
           {/* Pagination */}
-          {!isMobile && paginationProps && (
-            <CustomPagination {...paginationProps}/>
+          {isMobile  ? (
+            <MobilePaginationDrawer>
+              {paginationProps &&(
+                <CustomPagination {...paginationProps} />
+              )}
+            </MobilePaginationDrawer>
+          ): (
+            paginationProps && (
+              <CustomPagination {...paginationProps}/>
+            )
           )}
         </Box>
       )}
