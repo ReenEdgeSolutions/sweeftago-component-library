@@ -48,3 +48,4 @@ export * from "./TransactionCard";
 export * from "./CustomPagination";
 export * from "./MobilePaginationDrawal";
 export * from "./MobileLogisticsCard";
+export * from "./TableHeadPanel"

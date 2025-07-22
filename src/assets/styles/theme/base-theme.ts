@@ -24,11 +24,11 @@ export const baseLightTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Inter, Manrope, Arial, sans-serif",
+    fontFamily: "Inter, Nunito-Sans, Arial, sans-serif",
   },
   font: {
-    default: "Inter, Manrope, Arial, sans-serif",
-    title: "Manrope, Inter, Arial, sans-serif",
+    default: "Inter, Nunito-Sans, Arial, sans-serif",
+    title: "Nunito-Sans, Inter, Arial, sans-serif",
     body: "Inter, Manrope, Arial, sans-serif",
   },
   color: {
