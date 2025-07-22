@@ -1,7 +1,7 @@
 {
   "name": "@reenedgesolutions/component-library",
   "private": false,
-  "version": "1.12.1",
+  "version": "1.12.5",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build && yalc push",
@@ -48,7 +48,7 @@
     "@mui/material-nextjs": "^7.0.0",
     "@mui/x-data-grid": "^7.27.0",
     "formik": "^2.4.6",
-    "next": "15.3.1",
+    "next": "^15.4.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-toastify": "^11.0.3",
@@ -79,7 +79,7 @@
     "typescript-eslint": "^8.24.1",
     "vite": "^6.1.1",
     "vite-plugin-dts": "^4.5.0",
-    "vite-plugin-linter": "^3.0.1",
+    "vite-plugin-linter": "^3.0.0",
     "vite-tsconfig-paths": "^5.1.4"
   },
   "license": "UNLICENSED",
