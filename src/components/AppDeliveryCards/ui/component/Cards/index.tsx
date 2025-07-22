@@ -6,14 +6,14 @@ interface CardsProps {
   background: string
   cardLabel: string
   cardValue: string | number
-  isProfileComplete?: boolean // Make it optional
+  isProfileComplete?: boolean
 }
 
 export const Cards = ({
   background,
   cardLabel,
   cardValue,
-  isProfileComplete = false // Provide default value
+  isProfileComplete = false
 }: CardsProps) => {
   return (
     <Stack
@@ -43,7 +43,7 @@ export const Cards = ({
 
       <Typography
         sx={{
-          // fontFamily: "nunito Sans"
+          // fontFamily: theme => theme.font.title,
           fontSize: {
             xs: pxToRem(16),
             sm: pxToRem(18),
@@ -55,7 +55,7 @@ export const Cards = ({
           textAlign: {sm: "center",md: "left"}
         }}
       >
-        {isProfileComplete ? cardValue : 0}
+        {isProfileComplete ? cardValue : (cardValue === 0 || cardValue === undefined || Number.isNaN(cardValue)) ? "0" : cardValue}
       </Typography>
     </Stack>
   )

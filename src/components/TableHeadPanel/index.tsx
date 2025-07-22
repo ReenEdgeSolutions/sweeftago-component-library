@@ -2,26 +2,27 @@ import React from 'react';
 import {Typography,Stack, Box, IconButton } from '@mui/material';
 import { Settings } from '@mui/icons-material';
 
-import { AppButton } from '../../../../AppButton';
-import { RowStack } from '../../../../RowStack';
-import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
-import { pxToRem } from '../../../../../common';
-import { StyledImage } from '../../../../../components';
-import deleteIcon from '../../assets/icon/delete.svg';
+import { AppButton } from '../AppButton';
+import { RowStack } from '../RowStack';
+// import FileUploadOutlinedIcon from '@mui/icons-material/FileUploadOutlined';
+import { pxToRem } from '../../common';
+import { StyledImage } from '..';
+import deleteIcon from '../AppTable/ui/assets/icon/delete.svg';
 
-interface TableHeaderProps {
+ export interface TableHeaderProps {
   title?: string;
-  showCustomizeButton: boolean;
-  onCustomizeClick: (event: React.MouseEvent<HTMLElement>) => void;
+  showCustomizeButton?: boolean;
+  onCustomizeClick?: (event: React.MouseEvent<HTMLElement>) => void;
   handleExport?: () => void;
   showTitle?: boolean;
   showAddRiderButton?: boolean;
   handleRiderAddClick?: () => void;
   handleDeleteAsignRider?: (data :number) => void;
   disabledCustomisedButton?: boolean
+  showExport? : boolean
 }
 
-export const TableHeader: React.FC<TableHeaderProps> = ({
+export const TableHeadPanel = ({
   title = "All Deliveries",
   showCustomizeButton,
   onCustomizeClick,
@@ -30,31 +31,31 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
   showAddRiderButton= false,
   handleRiderAddClick,
   handleDeleteAsignRider,
-  disabledCustomisedButton = false
-}) => {
+  showExport = true
+}: TableHeaderProps) => {
   return (
     <Box width="100%" mb="24px">
-      {showCustomizeButton && (
-        <RowStack justifyContent={"space-between"} sx={{  width: '100%', alignItems: 'center'}}>
-          { showTitle && (
-            <Typography
-              sx={{
-                fontSize: pxToRem(20),
-                fontWeight: 500,
-                lineHeight: '120%',
-                padding: '16px 0',
-                color: '#252423'
-              }}
-            >
-              {title}
-            </Typography>
-          )}
+      <RowStack justifyContent={"space-between"} sx={{  width: '100%', alignItems: 'center'}}>
+        { showTitle && (
+          <Typography
+            sx={{
+              fontSize: pxToRem(20),
+              fontWeight: 500,
+              lineHeight: '120%',
+              padding: '16px 0',
+              color: '#252423'
+            }}
+          >
+            {title}
+          </Typography>
+        )}
 
-          <RowStack spacing={"16px"} sx={{ alignItems: 'center' }}>
+        <RowStack spacing={"16px"} sx={{ alignItems: 'center' }}>
+          {showExport && (
             <AppButton
               onClick={handleExport}
               disableArrow
-              startIcon={<FileUploadOutlinedIcon sx={{width: "24px", height: "24px"}}/>}
+              // startIcon={<FileUploadOutlinedIcon sx={{width: "24px", height: "24px"}}/>}
               sx={{
                 color: "#615D5D",
                 border: "1px solid #D5D5D5",
@@ -66,32 +67,32 @@ export const TableHeader: React.FC<TableHeaderProps> = ({
             >
               Export
             </AppButton>
+          )}
 
-            {!disabledCustomisedButton && (
-              <Stack direction="row" spacing={1}>
-                <AppButton
-                  variant="outlined"
-                  startIcon={<Settings />}
-                  onClick={onCustomizeClick}
-                  disableArrow
-                  sx={{
+          {showCustomizeButton && (
+            <Stack direction="row" spacing={1}>
+              <AppButton
+                variant="outlined"
+                startIcon={<Settings />}
+                onClick={onCustomizeClick}
+                disableArrow
+                sx={{
+                  borderColor: '#D5D5D5',
+                  color: '#615D5D',
+                  backgroundColor: 'transparent',
+                  '&:hover': {
+                    backgroundColor: 'transparent',
                     borderColor: '#D5D5D5',
                     color: '#615D5D',
-                    backgroundColor: 'transparent',
-                    '&:hover': {
-                      backgroundColor: 'transparent',
-                      borderColor: '#D5D5D5',
-                      color: '#615D5D',
-                    },
-                  }}
-                >
-                  Customize table
-                </AppButton>
-              </Stack>
-            )}
-          </RowStack>
+                  },
+                }}
+              >
+                Customize table
+              </AppButton>
+            </Stack>
+          )}
         </RowStack>
-      )}
+      </RowStack>
 
       {showAddRiderButton && (
         <RowStack justifyContent={"space-between"} sx={{  width: '100%', alignItems: 'center'}}>

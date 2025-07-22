@@ -9,10 +9,10 @@ import {
   GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import { MouseEvent, useCallback, useEffect, useState } from "react";
-import { Box, SxProps, Theme, Typography } from "@mui/material";
+import { Box, Stack, SxProps, Theme, Typography } from "@mui/material";
 import { pxToRem } from "../../common";
 import { CustomPagination } from '../CustomPagination';
-import { DataGridLoader, TableHeader } from './ui/components';
+import { DataGridLoader } from './ui/components';
 import { StatusRenderer, FilterHeaderDropdown, StatusType } from "./ui/components";
 import { colorMap } from "../../common";
 
@@ -107,18 +107,8 @@ export interface AppTableProps<T extends GridRow> extends Omit<
   ) => void;
   disableRowClick?: boolean;
   emptyMessage?: string;
-  title?: string;
-  handleExport?: () => void;
-  showTitle?: boolean;
-  showAddRiderButton?: boolean;
-  handleRiderAddClick?: () => void;
-  handleDeleteAsignRider?: (data: number) => void;
-  showCustomizeButton?: boolean;
-  disabledCustomisedButton?: boolean
-  onCustomizeClick?: () => void;
   pageSizeOptions?: number[];
   slots?: DataGridProps['slots'];
-
   // Custom pagination props - passed from parent
   paginationModel?: GridPaginationModel;
   onPaginationModelChange?: (model: GridPaginationModel) => void;
@@ -140,15 +130,6 @@ export const AppTable = <T extends GridRow>({
   onSelectionChange,
   onRowClick,
   disableRowClick = false,
-  title,
-  handleExport,
-  showTitle = true,
-  showAddRiderButton = false,
-  handleRiderAddClick,
-  handleDeleteAsignRider,
-  showCustomizeButton = false,
-  onCustomizeClick,
-  disabledCustomisedButton = false,
   pageSizeOptions = [5, 10, 15, 25, 50, 100],
   sx = {},
   slots,
@@ -217,23 +198,10 @@ export const AppTable = <T extends GridRow>({
   }, [paginationModel, sortModel, fetchData]);
 
   return (
-    <Box sx={{ width: '100%', overflow: "hidden" }}>
-      <TableHeader
-        title={title}
-        showCustomizeButton={showCustomizeButton}
-        onCustomizeClick={onCustomizeClick ?? (() => {})}
-        handleExport={handleExport}
-        showTitle={showTitle}
-        showAddRiderButton={showAddRiderButton}
-        handleRiderAddClick={handleRiderAddClick}
-        handleDeleteAsignRider={handleDeleteAsignRider}
-        disabledCustomisedButton={disabledCustomisedButton}
-      />
-
+    <Stack spacing={"20px"} sx={{ width: '100%' }}>
       <Box sx={{
         border: "1px solid #D6D4D1",
-        borderRadius: "10px",
-        overflow: "hidden"
+        borderRadius: "10px"
       }}>
         <MuiDataGrid<T>
           columns={columns}
@@ -328,7 +296,7 @@ export const AppTable = <T extends GridRow>({
 
       {/* Custom Pagination - Only show if props are provided */}
       {showPagination && itemsPerPage && handleItemsPerPageChange && currentPage && handlePageChange && totalItems && totalPages && (
-        <Box sx={{ mt: 3, mb: 3 }}>
+        <Box sx={{ mb: 3 }}>
           <CustomPagination
             itemsPerPage={itemsPerPage}
             handleItemsPerPageChange={handleItemsPerPageChange}
@@ -339,7 +307,7 @@ export const AppTable = <T extends GridRow>({
           />
         </Box>
       )}
-    </Box>
+    </Stack>
   );
 };
 
