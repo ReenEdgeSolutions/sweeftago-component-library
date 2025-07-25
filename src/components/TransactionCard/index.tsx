@@ -5,6 +5,7 @@ import amountIcon from "./ui/assets/icons/amount.svg";
 import { LabelAndImg } from "../LabelAndImg";
 import { pxToRem } from "../../common";
 import { RowStack } from "../RowStack";
+import ShortenedText from "../ShortenedText";
 
 interface TransactionCardProps {
   transaction: TransactionData;
@@ -71,9 +72,10 @@ export const TransactionCard = ({ transaction, handleCardClick }: TransactionCar
             mb: 1,
           }}
         >
-          {transaction.referenceNumber.length > 10
-            ? `...${transaction.referenceNumber.slice(-10)}`
-            : transaction.referenceNumber}
+          {ShortenedText({
+            text: transaction.referenceNumber,
+            maxLength: 16,
+          })}
         </Typography>
 
 

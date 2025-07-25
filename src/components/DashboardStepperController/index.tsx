@@ -7,6 +7,8 @@ import {
   Typography,
   Box,
   styled,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 
 interface DashboardStepperControllerProps {
@@ -19,15 +21,30 @@ interface DashboardStepperControllerProps {
   }[];
 }
 
-// Styled vertical connector
-const OrangeConnector = styled(StepConnector)(() => ({
+// Styled vertical connector for desktop
+const VerticalConnector = styled(StepConnector)(() => ({
   [`&.${stepConnectorClasses.vertical}`]: {
-    marginLeft: 11,
+    // marginLeft: 11,
   },
   [`& .${stepConnectorClasses.line}`]: {
     borderColor: '#E0E0E0',
     minHeight: 32,
     borderLeftWidth: 2,
+  },
+}));
+
+// Styled horizontal connector for mobile
+const HorizontalConnector = styled(StepConnector)(() => ({
+  [`&.${stepConnectorClasses.horizontal}`]: {
+    left: 'calc(-50% + 12px)',
+    right: 'calc(50% + 12px)',
+    width: 'calc(100% - 24px)',
+    margin: '0 auto',
+  },
+  [`& .${stepConnectorClasses.line}`]: {
+    borderColor: '#E0E0E0',
+    borderTopWidth: 2,
+    borderLeftWidth: 0,
   },
 }));
 
@@ -48,7 +65,7 @@ const CustomStepIcon = ({
       borderRadius: '50%',
       backgroundColor: active || completed ? '#F98D31' : '#E0E0E0',
       display: 'flex',
-      justifyContent: 'center',
+      justifyContent: "center",
       alignItems: 'center',
       color: active || completed ? '#fff' : '#757575',
       fontWeight: 500,
@@ -65,6 +82,9 @@ export const DashboardStepperController = ({
   completedSteps,
   tabTitles,
 }: DashboardStepperControllerProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   const handleStepClick = (index: number) => {
     if (handleTabChange) {
       handleTabChange({} as React.SyntheticEvent, index);
@@ -74,9 +94,16 @@ export const DashboardStepperController = ({
   return (
     <Stepper
       activeStep={activeTab}
-      orientation="vertical"
-      connector={<OrangeConnector />}
-      sx={{ paddingY: 1 }}
+      orientation={isMobile ? 'horizontal' : 'vertical'}
+      connector={isMobile ? <HorizontalConnector /> : <VerticalConnector />}
+      sx={{
+        paddingY: 1,
+        ...(isMobile && {
+          width: '100%',
+          padding: 0,
+          margin: 0,
+        })
+      }}
     >
       {tabTitles.map((item, index) => {
         const isActive = activeTab === index;
@@ -89,6 +116,18 @@ export const DashboardStepperController = ({
             onClick={() => handleStepClick(index)}
             sx={{
               cursor: handleTabChange ? 'pointer' : 'default',
+              ...(isMobile && {
+                flex: 1,
+                padding: 0,
+                '& .MuiStepLabel-root': {
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  padding: 0,
+                },
+                '& .MuiStepLabel-iconContainer': {
+                  paddingRight: 0,
+                },
+              })
             }}
             completed={isCompleted}
           >
@@ -99,7 +138,11 @@ export const DashboardStepperController = ({
                   fontSize: '12px',
                   fontWeight: 500,
                   color: isActive || isCompleted ? '#F98D31' : '#757575',
-                  marginLeft: 1,
+                  marginLeft: isMobile ? 0 : 1,
+                  marginTop: isMobile ? 1 : 0,
+                  textAlign: isMobile ? 'center' : 'left',
+                  paddingRight: isMobile ? 0 : undefined,
+                  whiteSpace: isMobile ? 'nowrap' : 'normal',
                 },
               }}
             >

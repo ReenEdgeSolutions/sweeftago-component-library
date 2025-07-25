@@ -1,4 +1,4 @@
-import { Box, MenuItem, Select, SelectChangeEvent, Stack, Typography, IconButton } from "@mui/material";
+import { Box, MenuItem, Select, SelectChangeEvent, Stack, Typography, IconButton, useTheme, useMediaQuery } from "@mui/material";
 import { KeyboardArrowDown, KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { pxToRem } from "../../common";
 
@@ -19,10 +19,13 @@ export const CustomPagination = ({
   handlePageChange,
   totalItems,
   totalPages,
-  pageIndex = [5,10,20, 50]
+  pageIndex = [5,10,20, 50],
 }: CustomPaginationProps) => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, totalItems);
+
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const handleMuiItemsPerPageChange = (event: SelectChangeEvent<number>) => {
     const newPageSize = event.target.value as number;
@@ -108,6 +111,7 @@ export const CustomPagination = ({
             return selected;
           }}
         >
+
           <MenuItem disabled value="">
             <em>Items</em>
           </MenuItem>
@@ -118,19 +122,21 @@ export const CustomPagination = ({
           ))}
         </Select>
 
-        <Typography
-          sx={{
-            fontSize: {
-              xm: pxToRem(12),
-              md: pxToRem(14)
-            },
-            fontWeight: 400,
-            color: '#797979',
-            lineHeight: '140%',
-          }}
-        >
-          {startIndex + 1}-{endIndex} of {totalItems} items
-        </Typography>
+        {!isMobile && (
+          <Typography
+            sx={{
+              fontSize: {
+                xm: pxToRem(12),
+                md: pxToRem(14)
+              },
+              fontWeight: 400,
+              color: '#797979',
+              lineHeight: '140%',
+            }}
+          >
+            {startIndex + 1}-{endIndex} of {totalItems} items
+          </Typography>
+        )}
       </Stack>
 
       {/* Custom Pagination */}
@@ -139,8 +145,8 @@ export const CustomPagination = ({
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
           sx={{
-            width:{xs: 24, md: 32},
-            height: {xs: 24, md: 32},
+            width:{xs: 22, md: 32},
+            height: {xs: 22, md: 32},
             color: currentPage === 1 ? '#ccc' : '#666',
             '&:hover': {
               backgroundColor: 'rgba(0, 0, 0, 0.04)',
@@ -155,8 +161,8 @@ export const CustomPagination = ({
             key={page}
             onClick={() => handlePageChange(page)}
             sx={{
-              width: {xs: 24, md: 32},
-              height: {xs: 24, md: 32},
+              width: {xs: 22, md: 32},
+              height: {xs: 22, md: 32},
               borderRadius: '50%',
               fontSize: {
                 xs: pxToRem(12),
@@ -178,8 +184,8 @@ export const CustomPagination = ({
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
           sx={{
-            width: {xs: 24, md: 32},
-            height: {xs: 24, md: 32},
+            width: {xs: 22, md: 32},
+            height: {xs: 22, md: 32},
             color: currentPage === totalPages ? '#ccc' : '#666',
             '&:hover': {
               backgroundColor: 'rgba(0, 0, 0, 0.04)',

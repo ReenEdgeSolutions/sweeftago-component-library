@@ -1,5 +1,5 @@
 "use client"
-import { Stack, Typography } from "@mui/material"
+import { Stack, Typography, CircularProgress } from "@mui/material"
 import { pxToRem } from "../../../../../common/utils"
 
 interface CardsProps {
@@ -7,14 +7,52 @@ interface CardsProps {
   cardLabel: string
   cardValue: string | number
   isProfileComplete?: boolean
+  isLoading?: boolean
 }
 
 export const Cards = ({
   background,
   cardLabel,
   cardValue,
-  isProfileComplete = false
+  isProfileComplete = false,
+  isLoading = false
 }: CardsProps) => {
+  const renderCardValue = () => {
+    // Show loader if explicitly loading
+    if (isLoading) {
+      return (
+        <CircularProgress
+          size={24}
+          sx={{
+            color: "#F98D31",
+            alignSelf: { sm: "center", md: "flex-start" }
+          }}
+        />
+      )
+    }
+
+    // Show loader if value is undefined, null, or NaN (indicating still fetching)
+    if (cardValue === undefined || cardValue === null || Number.isNaN(cardValue)) {
+      return (
+        <CircularProgress
+          size={24}
+          sx={{
+            color: "#F98D31",
+            alignSelf: { sm: "center", md: "flex-start" }
+          }}
+        />
+      )
+    }
+
+    // Handle profile complete logic
+    if (isProfileComplete) {
+      return cardValue
+    }
+
+    // Show 0 for zero values, otherwise show the actual value
+    return cardValue === 0 ? "0" : cardValue
+  }
+
   return (
     <Stack
       sx={{
@@ -43,7 +81,6 @@ export const Cards = ({
 
       <Typography
         sx={{
-          // fontFamily: theme => theme.font.title,
           fontSize: {
             xs: pxToRem(16),
             sm: pxToRem(18),
@@ -52,10 +89,13 @@ export const Cards = ({
           fontWeight: {xs:600, md: 700},
           color: "#000000",
           lineHeight: "120%",
-          textAlign: {sm: "center",md: "left"}
+          textAlign: {sm: "center",md: "left"},
+          display: "flex",
+          alignItems: "center",
+          justifyContent: { sm: "center", md: "flex-start" }
         }}
       >
-        {isProfileComplete ? cardValue : (cardValue === 0 || cardValue === undefined || Number.isNaN(cardValue)) ? "0" : cardValue}
+        {renderCardValue()}
       </Typography>
     </Stack>
   )

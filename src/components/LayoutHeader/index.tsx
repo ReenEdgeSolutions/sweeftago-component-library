@@ -8,15 +8,22 @@ import helpIcon from "./ui/assets/icon/Vector.svg"
 import { AppButton } from '../AppButton';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { StyledImage } from '../../components/StyledImage';
+import { pxToRem } from '../../common';
 
 export interface LayoutHeaderProps {
-  handleDesktopHelpClick: () => void;
-  handleMobileHelpClick: () => void;
+  handleDesktopHelpClick?: () => void;
+  handleMobileHelpClick?: () => void;
+  handleSignInClick?: () => void;
+  showHelpCenter?: boolean;
+  showSignIn?: boolean;
 }
 
 export const LayoutHeader = ({
   handleDesktopHelpClick,
-  handleMobileHelpClick
+  handleMobileHelpClick,
+  handleSignInClick,
+  showHelpCenter = true,
+  showSignIn = false,
 }: LayoutHeaderProps) => {
   const theme = useTheme();
   const ismobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -69,55 +76,78 @@ export const LayoutHeader = ({
           </IconButton>
         </Box>
 
-        <Box>
+        {showHelpCenter && (
+          <Box>
             {/* Right Help Center */}
-          {!ismobile && (
-            <AppButton
-              onClick = {handleDesktopHelpClick }
-              disableArrow
-              startIcon={<HelpOutlineIcon />}
-              variant="text"
-              sx={{
-                backgroundColor: "transparent",
-                p:0,
-                textTransform: 'none',
-                fontWeight: 400,
-                fontSize: "16px",
-                lineHeight: "150%",
-                color: '#454341',
-                "&:hover":{
-                  backgroundColor: "transparent"
-                }
-              }}
-            >
-              Help center
-            </AppButton>
-          )}
-
-          {ismobile && (
-            <AppButton
-              variant="text"
-              onClick={handleMobileHelpClick}
-              disableArrow
-              sx={{
-                backgroundColor: "transparent",
-                p: 0,
-                "&:hover": {
-                  backgroundColor: "transparent"
-                }
-              }}
-            >
-              <StyledImage
-                src={helpIcon}
-                alt="Help Icon"
+            {!ismobile && (
+              <AppButton
+                onClick = {handleDesktopHelpClick }
+                disableArrow
+                startIcon={<HelpOutlineIcon />}
+                variant="text"
                 sx={{
-                  width: "15px",
-                  height: "16px"
+                  backgroundColor: "transparent",
+                  p:0,
+                  textTransform: 'none',
+                  fontWeight: 400,
+                  fontSize: "16px",
+                  lineHeight: "150%",
+                  color: '#454341',
+                  "&:hover":{
+                    backgroundColor: "transparent"
+                  }
                 }}
-              />
-            </AppButton>
-          )}
-        </Box>
+              >
+                Help center
+              </AppButton>
+            )}
+
+            {ismobile && (
+              <AppButton
+                variant="text"
+                onClick={handleMobileHelpClick}
+                disableArrow
+                sx={{
+                  backgroundColor: "transparent",
+                  p: 0,
+                  "&:hover": {
+                    backgroundColor: "transparent"
+                  }
+                }}
+              >
+                <StyledImage
+                  src={helpIcon}
+                  alt="Help Icon"
+                  sx={{
+                    width: "15px",
+                    height: "16px"
+                  }}
+                />
+              </AppButton>
+            )}
+          </Box>
+        )}
+
+        {showSignIn && (
+          <AppButton
+            variant="text"
+            onClick={handleSignInClick}
+            disableArrow
+            sx={{
+              backgroundColor: "transparent",
+              color: "#F98D31",
+              p: 0,
+              fontSize: pxToRem(18),
+              "&:hover": {
+                backgroundColor: "transparent",
+                color: "#F98D31",
+                textDecoration: "underline"
+              }
+            }}
+          >
+            Sign In
+          </AppButton>
+        )}
       </Toolbar>
     </AppBar>
   );
