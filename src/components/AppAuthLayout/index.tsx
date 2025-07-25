@@ -17,9 +17,6 @@ export const AppAuthLayout = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
-  const handleDesktopHelpClick: () => void = HeaderProps?.handleDesktopHelpClick ?? (() => {});
-  const handleMobileHelpClick: () => void = HeaderProps?.handleMobileHelpClick ?? (() => {});
-
   return(
     <Box
       sx={{
@@ -30,8 +27,7 @@ export const AppAuthLayout = ({
       }}
     >
       <LayoutHeader
-        handleDesktopHelpClick={handleDesktopHelpClick}
-        handleMobileHelpClick={handleMobileHelpClick}
+        { ...HeaderProps}
       />
 
 

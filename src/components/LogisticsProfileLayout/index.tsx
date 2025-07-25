@@ -46,6 +46,7 @@ export function LogisticsProfileLayout({
         >
           <RowStack
             justifyContent={"space-between"}
+            alignItems={"center"}
             sx={{
               width: "100%",
               padding: {
@@ -62,12 +63,12 @@ export function LogisticsProfileLayout({
 
             {/* Left side - can be used for navigation title */}
             <Typography
-              variant="h6"
               sx={{
                 fontWeight: 400,
                 fontSize: "16px",
-                display: { xs: "none", sm: "block" },
-                color: "#615D5D"
+                color: "#615D5D",
+                flex: 1,
+                ml: "20px",
               }}
             >
               { headerChildren }

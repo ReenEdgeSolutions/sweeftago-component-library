@@ -45,8 +45,8 @@ export const AppTransactionPagination = ({
   const isXs = useMediaQuery(theme.breakpoints.only('xs'));
 
   const initialValues = {
-    statusFilter: isXs ? "Status" : "Filtered bystatus",
-    dateSort: isXs ? "Date" : "Sort by date"
+    statusFilter: isXs ? "Status" : "Filtered by Status",
+    dateSort: isXs ? "Date" : "Sort by Date"
   };
 
   return (

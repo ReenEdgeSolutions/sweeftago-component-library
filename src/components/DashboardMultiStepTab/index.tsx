@@ -2,7 +2,9 @@ import {
   Stack,
   Typography,
   Box,
-  Grid
+  Grid,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { AppTitleAndDesc } from '../AppTitleAndDesc';
 import { pxToRem } from '../../common/utils';
@@ -28,18 +30,22 @@ export const DashboardMultiStepTab = ({
   tabTitles,
   showTitleAndDesc = true
 }: DashboardMultiStepTabProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
     <Box
       sx={{
-        width: '100%',
+        width: {xs:'100%', md: '750px'},
         maxWidth: "800px",
+        minWidth: "300px",
         margin: '0 auto',
         borderRadius: '10px',
         display: 'flex',
         flexDirection: 'column',
+        p: {xs: "10px", md: "20px"},
         gap: "32px",
-        backgroundColor: 'inherit',
+        backgroundColor: '#f9f9f9',
       }}
     >
       {showTitleAndDesc && (
@@ -49,29 +55,47 @@ export const DashboardMultiStepTab = ({
         />
       )}
 
-      <Grid container spacing={2}>
-        {/* Left-side Stepper */}
-        <Grid size={{xs: 12, md: 4}}>
-          <Box sx={{ paddingLeft: { md: 2 } }}>
-            <DashboardStepperController
-              activeTab={activeTab}
-              handleTabChange={handleTabChange}
-              completedSteps={completedSteps}
-              tabTitles={tabTitles}
-            />
-          </Box>
-        </Grid>
+      {/* Mobile: Stepper at top */}
+      {isMobile && (
+        <Box sx={{
+          width: '100%',
+          margin: 0,
+          padding: 0,
+        }}>
+          <DashboardStepperController
+            activeTab={activeTab}
+            handleTabChange={handleTabChange}
+            completedSteps={completedSteps}
+            tabTitles={tabTitles}
+          />
+        </Box>
+      )}
 
-        {/* Right-side Content */}
+      <Grid container spacing={2}>
+        {/* Desktop: Left-side Stepper */}
+        {!isMobile && (
+          <Grid size={{xs: 12, md: 4}}>
+            <Box sx={{ paddingLeft: 0 }}>
+              <DashboardStepperController
+                activeTab={activeTab}
+                handleTabChange={handleTabChange}
+                completedSteps={completedSteps}
+                tabTitles={tabTitles}
+              />
+            </Box>
+          </Grid>
+        )}
+
+        {/* Content */}
         <Grid size={{xs: 12, md: 7}}>
           <Stack spacing="24px">
             <Typography
               sx={{
-                fontSize: pxToRem(16),
-                fontWeight: 500,
+                fontSize:{xs: pxToRem(12), sm: pxToRem(16)},
+                fontWeight: {xs: 400, sm: 500},
                 color: '#252423',
                 lineHeight: '140%',
-                flexGrow: 1
+                flex: 1
               }}
             >
               {tabTitles[activeTab]?.label ?? ''}

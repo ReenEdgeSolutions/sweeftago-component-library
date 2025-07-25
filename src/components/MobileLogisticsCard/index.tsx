@@ -7,7 +7,7 @@ import { CustomPagination, CustomPaginationProps } from "../CustomPagination";
  export interface MobileLogisticsCardProps {
   profile: ProfileProps;
   onViewProfileClick: () => void;
-  paginationProps: CustomPaginationProps;
+  paginationProps: CustomPaginationProps
 }
 
 export const MobileLogisticsCard = ({
@@ -34,8 +34,10 @@ export const MobileLogisticsCard = ({
         }}>
           <Divider sx={{
             width: "100%",
-            borderColor: "#D6D4D1",
-            borderWidth: "1px",
+            height: "1px",
+            backgroundColor: "#D6D4D1",
+            margin: "10px 0",
+            border: "none",
           }}/>
         </Box>
 
