@@ -14,12 +14,14 @@ import { MenuButton } from "./ui/blocks/AppDashboardSidebar/ui/components";
 export type AppDashboardLayoutProps = PropsWithChildren & {
   headerProps: AppDashboardHeaderProps;
   sidebarProps: Omit<AppDashboardSidebarProps, "open">;
+  showSideBar?: boolean;
 };
 
 export function AppDashboardLayout({
   children,
   headerProps,
   sidebarProps,
+  showSideBar = true,
 }: AppDashboardLayoutProps) {
   const theme = useTheme();
   const isBelowLg = useMediaQuery(theme.breakpoints.down("lg"));
@@ -57,7 +59,7 @@ export function AppDashboardLayout({
       }}
     >
       {/* Desktop Sidebar */}
-      {!isMobile && (
+      {!isMobile && showSideBar && (
         <AppDashboardSidebar {...sidebarProps} open={sidebarOpen} />
       )}
 
@@ -75,7 +77,7 @@ export function AppDashboardLayout({
             zIndex: 1500,
           },
           "& .MuiBackdrop-root": {
-            zIndex: 1499, // Backdrop should be just below the drawer
+            zIndex: 1499,
           },
         }}
       >

@@ -7,6 +7,7 @@ import sortIcon from "./ui/assets/icon/sort.svg"
 import filterIcon from "./ui/assets/icon/filter.svg"
 import { StyledImage } from "../StyledImage";
 import { CustomPagination } from "../CustomPagination";
+import { MobilePaginationDrawer } from "../MobilePaginationDrawal";
 
 // Filter and sort data interface
 export interface FilterSortData {
@@ -42,11 +43,11 @@ export const AppTransactionPagination = ({
 }: AppTransactionPaginationProps) => {
 
   const theme = useTheme();
-  const isXs = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const initialValues = {
-    statusFilter: isXs ? "Status" : "Filtered by Status",
-    dateSort: isXs ? "Date" : "Sort by Date"
+    statusFilter: isMobile ? "Status" : "Filtered by Status",
+    dateSort: isMobile ? "Date" : "Sort by Date"
   };
 
   return (
@@ -136,8 +137,8 @@ export const AppTransactionPagination = ({
       {children}
 
       {/* Pagination */}
-      {!isXs && (
-        <Box mt={"20px"}>
+      <Box mt={{sm: "20px"}}>
+        {!isMobile ? (
           <CustomPagination
             itemsPerPage={itemsPerPage}
             handleItemsPerPageChange={handleItemsPerPageChange}
@@ -146,8 +147,19 @@ export const AppTransactionPagination = ({
             totalItems={totalItems}
             totalPages={totalPages}
           />
-        </Box>
-      )}
+        ): (
+          <MobilePaginationDrawer>
+            <CustomPagination
+              itemsPerPage={itemsPerPage}
+              handleItemsPerPageChange={handleItemsPerPageChange}
+              currentPage={currentPage}
+              handlePageChange={handlePageChange}
+              totalItems={totalItems}
+              totalPages={totalPages}
+            />
+          </MobilePaginationDrawer>
+        )}
+      </Box>
     </Box>
   );
 };

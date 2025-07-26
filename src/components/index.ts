@@ -40,7 +40,6 @@ export * from "./AppBackAndChildren";
 export * from './AppTwinBtnSuccess';
 export * from "./AppTable";
 export * from "./EmptyAddDeliveryState"
-export * from "./LogisticsProfileLayout";
 export * from './AppTab';
 export * from "./CustomPagination";
 export * from "./AppBreadCrumbs";
@@ -50,3 +49,4 @@ export * from "./MobilePaginationDrawal";
 export * from "./MobileLogisticsCard";
 export * from "./TableHeadPanel";
 export * from './ShortenedText';
+export * from './FinancialRequestCard';

@@ -1,4 +1,4 @@
-import { alpha, AppBar, IconButton, Toolbar, Typography, useMediaQuery, useTheme} from "@mui/material";
+import { alpha, AppBar, Box, IconButton, Toolbar, Typography, useMediaQuery, useTheme} from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { RowStack } from "../../../../RowStack";
 import { Profile, ProfileProps } from "./ui/components";
@@ -7,6 +7,7 @@ import whatsApp from '../../assets/icons/whatsapp.svg';
 import { StyledImage } from "../../../../StyledImage";
 import { pxToRem } from "../../../../../common";
 import { ReactNode } from "react";
+import { AppLogo } from "src/components/AppLogo";
 
 export type AppDashboardHeaderProps = {
   profileProps: ProfileProps;
@@ -15,6 +16,7 @@ export type AppDashboardHeaderProps = {
   showProfile?: boolean;
   showHome?: boolean;
   children?: ReactNode
+  showHeaderLogo?: boolean;
 };
 
 export function AppDashboardHeader({
@@ -23,7 +25,8 @@ export function AppDashboardHeader({
   onMobileMenuToggle,
   showProfile = true,
   showHome,
-  children
+  children,
+  showHeaderLogo = false,
 }: AppDashboardHeaderProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -118,21 +121,28 @@ export function AppDashboardHeader({
               },
             }}
           >
-            {/* Left side - Navigation title */}
-            {showHome && (
-              <Typography
-                variant="h6"
-                sx={{
-                  fontWeight: 400,
-                  fontSize: "16px",
-                  display: { xs: "none", sm: "block" },
-                  color: "#615D5D"
-                }}
-              >
-                Home
-              </Typography>
-            )}
-            {!showHome && children}
+            <RowStack>
+              {showHeaderLogo && (
+                <Box pr="15px" borderRight="1px solid #D6D4D1">
+                  <AppLogo sx={{width: "148px", height: "49.33px"}}/>
+                </Box>
+              )}
+
+              {showHome && (
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontWeight: 400,
+                    fontSize: "16px",
+                    display: { xs: "none", sm: "block" },
+                    color: "#615D5D"
+                  }}
+                >
+                  Home
+                </Typography>
+              )}
+              {!showHome && children}
+            </RowStack>
 
             {/* Right side - chat button, notifications, profile */}
             <RowStack spacing={"19px"} alignItems="center">

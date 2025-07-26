@@ -20,7 +20,7 @@ export interface ProfileProps {
   statusBackgroundColor: string;
 }
 
-export const Profile = ({
+export const MobileProfile = ({
   ProfilePhoto,
   profileName,
   ID,
