@@ -123,7 +123,7 @@ export function AppDashboardHeader({
           >
             <RowStack>
               {showHeaderLogo && (
-                <Box pr="15px" borderRight="1px solid #D6D4D1">
+                <Box mr="30px" borderRight="1px solid #D6D4D1">
                   <AppLogo sx={{width: "148px", height: "49.33px"}}/>
                 </Box>
               )}
@@ -136,6 +136,7 @@ export function AppDashboardHeader({
                     fontSize: "16px",
                     display: { xs: "none", sm: "block" },
                     color: "#615D5D"
+
                   }}
                 >
                   Home

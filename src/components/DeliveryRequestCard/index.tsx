@@ -68,10 +68,8 @@ export const DeliveryRequestCard = ({
       >
         <RowStack sx={{
           alignItems: "center",
-          width: "100%",
           gap: "10px",
           flexWrap: "wrap",
-          justifyContent: "space-between",
         }}>
           <RowStack spacing="16px">
             <Box width="92px" display="flex" alignItems="center" justifyContent="center" >
@@ -127,6 +125,10 @@ export const DeliveryRequestCard = ({
             icon={amountIcon}
             label={`#${amount}`}
           />
+
+          {!isMobile && (
+            <Box mx="30px"></Box>
+          )}
 
           <LabelAndImg
             icon={distanceIcon}
