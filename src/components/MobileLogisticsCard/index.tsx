@@ -1,5 +1,5 @@
 import { Box, Divider, Stack } from "@mui/material"
-import { Profile, ProfileProps } from "./ui/components";
+import { MobileProfile, ProfileProps } from "./ui/components";
 import { AppButton } from "../AppButton";
 import { MobilePaginationDrawer } from "../MobilePaginationDrawal";
 import { CustomPagination, CustomPaginationProps } from "../CustomPagination";
@@ -23,7 +23,7 @@ export const MobileLogisticsCard = ({
         borderRadius: "10px",
         width: "100%",
       }}>
-        <Profile  {...profile}/>
+        <MobileProfile  {...profile}/>
 
         <Box sx={{
           width: "80%",
@@ -71,3 +71,5 @@ export const MobileLogisticsCard = ({
     </>
   )
 }
+
+export { TextObject , MobileProfile } from "./ui/components";

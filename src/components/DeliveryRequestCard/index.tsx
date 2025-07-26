@@ -1,4 +1,5 @@
-import { Box, Stack, Typography } from "@mui/material"
+import { Box, IconButton, Stack, Typography, useTheme, useMediaQuery } from "@mui/material"
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz"
 import { pxToRem } from "../../common/utils"
 import { LabelAndImg } from "../LabelAndImg"
 import { RowStack } from "../RowStack"
@@ -20,6 +21,10 @@ interface DeliveryRequestCardProps {
   color: string
   bgColor: string
   handleViewDetails: (id: string) => void
+  showStartTime?: boolean
+  startTime?: string
+  onMoreOptionsClick?: (event: React.MouseEvent<HTMLButtonElement>, deliveryId?: string) => void
+  showActionButton?: boolean
 }
 
 export const DeliveryRequestCard = ({
@@ -36,8 +41,15 @@ export const DeliveryRequestCard = ({
   status,
   color,
   bgColor,
+  showStartTime = false,
+  startTime,
   handleViewDetails,
+  onMoreOptionsClick,
+  showActionButton = false,
 }: DeliveryRequestCardProps) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Stack
       sx={{
@@ -54,36 +66,60 @@ export const DeliveryRequestCard = ({
         spacing={{xs:"12px", sm: "24px"}}
         alignItems={{xs: "flex-start", sm: "center"}}
       >
-        <RowStack spacing="16px">
-          <Box width="92px" display="flex" alignItems="center" justifyContent="center" >
+        <RowStack sx={{
+          alignItems: "center",
+          width: "100%",
+          gap: "10px",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
+        }}>
+          <RowStack spacing="16px">
+            <Box width="92px" display="flex" alignItems="center" justifyContent="center" >
+              <Typography
+                sx={{
+                  padding: "4px 8px",
+                  fontSize: pxToRem(12),
+                  fontWeight: 400,
+                  color: color,
+                  backgroundColor: bgColor,
+                  width: "100%",
+                  textAlign: "center",
+                }}
+              >
+                {status}
+              </Typography>
+            </Box>
+
             <Typography
               sx={{
-                padding: "4px 8px",
-                fontSize: pxToRem(12),
+                fontSize: {xs: pxToRem(14), sm: pxToRem(14)},
                 fontWeight: 400,
-                color: color,
-                backgroundColor: bgColor,
-                width: "100%",
-                textAlign: "center",
+                lineHeight: "140%",
+                color: "#797979",
+                textTransform: "capitalize",
+                pr: "16px",
+                borderRight: {xs:"none" ,sm: "1px solid #D6D4D1"},
               }}
             >
-              {status}
+              {deliveryId}
             </Typography>
-          </Box>
+          </RowStack>
 
-          <Typography
-            sx={{
-              fontSize: {xs: pxToRem(14), sm: pxToRem(14)},
-              fontWeight: 400,
-              lineHeight: "140%",
-              color: "#797979",
-              textTransform: "capitalize",
-              pr: "16px",
-              borderRight: {xs:"none" ,sm: "1px solid #D6D4D1"},
-            }}
-          >
-            {deliveryId}
-          </Typography>
+          {isMobile && showActionButton && (
+            <IconButton
+              onClick={(event) => onMoreOptionsClick && onMoreOptionsClick(event, deliveryId)}
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "flex-end",
+                alignSelf: "flex-start",
+                ml: "auto",
+                p: 0
+              }}
+            >
+              <MoreHorizIcon />
+            </IconButton>
+          )}
         </RowStack>
 
         <RowStack spacing="8px" alignItems={"center"}>
@@ -104,12 +140,27 @@ export const DeliveryRequestCard = ({
         </RowStack>
       </Stack>
 
+
       <Stack
         direction={{xs: "column", sm: "row"}}
         spacing={{xs:"12px", md: "24px"}}
         alignItems={{xs: "flex-start", sm: "center"}}
         justifyContent={{xs: "flex-start", sm: "space-between"}}
       >
+
+        {showStartTime && (
+          <Typography
+            sx={{
+              fontSize: {xs: pxToRem(14),md:pxToRem(16)},
+              fontWeight: 400,
+              lineHeight: "140%",
+              color: "#615D5D",
+            }}
+          >
+            Delivery Start Time : {startTime}
+          </Typography>
+        )}
+
         <Stack
           direction={{xs: "column", sm: "row"}}
           spacing={{xs:"10px", sm: "24px"}}
