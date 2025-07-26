@@ -99,8 +99,8 @@ export function AppDashboardLayout({
       </Drawer>
 
       {/* Menu Toggle Button (Only for Desktop) */}
-      {!isMobile && (
-        <Box sx={{ display: { xs: "none", md: "block" } }}>
+      {!isMobile && showSideBar && (
+        <Box sx={{ display: { xs: "none", md: !showSideBar ? "none" : "block" } }}>
           <MenuButton
             onClick={handleSidebarToggle}
             isMenuOpen={sidebarOpen}
