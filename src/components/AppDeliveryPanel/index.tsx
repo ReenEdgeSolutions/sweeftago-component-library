@@ -91,8 +91,6 @@ export const AppDeliveryPanel = ({
     }
   ];
 
-  // Desktop/Tablet Action Buttons
-
 
   return (
     <Box>
@@ -136,24 +134,34 @@ export const AppDeliveryPanel = ({
                 }}
                 sx={{
                   '& .MuiPopover-paper': {
-                    borderRadius: '8px',
-                    boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
+                    backgroundColor: 'transparent',
+                    boxShadow: 'none',
+                    border: 'none',
                     minWidth: '180px',
                     mt: 1
                   }
                 }}
               >
-                <List sx={{ padding: 0 }}>
+                <List sx={{
+                  padding: 0,
+                  backgroundColor: 'transparent',
+                  gap: '8px',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}>
                   {mobileMenuItems.map((item, index) => (
                     <ListItem
                       key={index}
                       onClick={item.onClick}
                       sx={{
                         padding: '12px 16px',
-                        borderBottom: index < mobileMenuItems.length - 1 ? '1px solid #F0F0F0' : 'none',
+                        borderRadius: '8px',
+                        backgroundColor: '#FEE8D6',
+                        boxShadow: '0px 0px 4px rgba(0, 0, 0, 0.25)',
                         cursor: 'pointer',
+                        margin: 0,
                         '&:hover': {
-                          backgroundColor: '#F8F8F8'
+                          backgroundColor: '#fed7c3' 
                         }
                       }}
                     >

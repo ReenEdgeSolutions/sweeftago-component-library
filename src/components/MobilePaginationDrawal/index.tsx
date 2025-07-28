@@ -69,7 +69,7 @@ export const MobilePaginationDrawer = ({
             backdropFilter: 'blur(10px)',
             borderRadius: '12px 12px 0 0',
             border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.1)',
+            boxShadow: '0 -1px 10px rgba(0, 0, 0, 0.09)',
             transition: 'all 0.3s ease-in-out',
             '&:hover': {
               background: 'rgba(255, 255, 255, 0.15)',
@@ -82,8 +82,8 @@ export const MobilePaginationDrawer = ({
               data-testid="mobile-pagination-arrow"
               onClick={handleToggle}
               sx={{
-                width: '50px',
-                height: '50px',
+                width: '40px',
+                height: '40px',
                 borderRadius: '12px 12px 0 0',
                 color: '#666',
                 '&:hover': {
@@ -107,8 +107,8 @@ export const MobilePaginationDrawer = ({
             background: 'rgba(255, 255, 255, 0.95)',
             backdropFilter: 'blur(20px)',
             borderRadius: '12px 12px 0 0',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.15)',
+            border: 'none',
+            // boxShadow: '0 -1px 10px rgba(0, 0, 0, 0.09)',
             width: '100%',
             height: '50px',
             animation: 'slideUp 0.3s ease-out',

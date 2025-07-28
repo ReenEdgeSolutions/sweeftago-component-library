@@ -12,7 +12,7 @@ export interface ProfileProps {
   profileName: string;
   ID: string;
   isVerified: boolean;
-  onMoreOptionsClick: (params: string) => void;
+  onMoreOptionsClick: (event: React.MouseEvent<HTMLButtonElement>, ID?: string) => void;
   phoneNumber: string;
   lastTrip: string;
   statusText: string;
@@ -112,7 +112,7 @@ export const MobileProfile = ({
       </Stack>
 
       <IconButton
-        onClick={ () => onMoreOptionsClick(ID)}
+        onClick={(event) => onMoreOptionsClick(event, ID)}
         sx={{
           display: "flex",
           justifyContent: "flex-end",

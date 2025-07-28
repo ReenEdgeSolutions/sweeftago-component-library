@@ -70,6 +70,7 @@ export const DeliveryRequestCard = ({
           alignItems: "center",
           gap: "10px",
           flexWrap: "wrap",
+          justifyContent: "space-between",
         }}>
           <RowStack spacing="16px">
             <Box width="92px" display="flex" alignItems="center" justifyContent="center" >

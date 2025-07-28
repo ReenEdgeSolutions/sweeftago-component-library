@@ -1,12 +1,7 @@
-import React, { forwardRef, PropsWithChildren, ReactElement, Ref } from "react";
+import React, { forwardRef, ReactElement, Ref } from "react";
 import { Dialog, DialogProps, Slide } from "@mui/material";
 import { TransitionProps } from "@mui/material/transitions";
 import { FullPageModalProvider } from "../../module/partials";
-
-// Define the props for the AppFullPageModal by omitting 'onClose' from DialogProps and redefining it
-export type AppFullPageModalProps = PropsWithChildren<
-  Omit<DialogProps, "onClose"> & { onClose: () => void }
->;
 
 // Define the transition for the modal
 const Transition = forwardRef(function Transition(
@@ -20,9 +15,18 @@ const Transition = forwardRef(function Transition(
   );
 });
 
-// Create the AppFullPageModal component
-export const AppFullPageModal = ({ children, onClose, ...rest }: AppFullPageModalProps) => {
-  // Define a handler that matches Dialog's onClose signature
+interface AppFullPageModalProps extends Omit<DialogProps, "onClose"> {
+  children?: React.ReactNode;
+  onClose: () => void;
+  offSetZIndex?: boolean;
+}
+
+export const AppFullPageModal = ({
+  children,
+  offSetZIndex = false,
+  onClose,
+  ...rest
+}: AppFullPageModalProps) => {
   const handleDialogClose = (
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _event: React.SyntheticEvent,
@@ -32,6 +36,33 @@ export const AppFullPageModal = ({ children, onClose, ...rest }: AppFullPageModa
     onClose();
   };
 
+  // When offSetZIndex is true, use the dominant modal configuration
+  if (offSetZIndex) {
+    return (
+      <Dialog
+        TransitionComponent={Transition}
+        PaperProps={{
+          sx: {
+            background: "#f9f9f9",
+            padding: 0,
+            position: "relative",
+            overflow: "auto",
+          },
+        }}
+        {...rest}
+        fullScreen
+        keepMounted={false}
+        onClose={handleDialogClose}
+      >
+        {/* Provide the onClose function via context */}
+        <FullPageModalProvider value={{ onClose: onClose }}>
+          {children}
+        </FullPageModalProvider>
+      </Dialog>
+    );
+  }
+
+
   return (
     <Dialog
       TransitionComponent={Transition}
@@ -39,18 +70,14 @@ export const AppFullPageModal = ({ children, onClose, ...rest }: AppFullPageModa
         sx: {
           background: "#f9f9f9",
           padding: 0,
-          // Ensure the modal content can handle menu overlays
           position: "relative",
-          overflow: "visible", // Allow menu to overflow if needed
+          overflow: "auto",
         },
       }}
-      // Prevent backdrop clicks from interfering with menu
       BackdropProps={{
         sx: {
-          // Lower z-index for backdrop to allow menu to appear above
           zIndex: -1,
         },
-        // Prevent backdrop from blocking menu interactions
         onClick: (e) => {
           e.stopPropagation();
         }
@@ -59,11 +86,9 @@ export const AppFullPageModal = ({ children, onClose, ...rest }: AppFullPageModa
       fullScreen
       keepMounted={false}
       onClose={handleDialogClose}
-      // Allow menu interactions by not closing on backdrop click
       disableEscapeKeyDown={false}
-      // Ensure proper stacking context
       sx={{
-        zIndex: 1000, // Standard MUI Dialog z-index
+        zIndex: 1000,
         ...rest.sx
       }}
     >
@@ -74,7 +99,6 @@ export const AppFullPageModal = ({ children, onClose, ...rest }: AppFullPageModa
           height: '100%',
           width: '100%',
           position: 'relative',
-          // Ensure this container doesn't interfere with menu
           zIndex: 'auto'
         }}>
           {children}
@@ -83,3 +107,6 @@ export const AppFullPageModal = ({ children, onClose, ...rest }: AppFullPageModa
     </Dialog>
   );
 };
+
+// Export the type for external use
+export type { AppFullPageModalProps };
