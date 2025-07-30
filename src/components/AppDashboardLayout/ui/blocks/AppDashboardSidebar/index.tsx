@@ -1,4 +1,4 @@
-import { CSSObject, Stack, Theme, useTheme, useMediaQuery, } from "@mui/material";
+import { CSSObject, Stack, Theme, useTheme, useMediaQuery, Box } from "@mui/material";
 import { AppLogo } from "../../../../AppLogo";
 import { RowStack } from "../../../../RowStack";
 import logoIcon from "./ui/assets/icons/logo-icon.png";
@@ -75,21 +75,15 @@ export function AppDashboardSidebar({
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   const sidebarLinks = links || [];
+
   return (
     <Stack
-      spacing="40px"
       sx={{
         position: "relative",
-        overflowY: "auto",
         height: isMobileDrawer ? "100%" : "100vh",
         maxHeight: isMobileDrawer ? "100%" : "100vh",
-        paddingY: "40px",
-        paddingLeft: "24px",
-        paddingRight: "20px",
-        '::-webkit-scrollbar': { display: 'none' },
-        scrollbarWidth: 'none',
         maxWidth: isMobileDrawer ? "100%" : SIDEBAR_WIDTH,
-        borderRight: isMobileDrawer ? "none" : "1px solid #E1E1E1",
+        borderRight: "1px solid #E1E1E1",
         background: "#F9F9F9",
         width: "100%",
         zIndex: theme.zIndex.appBar + 1,
@@ -106,50 +100,71 @@ export function AppDashboardSidebar({
         display: isMobile && !isMobileDrawer ? 'none' : 'flex',
       }}
     >
-      {/* Top section */}
-      <Stack>
+      {/* Fixed Header Section - Always visible */}
+      <Box
+        sx={{
+          flexShrink: 0,
+          pt: isMobileDrawer ? "40px" : "20px",
+          paddingLeft: "24px",
+          paddingRight: "20px",
+        }}
+      >
         {/* Mobile Profile Header - only show in mobile drawer mode */}
-        {isMobileDrawer && mobileProfileProps && <MobileProfileHeader
-          onMobileClose={onMobileClose}
-          mobileProfileProps={mobileProfileProps}
-        />}
-
-        {/* Logo - show when not mobile or when sidebar is open or in mobile drawer */}
-        {(!isMobile) && (
-          <Stack spacing={3}>
-            <StyledLink href={hrefLink || "#"}>
-              <RowStack
-                sx={{ width: '100%'}}
-                justifyContent={(open) ? "flex-start" : "center"}
-                mb={"30px"}
-              >
-                {(open) ? (
-                  <AppLogo sx={{width: "214px", height: "71.33px"}}/>
-                ) : (
-                  <StyledImage
-                    src={logoIcon}
-                    alt="Logo"
-                    sx={{ width: "35px", height: "35px"}}
-                  />
-                )}
-              </RowStack>
-            </StyledLink>
-          </Stack>
+        {isMobileDrawer && mobileProfileProps && (
+          <Box>
+            <MobileProfileHeader
+              onMobileClose={onMobileClose}
+              mobileProfileProps={mobileProfileProps}
+            />
+          </Box>
         )}
 
-        {!isMobileDrawer && !isMobile && showProfileRating &&(
+        {(!isMobile) && (
+          <StyledLink href={hrefLink || "#"}>
+            <RowStack
+              sx={{ width: '100%'}}
+              justifyContent={(open) ? "flex-start" : "center"}
+              mb={"20px"}
+            >
+              {(open) ? (
+                <AppLogo sx={{width: "214px", height: "71.33px"}}/>
+              ) : (
+                <StyledImage
+                  src={logoIcon}
+                  alt="Logo"
+                  sx={{ width: "35px", height: "35px"}}
+                />
+              )}
+            </RowStack>
+          </StyledLink>
+        )}
+
+        {/* Profile Rating - Fixed at top */}
+        {!isMobileDrawer && !isMobile && showProfileRating && (
           <ProfileRating
             ratePercent={ratePercent ?? 0}
             ratingItems={ratingItems ?? []}
-            open = { open }
+            open={open}
             isMobile={isMobile}
             rateIcon={rateIcon}
           />
         )}
+      </Box>
 
+      {/* Scrollable Navigation Section */}
+      <Box
+        sx={{
+          flex: 1,
+          overflowY: "auto",
+          paddingLeft: "24px",
+          paddingRight: "20px",
+          '::-webkit-scrollbar': { display: 'none' },
+          scrollbarWidth: 'none',
+        }}
+      >
         {/* Navigation Links */}
         {showSideLinks && !showProfileRating && (
-          <Stack spacing={isMobileDrawer ? "20px" : "40px"} mt={isMobileDrawer ? "10px" : "30px"}>
+          <Stack spacing={isMobileDrawer ? "20px" : "31px"} sx={{ mt: "10px" }}>
             {sidebarLinks.map((item, index) => (
               <SideLinks
                 sideIcon={item.sideIcon}
@@ -161,7 +176,7 @@ export function AppDashboardSidebar({
             ))}
           </Stack>
         )}
-      </Stack>
+      </Box>
 
       {isMobileDrawer && mobileProfileProps && (
         <MobileLogoutAndDeactivate

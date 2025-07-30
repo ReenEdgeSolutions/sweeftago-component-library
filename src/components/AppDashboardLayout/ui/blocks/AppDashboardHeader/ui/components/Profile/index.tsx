@@ -21,7 +21,7 @@ export const Profile = ({ profileClick, userImg, userMail, lastName, firstName, 
       onClick={profileClick}
       sx={{
         cursor: "pointer",
-        padding: "14px 16px",
+        padding: "14px 0 14px 16px",
         "&:hover": {
           backgroundColor: "transparent",
         },
