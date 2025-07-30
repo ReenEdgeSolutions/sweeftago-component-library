@@ -8,6 +8,7 @@ import { StyledImage } from "../../../../StyledImage";
 import { pxToRem } from "../../../../../common";
 import { ReactNode } from "react";
 import { AppLogo } from "src/components/AppLogo";
+import { AppSearchField } from "src/components/TextField";
 
 export type AppDashboardHeaderProps = {
   profileProps: ProfileProps;
@@ -17,6 +18,10 @@ export type AppDashboardHeaderProps = {
   showHome?: boolean;
   children?: ReactNode
   showHeaderLogo?: boolean;
+  showSearch?: boolean;
+  handleSearchClick?: () => void;
+  handleSearchChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  showWhatsappChat?: boolean;
 };
 
 export function AppDashboardHeader({
@@ -27,6 +32,10 @@ export function AppDashboardHeader({
   showHome,
   children,
   showHeaderLogo = false,
+  showSearch = false,
+  handleSearchClick,
+  handleSearchChange,
+  showWhatsappChat = true,
 }: AppDashboardHeaderProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -38,12 +47,14 @@ export function AppDashboardHeader({
       sx={{
         background: "#F9F9F9",
         borderBottom: "1px solid #E1E1E1",
+        p: 0
       }}
     >
       {isMobile ? (
         <Toolbar
+          disableGutters
           sx={{
-            padding: "0",
+            padding: 0,
             width: "100%",
             height: "56px",
             background: "#F9F9F9",
@@ -103,8 +114,9 @@ export function AppDashboardHeader({
         </Toolbar>
       ): (
         <Toolbar
+          disableGutters
           sx={{
-            padding: "0",
+            padding: 0,
             width: "100%",
             height: "101px",
             background: "#F9F9F9",
@@ -114,11 +126,7 @@ export function AppDashboardHeader({
             justifyContent={"space-between"}
             sx={{
               width: "100%",
-              padding: {
-                xs: "12px 15px",
-                sm: "14px 20px",
-                md: "16px 30px",
-              },
+              paddingX: { xs: "16px", sm: "20px", md: "35px" },
             }}
           >
             <RowStack>
@@ -148,31 +156,48 @@ export function AppDashboardHeader({
             {/* Right side - chat button, notifications, profile */}
             <RowStack spacing={"19px"} alignItems="center">
               {/* Chat toggle button */}
-              <IconButton
-                onClick={onChatToggle}
-                sx={{
-                  backgroundColor: "#CFFFD2",
-                  borderRadius: "10px",
-                  padding: "14px 16px",
-                  "&:hover": {
-                    backgroundColor: alpha("#CFFFD2", .8),
-                  },
-                }}
-              >
-                <RowStack spacing={1} alignItems="center">
-                  <WhatsAppIcon />
-                  <Typography
-                    sx={{
-                      color: "#252423",
-                      fontSize: "16px",
-                      fontWeight: 500,
-                      display: { xs: "none", sm: "block" },
-                    }}
-                  >
-                    Switch to chat
-                  </Typography>
-                </RowStack>
-              </IconButton>
+
+              {showSearch && (
+                <Box maxWidth={"466px"} width="100%">
+                  <AppSearchField
+                    iconPosition="start"
+                    placeholder="Search"
+                    onClick={handleSearchClick}
+                    onChange={handleSearchChange}
+                    fullWidth
+                  />
+                </Box>
+
+              )}
+
+              {showWhatsappChat && (
+                <IconButton
+                  onClick={onChatToggle}
+                  sx={{
+                    backgroundColor: "#CFFFD2",
+                    borderRadius: "10px",
+                    padding: "14px 16px",
+                    "&:hover": {
+                      backgroundColor: alpha("#CFFFD2", .8),
+                    },
+                  }}
+                >
+                  <RowStack spacing={1} alignItems="center">
+                    <WhatsAppIcon />
+                    <Typography
+                      sx={{
+                        color: "#252423",
+                        fontSize: "16px",
+                        fontWeight: 500,
+                        display: { xs: "none", sm: "block" },
+                      }}
+                    >
+                      Switch to chat
+                    </Typography>
+                  </RowStack>
+                </IconButton>
+              )}
+
 
               {/* Profile */}
               {showProfile && (

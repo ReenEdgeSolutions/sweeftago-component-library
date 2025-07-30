@@ -1,5 +1,6 @@
 import { Grid } from "@mui/material"
 import { Cards } from "./ui/component"
+import { StaticImageData } from "next/image"
 
 interface AppDeliveryCardsProps {
   deliverydata: {
@@ -7,6 +8,8 @@ interface AppDeliveryCardsProps {
     background: string
     cardLabel: string
     cardValue: string | number
+    enableAdminCard?: boolean
+    labelIcon?: string | StaticImageData
   }[]
   isProfileComplete?: boolean
 }
@@ -42,6 +45,8 @@ export const AppDeliveryCards = ({
             cardLabel={item.cardLabel}
             cardValue={item.cardValue}
             isProfileComplete = {isProfileComplete}
+            enableAdminCard={item.enableAdminCard}
+            labelIcon={item.labelIcon}
           />
         </Grid>
       ))}

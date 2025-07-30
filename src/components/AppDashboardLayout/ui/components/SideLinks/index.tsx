@@ -18,7 +18,7 @@ export function SideLinks({ sideIcon, sideLink, link, isSideBarOpen }: SideLinks
   const pathname = usePathname();
   const isActive = pathname.includes(link);
   return (
-    <StyledLink href={link || "#"}>
+    <StyledLink href={link || "#"} style={{ textDecoration: "none", color: "inherit" }}>
       <RowStack
         spacing={1}
         sx={{
@@ -66,7 +66,7 @@ export function SideLinks({ sideIcon, sideLink, link, isSideBarOpen }: SideLinks
         {isSideBarOpen && (
           <Typography
             sx={{
-              color: isActive ? "#252423" : "#615D5D",
+              color: isActive ? "#252423 !important" : "#615D5D!important",
               fontWeight: 500,
               fontSize: {
                 xs: isActive ? pxToRem(12) : pxToRem(14),

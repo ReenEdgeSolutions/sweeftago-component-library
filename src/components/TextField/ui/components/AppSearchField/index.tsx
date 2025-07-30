@@ -55,6 +55,7 @@ export const AppSearchField = ({
         '& .MuiInputBase-root': {
           borderRadius: '10px',
           backgroundColor: '#F5F5F5',
+          border: "1px solid #D5D5D5"
         },
         ...props.sx
       }}
