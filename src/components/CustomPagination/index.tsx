@@ -53,16 +53,19 @@ export const CustomPagination = ({
   return(
     <Box sx={{ width: "100%", display: 'flex', justifyContent: 'space-between', alignItems: 'center' }} >
       <Stack direction="row" spacing={2} alignItems="center">
-        <Typography
-          sx={{
-            fontSize: pxToRem(14),
-            fontWeight: 400,
-            color: '#615D5D',
-            lineHeight: '140%',
-          }}
-        >
-          Items per page
-        </Typography>
+        {!isMobile && (
+          <Typography
+            sx={{
+              fontSize: pxToRem(14),
+              fontWeight: 400,
+              color: '#615D5D',
+              lineHeight: '140%',
+            }}
+          >
+            Items per page
+          </Typography>
+        )}
+
 
 
         <Select

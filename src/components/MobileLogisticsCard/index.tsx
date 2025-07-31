@@ -58,6 +58,7 @@ export const MobileLogisticsCard = ({
           }
         }}
         onClick={onViewProfileClick}
+        disableArrow
         >
           View Profile
         </AppButton>

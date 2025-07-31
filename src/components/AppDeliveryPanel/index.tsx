@@ -29,6 +29,7 @@ export interface AppDeliveryPanelProps {
   handleFilterClick?: () => void;
   handleSortClick?: () => void;
   showRequestsBtn?: boolean;
+  isProfileComplete?: boolean;
 }
 
 export const AppDeliveryPanel = ({
@@ -41,6 +42,7 @@ export const AppDeliveryPanel = ({
   isTransaction = false,
   handleFilterClick,
   handleSortClick,
+  isProfileComplete = true,
   showRequestsBtn = true
 }: AppDeliveryPanelProps) => {
   const isMobile = useMediaQuery('(max-width:576px)');
@@ -137,7 +139,7 @@ export const AppDeliveryPanel = ({
                     backgroundColor: 'transparent',
                     boxShadow: 'none',
                     border: 'none',
-                    minWidth: '180px',
+                    minWidth: '199px',
                     mt: 1
                   }
                 }}
@@ -161,7 +163,7 @@ export const AppDeliveryPanel = ({
                         cursor: 'pointer',
                         margin: 0,
                         '&:hover': {
-                          backgroundColor: '#fed7c3' 
+                          backgroundColor: '#fed7c3'
                         }
                       }}
                     >
@@ -247,13 +249,14 @@ export const AppDeliveryPanel = ({
         />
       )}
 
-      {isMobile && showRequestsBtn && (
+      {isMobile && showRequestsBtn && isProfileComplete && (
         <Box
           sx={{
             position: 'fixed',
             top: "70%",
             right: 20,
             transform: 'translateY(-50%)',
+            zIndex: 1000,
           }}
         >
           <AppButton

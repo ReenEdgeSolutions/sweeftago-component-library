@@ -1,8 +1,8 @@
 "use client"
 import { Stack, Typography } from "@mui/material"
 import { pxToRem } from "../../../../../common/utils"
-import { RowStack } from "src/components/RowStack"
-import { StyledImage } from "src/components/StyledImage"
+import { RowStack } from "../../../../RowStack"
+import { StyledImage } from "../../../../StyledImage"
 import arrow from "../../assets/icon/arrow.svg"
 import { StaticImageData } from "next/image"
 

@@ -27,7 +27,7 @@ export const MobileProfileHeader = ({
         padding: '16px 20px',
         borderBottom: '1px solid #E1E1E1',
         marginBottom: '20px',
-        marginTop: '-40px',
+        marginTop: '-20px',
         marginLeft: '-16px',
         marginRight: '-16px',
       }}

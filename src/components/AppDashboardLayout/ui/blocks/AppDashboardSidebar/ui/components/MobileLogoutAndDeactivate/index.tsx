@@ -15,7 +15,8 @@ export const MobileLogoutAndDeactivate = ({
     <Stack
       sx={{
         justifyContent: "space-between",
-        flex: 1
+        flex: 1,
+        mt: "20px",
       }}
     >
       <AppButton
@@ -27,7 +28,7 @@ export const MobileLogoutAndDeactivate = ({
           backgroundColor: 'transparent',
           color: '#615D5D',
           p: 0,
-          ml: "16px",
+          ml: "36px",
           "&:hover": {
             backgroundColor: 'transparent',
             color: '#EC8444',
@@ -46,7 +47,7 @@ export const MobileLogoutAndDeactivate = ({
           backgroundColor: 'transparent',
           color: '#615D5D',
           p: 0,
-          ml: "16px",
+          ml: "36px",
           "&:hover": {
             backgroundColor: 'transparent',
             color: '#EC8444',

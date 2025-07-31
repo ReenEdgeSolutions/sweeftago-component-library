@@ -25,6 +25,7 @@ export function SideLinks({ sideIcon, sideLink, link, isSideBarOpen }: SideLinks
           width: "100%",
           borderRadius: "12px",
           padding: "12px 10px",
+          flex: 1,
           background: isActive ? "#FDDDC1" : "transparent",
           "&:hover": {
             background: "#FDDDC1",
