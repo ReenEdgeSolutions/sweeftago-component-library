@@ -6,7 +6,7 @@ import route from "./ui/assets/icons/location.svg"
 import support from "./ui/assets/icons/help-center.png"
 import profileImg from "./ui/assets/icons/profile.png"
 import { Box,  useMediaQuery, useTheme } from "@mui/material";
-import { VendorDashboardInfo } from "../DeliveryTable";
+import { TableTestData } from "../TatbleTestData";
 
 const sidebarLinks = [
   {
@@ -106,8 +106,8 @@ export const DashboardLayout = () => {
           setIsPickUpDetailsCompleted={setIsPickUpDetailsCompleted}
         /> */}
 
-        <VendorDashboardInfo isProfileComplete={true}/>
-
+        {/* <VendorDashboardInfo isProfileComplete={true}/> */}
+          <TableTestData/>
         {/* <MobileLogisticsCard
           profile={{
             ProfilePhoto: profileImg.src,

@@ -29,12 +29,18 @@ export const AppTwinBtnSuccess = ({
     <Stack
       sx={{
         p: "32px",
-        width: "507px",
+        width: {xs: "90%", sm:"507px"},
+        maxWidth: "507px",
         alignItems: "center",
         justifyContent: "center",
       }}
     >
-      <Box sx={{width: "400px", height: "300px", mx: "auto", display: "block"}}>
+      <Box sx={{
+        width: {xs: "80%", sm:"400px"},
+        height: {xs:"auto", sm:"300px"},
+        mx: "auto",
+        display: "block"
+      }}>
         <StyledImage
           src={successIcon}
           alt="success"

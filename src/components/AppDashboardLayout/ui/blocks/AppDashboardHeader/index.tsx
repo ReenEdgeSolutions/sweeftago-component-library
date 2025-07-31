@@ -7,8 +7,8 @@ import whatsApp from '../../assets/icons/whatsapp.svg';
 import { StyledImage } from "../../../../StyledImage";
 import { pxToRem } from "../../../../../common";
 import { ReactNode } from "react";
-import { AppLogo } from "src/components/AppLogo";
-import { AppSearchField } from "src/components/TextField";
+import { AppLogo } from "../../../../AppLogo";
+import { AppSearchField } from "../../../../TextField";
 
 export type AppDashboardHeaderProps = {
   profileProps: ProfileProps;

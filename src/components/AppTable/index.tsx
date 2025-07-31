@@ -17,7 +17,6 @@ import { StatusRenderer, FilterHeaderDropdown, StatusType } from "./ui/component
 import { colorMap } from "../../common";
 
 export type GridRow = { id: string | number };
-
 export type GridColSpec<T extends GridRow> = Omit<
   GridColDef<T>,
   "field" | "headerName"
@@ -25,17 +24,14 @@ export type GridColSpec<T extends GridRow> = Omit<
   field: Extract<keyof T, string> | string;
   headerName: string;
 };
-
 export type GridSortSpec<T extends GridRow> = {
   field: Extract<keyof T, string> | string;
   sort: GridSortDirection;
 };
-
 export type GridDataFetchResult<T extends GridRow> = {
   rows: T[];
   totalRows: number;
 };
-
 export type GridDataFetcher<T extends GridRow> = (
   page: number,
   pageSize: number,
@@ -147,7 +143,6 @@ export const AppTable = <T extends GridRow>({
   const [rows, setRows] = useState<T[]>([]);
   const [rowCount, setRowCount] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
-
   const [internalPaginationModel, setInternalPaginationModel] =
     useState<GridPaginationModel>({
       pageSize: initialPageSize,
@@ -160,7 +155,6 @@ export const AppTable = <T extends GridRow>({
 
   // Selection state
   const [selectionModel, setSelectionModel] = useState<GridRowSelectionModel>([]);
-
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [sortModel, _setSortModel] = useState<GridSortSpec<T>[]>([]);
 
@@ -201,7 +195,8 @@ export const AppTable = <T extends GridRow>({
     <Stack spacing={"20px"} sx={{ width: '100%' }}>
       <Box sx={{
         border: "1px solid #D6D4D1",
-        borderRadius: "10px"
+        borderRadius: "10px",
+        overflow: 'hidden'
       }}>
         <MuiDataGrid<T>
           columns={columns}
@@ -277,17 +272,6 @@ export const AppTable = <T extends GridRow>({
                 color: "#F98D31",
               },
             },
-            // Hide any footer elements that might show row count
-            "& .MuiDataGrid-footerContainer": {
-              display: "none !important",
-            },
-            "& .MuiDataGrid-selectedRowCount": {
-              display: "none !important",
-            },
-            // Hide any overlay text/numbers that might appear
-            "& .MuiDataGrid-overlay": {
-              backgroundColor: "transparent",
-            },
             ...sx,
           }}
           {...moreGridProps}
@@ -295,14 +279,14 @@ export const AppTable = <T extends GridRow>({
       </Box>
 
       {/* Custom Pagination - Only show if props are provided */}
-      {showPagination && itemsPerPage && handleItemsPerPageChange && currentPage && handlePageChange && totalItems && totalPages && (
+      {showPagination && (itemsPerPage ?? 0) > 0 && handleItemsPerPageChange && (currentPage ?? 0) > 0 && handlePageChange && (totalItems ?? 0) > 0 && totalPages && (
         <Box sx={{ mb: 3 }}>
           <CustomPagination
-            itemsPerPage={itemsPerPage}
+            itemsPerPage={itemsPerPage ?? 0}
             handleItemsPerPageChange={handleItemsPerPageChange}
-            currentPage={currentPage}
+            currentPage={currentPage ?? 0}
             handlePageChange={handlePageChange}
-            totalItems={totalItems}
+            totalItems={totalItems ?? 0}
             totalPages={totalPages}
           />
         </Box>

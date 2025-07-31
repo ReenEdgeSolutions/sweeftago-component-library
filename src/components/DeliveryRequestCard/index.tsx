@@ -25,6 +25,7 @@ interface DeliveryRequestCardProps {
   startTime?: string
   onMoreOptionsClick?: (event: React.MouseEvent<HTMLButtonElement>, deliveryId?: string) => void
   showActionButton?: boolean
+  showViewDetails?: boolean
 }
 
 export const DeliveryRequestCard = ({
@@ -38,6 +39,7 @@ export const DeliveryRequestCard = ({
   timeAway,
   driver,
   driverIcon,
+  showViewDetails = true,
   status,
   color,
   bgColor,
@@ -59,8 +61,25 @@ export const DeliveryRequestCard = ({
         padding: {xs:"16px 12px", sm: "16px 24px"},
         border: "1px solid #D6D4D1",
         gap: {xs: "20px", sm: "24px"},
+        position: "relative", // Add relative positioning for absolute positioning of more icon
       }}
     >
+      {/* More options button positioned absolutely at top right */}
+      {isMobile && showActionButton && (
+        <IconButton
+          onClick={(event) => onMoreOptionsClick && onMoreOptionsClick(event, deliveryId)}
+          sx={{
+            position: "absolute",
+            top: "16px",
+            right: "12px",
+            p: 0,
+            zIndex: 1,
+          }}
+        >
+          <MoreHorizIcon />
+        </IconButton>
+      )}
+
       <Stack
         direction={{xs: "column", sm: "row"}}
         spacing={{xs:"12px", sm: "24px"}}
@@ -70,7 +89,7 @@ export const DeliveryRequestCard = ({
           alignItems: "center",
           gap: "10px",
           flexWrap: "wrap",
-          justifyContent: "space-between",
+          // Remove justifyContent: "space-between" since we don't need it anymore
         }}>
           <RowStack spacing="16px">
             <Box width="92px" display="flex" alignItems="center" justifyContent="center" >
@@ -103,22 +122,6 @@ export const DeliveryRequestCard = ({
               {deliveryId}
             </Typography>
           </RowStack>
-
-          {isMobile && showActionButton && (
-            <IconButton
-              onClick={(event) => onMoreOptionsClick && onMoreOptionsClick(event, deliveryId)}
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                alignItems: "flex-end",
-                alignSelf: "flex-start",
-                ml: "auto",
-                p: 0
-              }}
-            >
-              <MoreHorizIcon />
-            </IconButton>
-          )}
         </RowStack>
 
         <RowStack spacing="8px" alignItems={"center"}>
@@ -142,7 +145,6 @@ export const DeliveryRequestCard = ({
           />
         </RowStack>
       </Stack>
-
 
       <Stack
         direction={{xs: "column", sm: "row"}}
@@ -203,26 +205,28 @@ export const DeliveryRequestCard = ({
           </Typography>
         </Stack>
 
-        <Box alignSelf={{xs: "flex-end"}} ml="auto">
-          <AppButton
-            onClick={() => handleViewDetails(deliveryId)}
-            sx={{
-              backgroundColor: "transparent",
-              fontSize: {xs: pxToRem(14)},
-              fontWeight: 500,
-              lineHeight: "150%",
-              color: "#F98D31",
-              p: 0,
-              textAlign: "right",
-              "&:hover": {
+        {showViewDetails && (
+          <Box alignSelf={{xs: "flex-end"}} ml="auto">
+            <AppButton
+              onClick={() => handleViewDetails(deliveryId)}
+              sx={{
                 backgroundColor: "transparent",
-              },
-            }}
-            disableArrow
-          >
-            {'>>'}View Details
-          </AppButton>
-        </Box>
+                fontSize: {xs: pxToRem(14)},
+                fontWeight: 500,
+                lineHeight: "150%",
+                color: "#F98D31",
+                p: 0,
+                textAlign: "right",
+                "&:hover": {
+                  backgroundColor: "transparent",
+                },
+              }}
+              disableArrow
+            >
+              {'>>'}View Details
+            </AppButton>
+          </Box>
+        )}
       </Stack>
     </Stack>
   )

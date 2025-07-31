@@ -86,6 +86,7 @@ export function AppDashboardSidebar({
         borderRight: "1px solid #E1E1E1",
         background: "#F9F9F9",
         width: "100%",
+        mb: "20px",
         zIndex: theme.zIndex.appBar + 1,
         // Apply desktop transitions only when not mobile drawer
         ...(!isMobileDrawer && !isMobile && {
@@ -104,9 +105,7 @@ export function AppDashboardSidebar({
       <Box
         sx={{
           flexShrink: 0,
-          pt: isMobileDrawer ? "40px" : "20px",
-          paddingLeft: "24px",
-          paddingRight: "20px",
+          p: "20px 24px",
         }}
       >
         {/* Mobile Profile Header - only show in mobile drawer mode */}
@@ -122,7 +121,10 @@ export function AppDashboardSidebar({
         {(!isMobile) && (
           <StyledLink href={hrefLink || "#"}>
             <RowStack
-              sx={{ width: '100%'}}
+              sx={{
+                width: '100%',
+                mt: open ? "0px" : "15px",
+              }}
               justifyContent={(open) ? "flex-start" : "center"}
               mb={"20px"}
             >
@@ -164,7 +166,7 @@ export function AppDashboardSidebar({
       >
         {/* Navigation Links */}
         {showSideLinks && !showProfileRating && (
-          <Stack spacing={isMobileDrawer ? "20px" : "31px"} sx={{ mt: "10px" }}>
+          <Stack spacing={isMobileDrawer ? "20px" : "31px"} sx={{ mt: "10px", flex: 1 }}>
             {sidebarLinks.map((item, index) => (
               <SideLinks
                 sideIcon={item.sideIcon}
