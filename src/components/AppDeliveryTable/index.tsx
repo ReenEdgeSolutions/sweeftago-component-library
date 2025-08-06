@@ -12,6 +12,7 @@ interface BaseAppDeliveryTableProps {
   TabData: { label: string; count: number }[];
   currentTab: number;
   isProfileComplete?: boolean;
+  showTabCount?: boolean;
 }
 
 // Props when showAppDeliveryPanel is true (default)
@@ -42,7 +43,8 @@ export const AppDeliveryTable = (props: AppDeliveryTableProps) => {
     isProfileComplete,
     showAppDeliveryPanel = true,
     paginationProps,
-    emptyAddDeliveryStateProps
+    emptyAddDeliveryStateProps,
+    showTabCount = false
   } = props;
 
   const theme = useTheme();
@@ -65,6 +67,7 @@ export const AppDeliveryTable = (props: AppDeliveryTableProps) => {
           currentTab={currentTab}
           handleTabChange={handleTabChange}
           TabData={TabData}
+          showTabCount={showTabCount}
         />
       </Paper>
 
