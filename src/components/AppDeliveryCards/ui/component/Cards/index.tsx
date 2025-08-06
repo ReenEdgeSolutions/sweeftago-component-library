@@ -18,6 +18,8 @@ interface CardsProps {
   textIconColor?: string
   showRightItems?: boolean
   rightText?: string
+  isClickable?: boolean
+  handleCardClick?: () => void
 }
 
 export const Cards = ({
@@ -31,7 +33,9 @@ export const Cards = ({
   EnableTextIcon = false,
   textIconColor,
   showRightItems = true,
-  rightText
+  rightText,
+  isClickable = false,
+  handleCardClick
 }: CardsProps) => {
 
   return (
@@ -45,6 +49,7 @@ export const Cards = ({
             background: background,
             borderRadius: "10px",
             width: "100%",
+            cursor: isClickable ? "pointer" : "auto",
           }}
         >
           <Typography
@@ -90,7 +95,11 @@ export const Cards = ({
             background: background,
             borderRadius: "10px",
             width: "100%",
+            cursor: isClickable ? "pointer" : "auto",
+            border: "none",
           }}
+          component={"button"}
+          onClick={handleCardClick}
         >
           <RowStack justifyContent={"space-between"} alignItems={"center"}>
               <RowStack spacing={"4px"} flex={1} alignItems={"center"}>

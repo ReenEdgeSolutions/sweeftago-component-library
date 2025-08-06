@@ -8,15 +8,24 @@ interface AppDeliveryCardsProps {
     background: string
     cardLabel: string
     cardValue: string | number
-    enableAdminCard?: boolean
     labelIcon?: string | StaticImageData
+    rightIcon?: string | StaticImageData
+    EnableTextIcon?: boolean
+    textIconColor?: string
+    showRightItems?: boolean
+    rightText?: string
+    handleCardClick?: () => void
   }[]
   isProfileComplete?: boolean
+  enableAdminCard?: boolean
+  isClickable?: boolean
 }
 
 export const AppDeliveryCards = ({
   deliverydata,
-  isProfileComplete
+  isProfileComplete,
+  enableAdminCard = false,
+  isClickable = false
 }: AppDeliveryCardsProps) => {
   return(
     <Grid container
@@ -45,8 +54,15 @@ export const AppDeliveryCards = ({
             cardLabel={item.cardLabel}
             cardValue={item.cardValue}
             isProfileComplete = {isProfileComplete}
-            enableAdminCard={item.enableAdminCard}
+            enableAdminCard={enableAdminCard}
             labelIcon={item.labelIcon}
+            rightText={item.rightText}
+            rightIcon={item.rightIcon}
+            textIconColor={item.textIconColor}
+            EnableTextIcon={item.EnableTextIcon}
+            showRightItems={item.showRightItems}
+            isClickable={isClickable}
+            handleCardClick={item.handleCardClick}
           />
         </Grid>
       ))}

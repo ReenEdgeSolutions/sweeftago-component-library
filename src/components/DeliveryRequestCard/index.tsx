@@ -61,10 +61,10 @@ export const DeliveryRequestCard = ({
         padding: {xs:"16px 12px", sm: "16px 24px"},
         border: "1px solid #D6D4D1",
         gap: {xs: "20px", sm: "24px"},
-        position: "relative", // Add relative positioning for absolute positioning of more icon
+        position: "relative",
       }}
     >
-      {/* More options button positioned absolutely at top right */}
+
       {isMobile && showActionButton && (
         <IconButton
           onClick={(event) => onMoreOptionsClick && onMoreOptionsClick(event, deliveryId)}
@@ -89,7 +89,6 @@ export const DeliveryRequestCard = ({
           alignItems: "center",
           gap: "10px",
           flexWrap: "wrap",
-          // Remove justifyContent: "space-between" since we don't need it anymore
         }}>
           <RowStack spacing="16px">
             <Box width="92px" display="flex" alignItems="center" justifyContent="center" >
@@ -124,20 +123,22 @@ export const DeliveryRequestCard = ({
           </RowStack>
         </RowStack>
 
-        <RowStack spacing="8px" alignItems={"center"}>
+        <RowStack spacing={{xs:"8px", lg: "50px"}} alignItems={"center"} ml={{xs: 0, lg: "50px"}}>
           <LabelAndImg
             icon={amountIcon}
             label={`#${amount}`}
           />
 
-          {!isMobile && (
+          {/* {!isMobile && (
             <Box mx="30px"></Box>
-          )}
+          )} */}
 
-          <LabelAndImg
-            icon={distanceIcon}
-            label={timeAway}
-          />
+          <Box ml={{xs: 0, lg: "-50px"}} display="flex" alignItems="center">
+            <LabelAndImg
+              icon={distanceIcon}
+              label={timeAway}
+            />
+          </Box>
 
           <LabelAndImg
             icon={driverIcon}
@@ -168,8 +169,11 @@ export const DeliveryRequestCard = ({
 
         <Stack
           direction={{xs: "column", sm: "row"}}
-          spacing={{xs:"10px", sm: "24px"}}
+          spacing={{xs:"10px", sm: "24px", lg: "50px"}}
           alignItems={{xs: "flex-start", sm: "center"}}
+          sx={{
+            pl: {xs: 0, lg: "108px"}
+          }}
         >
           <Typography
             sx={{
