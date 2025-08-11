@@ -126,7 +126,7 @@ export const DeliveryRequestCard = ({
         <RowStack spacing={{xs:"8px", lg: "50px"}} alignItems={"center"} ml={{xs: 0, lg: "50px"}}>
           <LabelAndImg
             icon={amountIcon}
-            label={`#${amount}`}
+            label={`₦${amount}`}
           />
 
           {/* {!isMobile && (
