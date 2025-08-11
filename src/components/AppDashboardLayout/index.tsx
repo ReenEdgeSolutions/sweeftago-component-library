@@ -1,5 +1,5 @@
 "use client";
-import { Box, Stack, useTheme, useMediaQuery, Drawer } from "@mui/material";
+import { Box, Stack, Drawer } from "@mui/material";
 import {
   AppDashboardHeader,
   AppDashboardHeaderProps,
@@ -10,6 +10,7 @@ import {
 } from "./ui/blocks";
 import { PropsWithChildren, useState, useEffect } from "react";
 import { MenuButton } from "./ui/blocks/AppDashboardSidebar/ui/components";
+import { useResponsive } from "../../common";
 
 export type AppDashboardLayoutProps = PropsWithChildren & {
   headerProps: AppDashboardHeaderProps;
@@ -23,17 +24,17 @@ export function AppDashboardLayout({
   sidebarProps,
   showSideBar = true,
 }: AppDashboardLayoutProps) {
-  const theme = useTheme();
-  const isBelowLg = useMediaQuery(theme.breakpoints.down("lg"));
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const { isMobile, isBelowLg, hasMounted } = useResponsive();
 
-  const [sidebarOpen, setSidebarOpen] = useState(!isBelowLg);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
   useEffect(() => {
-    setSidebarOpen(!isBelowLg);
-    setMobileDrawerOpen(false);
-  }, [isBelowLg]);
+    if (hasMounted) {
+      setSidebarOpen(!isBelowLg);
+      setMobileDrawerOpen(false);
+    }
+  }, [isBelowLg, hasMounted]);
 
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
@@ -44,11 +45,42 @@ export function AppDashboardLayout({
   };
 
   const getMainContentWidth = () => {
-    if (isMobile) return "100%";
+    if (!hasMounted || isMobile) return "100%";
     return sidebarOpen
       ? `calc(100% - ${SIDEBAR_WIDTH}px)`
       : `calc(100% - ${COLLAPSED_WIDTH}px)`;
   };
+
+  // Show loading state or mobile-first layout during hydration
+  if (!hasMounted) {
+    return (
+      <Stack
+        sx={{
+          width: "100%",
+          height: "100vh",
+          flexDirection: "row",
+        }}
+      >
+        <Stack sx={{ flexGrow: 1, width: "100%" }}>
+          <AppDashboardHeader
+            {...headerProps}
+            onMobileMenuToggle={handleMobileDrawerToggle}
+          />
+          <Box
+            sx={{
+              paddingX: { xs: "16px", sm: "20px", md: "35px" },
+              overflowY: "auto",
+              paddingTop: "30px",
+              paddingBottom: "70px",
+              height: "100%",
+            }}
+          >
+            {children}
+          </Box>
+        </Stack>
+      </Stack>
+    );
+  }
 
   return (
     <Stack
@@ -85,6 +117,7 @@ export function AppDashboardLayout({
           {...sidebarProps}
           open={sidebarOpen}
           isMobileDrawer={true}
+          onMobileClose={handleMobileDrawerToggle}
           mobileProfileProps={
             headerProps.profileProps
               ? {

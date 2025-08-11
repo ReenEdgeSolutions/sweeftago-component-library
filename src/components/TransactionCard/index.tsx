@@ -102,7 +102,7 @@ export const TransactionCard = ({ transaction, handleCardClick }: TransactionCar
 
         <LabelAndImg
           icon={amountIcon}
-          label={formatAmount(transaction.amount)}
+          label={`₦${formatAmount(transaction.amount)}`}
         />
       </RowStack>
     </Box>

@@ -19,7 +19,9 @@ import { colorMap, pxToRem } from "../../../../../common";
   | 'Dispute'
   | 'Accepted'
   | 'Deactivated'
-  | 'All';
+  | 'All'
+  | 'Under Review'
+  | 'Resolved'
 
 
   interface StatusTextProps {
