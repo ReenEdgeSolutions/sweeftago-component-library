@@ -22,6 +22,10 @@ import { colorMap, pxToRem } from "../../../../../common";
   | 'All'
   | 'Under Review'
   | 'Resolved'
+  | "Opened"
+  | "Closed"
+  | "In Progress"
+  | "In Transit";
 
 
   interface StatusTextProps {

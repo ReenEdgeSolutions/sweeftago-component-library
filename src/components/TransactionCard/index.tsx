@@ -53,23 +53,42 @@ export const TransactionCard = ({ transaction, handleCardClick }: TransactionCar
         borderRadius: '10px',
         boxShadow: 'none',
         padding: {xs:'16px', sm: '16px 24px'},
-        '&:hover': {
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-          borderColor: '#D1D5DB',
-        },
         width: "100%",
         height: "100%",
-        cursor: "pointer"
+        cursor: "pointer",
+        backgroundColor: '#f9f9f9',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        '&:hover': {
+          transform: 'translateY(-3px) scale(1.02)',
+          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.12)',
+          borderColor: '#B0B0B0',
+          backgroundColor: '#fafafa',
+          '& .transaction-title': {
+            color: '#000000',
+          },
+          '& .transaction-chip': {
+            transform: 'scale(1.05)',
+          },
+          '& .transaction-label': {
+            color: '#1a1a1a',
+          }
+        },
+        '&:active': {
+          transform: 'translateY(-1px) scale(1.01)',
+          transition: 'all 0.15s ease-in-out',
+        }
       }}
       onClick={handleCardClick}
     >
       <RowStack sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
         <Typography
+          className="transaction-title"
           sx={{
             fontSize: pxToRem(16),
             fontWeight: 600,
             color: '#111827',
             mb: 1,
+            transition: 'color 0.2s ease-in-out',
           }}
         >
           {ShortenedText({
@@ -80,12 +99,14 @@ export const TransactionCard = ({ transaction, handleCardClick }: TransactionCar
 
 
         <Chip
+          className="transaction-chip"
           label={transaction.status.charAt(0).toUpperCase() + transaction.status.slice(1)}
           sx={{
             ...statusColors,
             fontWeight: {xs:400,sm:500},
             fontSize: {xs:pxToRem(10),sm:pxToRem(12)},
             height: 'auto',
+            transition: 'transform 0.2s ease-in-out',
             '& .MuiChip-label': {
               px: 2,
               py: 0.5,
@@ -95,15 +116,19 @@ export const TransactionCard = ({ transaction, handleCardClick }: TransactionCar
       </RowStack>
 
       <RowStack justifyContent="space-between" alignItems="center">
-        <LabelAndImg
-          icon={dateIcon}
-          label={formatIsoToDateTime(transaction.transactionDate)}
-        />
+        <Box className="transaction-label" sx={{ transition: 'all 0.2s ease-in-out' }}>
+          <LabelAndImg
+            icon={dateIcon}
+            label={formatIsoToDateTime(transaction.transactionDate)}
+          />
+        </Box>
 
-        <LabelAndImg
-          icon={amountIcon}
-          label={`₦${formatAmount(transaction.amount)}`}
-        />
+        <Box className="transaction-label" sx={{ transition: 'all 0.2s ease-in-out' }}>
+          <LabelAndImg
+            icon={amountIcon}
+            label={`₦${formatAmount(transaction.amount)}`}
+          />
+        </Box>
       </RowStack>
     </Box>
   );

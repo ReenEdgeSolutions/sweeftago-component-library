@@ -20,4 +20,8 @@ export const colorMap: Record<StatusType, string> = {
   Deactivated: '#F93232',
   'Under Review': '#877615',
   Resolved: '#37BD57',
+  Opened: '#A3A30E',
+  Closed: '#37BD57',
+  'In Progress': '#11B0FF',
+  'In Transit': '#11B0FF',
 };
