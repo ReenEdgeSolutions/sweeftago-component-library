@@ -38,6 +38,13 @@ export const Cards = ({
   handleCardClick
 }: CardsProps) => {
 
+  // Common hover styles
+  const hoverStyles = {
+    transform: "translateY(-4px) scale(1.02)",
+    boxShadow: "0 8px 25px rgba(0, 0, 0, 0.15)",
+    border: "1px solid rgba(255, 255, 255, 0.8)",
+  }
+
   return (
     <>
       {!enableAdminCard ? (
@@ -50,7 +57,11 @@ export const Cards = ({
             borderRadius: "10px",
             width: "100%",
             cursor: isClickable ? "pointer" : "auto",
+            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+            border: "1px solid transparent",
+            "&:hover": hoverStyles,
           }}
+          onClick={isClickable ? handleCardClick : undefined}
         >
           <Typography
             sx={{
@@ -96,7 +107,13 @@ export const Cards = ({
             borderRadius: "10px",
             width: "100%",
             cursor: isClickable ? "pointer" : "auto",
-            border: "none",
+            border: "1px solid transparent",
+            transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+            "&:hover": hoverStyles,
+            "&:active": {
+              transform: "translateY(-2px) scale(1.01)",
+              transition: "all 0.1s ease-in-out",
+            }
           }}
           component={"button"}
           onClick={handleCardClick}
