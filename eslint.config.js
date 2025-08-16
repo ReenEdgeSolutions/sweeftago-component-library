@@ -3,13 +3,12 @@ import pluginJs from "@eslint/js";
 import tseslint from "typescript-eslint";
 import prettierPlugin from "eslint-plugin-prettier";
 
-/** @type {import('eslint').Linter.Config[]} */
 export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   {
     // Base config for all files
-    files: ["**/*.{js,mjs,cjs}"],
+    files: ["/.{js,mjs,cjs}"],
     ignores: ["dist", "node_modules"],
     languageOptions: {
       globals: {
@@ -27,9 +26,8 @@ export default [
     },
   },
   {
-    // TypeScript-specific config only for src files
-    files: ["src/**/*.ts"], // Changed from ["**/*.ts"] to ["src/**/*.ts"]
-    ignores: ["dist/*"],
+    files: ["src/**/.ts"],
+    ignores: ["dist/"],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {

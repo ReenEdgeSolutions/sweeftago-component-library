@@ -350,8 +350,7 @@ export interface ExtendedDelivery {
   paymentStatus?: string;
 }
 
-// Function to enhance delivery data with additional fields
-export const enhanceDeliveryData = (delivery: any): ExtendedDelivery => {
+export const enhanceDeliveryData = (delivery: Delivery): ExtendedDelivery => {
   return {
     ...delivery,
     itemType: "Bag", // Default value, you can customize this

@@ -15,14 +15,14 @@ export const pxToRem = (px: number): string => {
 /**
  * Checks if a value is an object
  */
-export const isObject = (item: any): boolean => {
-  return item && typeof item === "object" && !Array.isArray(item);
+export const isObject = (item: unknown): boolean => {
+  return typeof item === "object" && item !== null && !Array.isArray(item);
 };
 
 /**
  * Deep merges two objects
  */
-export const mergeDeep = (target: any, source: any): any => {
+export const mergeDeep = (target: Record<string, unknown>, source: Record<string, unknown>): Record<string, unknown> => {
   const output = { ...target };
   if (isObject(target) && isObject(source)) {
     Object.keys(source).forEach((key) => {
@@ -30,7 +30,7 @@ export const mergeDeep = (target: any, source: any): any => {
         if (!(key in target)) {
           Object.assign(output, { [key]: source[key] });
         } else {
-          output[key] = mergeDeep(target[key], source[key]);
+          output[key] = mergeDeep(target[key] as Record<string, unknown>, source[key] as Record<string, unknown>);
         }
       } else {
         Object.assign(output, { [key]: source[key] });
