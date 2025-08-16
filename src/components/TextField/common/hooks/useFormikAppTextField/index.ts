@@ -3,7 +3,7 @@ import { FieldInputProps, useField } from "formik";
 import { ChangeEvent } from "react";
 
 export interface useFormikAppTextFieldReturnType {
-  field: FieldInputProps<any>;
+  field: FieldInputProps<string | number | boolean | null | undefined>;
   handleChange: (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   hasError: boolean;
   errorMessage: string | undefined;

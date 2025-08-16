@@ -181,6 +181,6 @@ export const baseLightTheme = createTheme({
 });
 
 export const createAppTheme = (overrides: ThemeOptions): Theme => {
-  const mergedTheme = mergeDeep(baseLightTheme, overrides);
+  const mergedTheme = mergeDeep(baseLightTheme as unknown as Record<string, unknown>, overrides as Record<string, unknown>);
   return createTheme(mergedTheme);
 };
