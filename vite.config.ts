@@ -32,11 +32,14 @@ export default defineConfig(() => ({
     tsConfigPaths(),
     dts({
       include: ["src/**/*.{ts,tsx}"],
+      rollupTypes: true,
     }),
   ],
   build: {
-    sourcemap: true,
+    sourcemap: false,
     cssCodeSplit: false,
+    target: 'es2020',
+    reportCompressedSize: false,
     lib: {
       entry: resolve("src", "index.ts"),
       name: "component-library",
@@ -47,13 +50,16 @@ export default defineConfig(() => ({
       external: externals,
       plugins: [preserveDirectives()],
       output: {
-        // Rename the CSS asset to "style.css"
         assetFileNames: (assetInfo) => {
           if (assetInfo.name && assetInfo.name.endsWith('.css')) {
             return 'style.css';
           }
           return assetInfo.name ? assetInfo.name : '[name]-[hash][extname]';
         },
+        compact: true,
+      },
+      treeshake: { 
+        moduleSideEffects: false,
       },
     },
   },

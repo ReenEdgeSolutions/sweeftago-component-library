@@ -2,7 +2,7 @@
 
 import { createTheme, ThemeOptions } from "@mui/material/styles";
 import { Theme } from "@mui/material";
-import { mergeDeep } from "../../../common";
+// import { mergeDeep } from "../../../common";
 
 // Import the theme declarations from above or include them here
 
@@ -181,6 +181,5 @@ export const baseLightTheme = createTheme({
 });
 
 export const createAppTheme = (overrides: ThemeOptions): Theme => {
-  const mergedTheme = mergeDeep(baseLightTheme as unknown as Record<string, unknown>, overrides as Record<string, unknown>);
-  return createTheme(mergedTheme);
+  return createTheme(baseLightTheme, overrides);
 };

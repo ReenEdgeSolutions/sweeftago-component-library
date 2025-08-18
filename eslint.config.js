@@ -5,10 +5,11 @@ import prettierPlugin from "eslint-plugin-prettier";
 
 export default [
   pluginJs.configs.recommended,
+
   ...tseslint.configs.recommended,
+
   {
-    // Base config for all files
-    files: ["/.{js,mjs,cjs}"],
+    files: ["**/*.{js,mjs,cjs}"], 
     ignores: ["dist", "node_modules"],
     languageOptions: {
       globals: {
@@ -25,8 +26,9 @@ export default [
       prettier: prettierPlugin,
     },
   },
+
   {
-    files: ["src/**/.ts"],
+    files: ["src/**/*.ts", "src/**/*.tsx"],
     ignores: ["dist/"],
     languageOptions: {
       parser: tseslint.parser,
@@ -44,17 +46,20 @@ export default [
       "@typescript-eslint": tseslint.plugin,
       prettier: prettierPlugin,
     },
+  },
+
+  {
+    files: ["src/**/*.ts", "src/**/*.tsx"],
     rules: {
-      camelcase: "error",
+      "camelcase": "error",
       "no-duplicate-imports": "error",
-      "@typescript-eslint/ban-ts-comment": "off",
-      "@typescript-eslint/no-explicit-any": "off",
       "no-console": "error",
       "no-alert": "error",
-      "@typescript-eslint/no-empty-function": "error",
-      "react/no-unknown-property": "off",
-      "react/no-unescaped-entities": "off",
       "padding-line-between-statements": "off",
+
+      "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-empty-function": "error",
       "@typescript-eslint/explicit-function-return-type": "error",
       "@typescript-eslint/explicit-member-accessibility": ["error", { accessibility: "explicit" }],
       "@typescript-eslint/no-non-null-assertion": "error",
@@ -66,6 +71,9 @@ export default [
           allowTernary: true,
         },
       ],
+
+      "react/no-unknown-property": "off",
+      "react/no-unescaped-entities": "off",
     },
     settings: {
       "import/resolver": {
