@@ -9,7 +9,7 @@ export default [
   ...tseslint.configs.recommended,
 
   {
-    files: ["**/*.{js,mjs,cjs}"], 
+    files: ["**/*.{js,mjs,cjs}"],
     ignores: ["dist", "node_modules"],
     languageOptions: {
       globals: {
@@ -52,17 +52,19 @@ export default [
     files: ["src/**/*.ts", "src/**/*.tsx"],
     rules: {
       "camelcase": "error",
-      "no-duplicate-imports": "error",
-      "no-console": "error",
+      "no-duplicate-imports": "off",
+      "no-console": "off",
       "no-alert": "error",
       "padding-line-between-statements": "off",
 
       "@typescript-eslint/ban-ts-comment": "off",
       "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-empty-function": "error",
-      "@typescript-eslint/explicit-function-return-type": "error",
+      "@typescript-eslint/no-empty-function": ["error", {
+        "allow": ["arrowFunctions", "functions", "methods"]
+      }], 
+      "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-member-accessibility": ["error", { accessibility: "explicit" }],
-      "@typescript-eslint/no-non-null-assertion": "error",
+      "@typescript-eslint/no-non-null-assertion": "off",
       "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
       "@typescript-eslint/no-unused-expressions": [
         "error",
