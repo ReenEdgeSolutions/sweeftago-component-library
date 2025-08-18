@@ -34,7 +34,6 @@ export const AppFullPageModal = ({
     onClose();
   };
 
-  // When offSetZIndex is true, use the dominant modal configuration
   if (offSetZIndex) {
     return (
       <Dialog
