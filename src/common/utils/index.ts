@@ -22,7 +22,7 @@ export const isObject = (item: unknown): boolean => {
 /**
  * Deep merges two objects
  */
-export const mergeDeep = (target: Record<string, unknown>, source: Record<string, unknown>): Record<string, unknown> => {
+export const mergeDeep = (target: any, source: any): any => {
   const output = { ...target };
   if (isObject(target) && isObject(source)) {
     Object.keys(source).forEach((key) => {
@@ -30,7 +30,7 @@ export const mergeDeep = (target: Record<string, unknown>, source: Record<string
         if (!(key in target)) {
           Object.assign(output, { [key]: source[key] });
         } else {
-          output[key] = mergeDeep(target[key] as Record<string, unknown>, source[key] as Record<string, unknown>);
+          output[key] = mergeDeep(target[key], source[key]);
         }
       } else {
         Object.assign(output, { [key]: source[key] });

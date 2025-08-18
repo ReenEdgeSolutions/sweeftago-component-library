@@ -1,7 +1,7 @@
 {
   "name": "@reenedgesolutions/component-library",
   "private": false,
-  "version": "1.14.5",
+  "version": "1.14.6",
   "type": "module",
   "scripts": {
     "build": "tsc && vite build && yalc push",
@@ -48,7 +48,7 @@
     "@mui/material-nextjs": "^7.0.0",
     "@mui/x-data-grid": "^7.27.0",
     "formik": "^2.4.6",
-    "next": "15.4.6",
+    "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-toastify": "^11.0.3",

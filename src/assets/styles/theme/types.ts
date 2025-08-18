@@ -8,9 +8,6 @@ type ColorType = {
   error: string;
 };
 
-
-// Add these declarations to your theme file
-
 // Define the types for button styles
 interface ButtonStyle {
   background: string;
@@ -44,80 +41,29 @@ interface TextFieldStyleVariant {
   focused: TextFieldStyleState;
 }
 
-// Add these to extend the Material UI Theme
-declare module '@mui/material/styles' {
-  interface Theme {
-    font: {
-      default: string;
-      title: string;
-      body: string;
-    };
-    color: {
-      blue: string;
-      green: string;
-      yellow: string;
-      pink: string;
-      error: string;
-    };
-    button: {
-      contained: {
-        primary: ButtonStyle;
-        secondary: ButtonStyle;
-        inherit: ButtonStyle;
-      };
-      outlined: {
-        primary: ButtonStyle;
-        secondary: ButtonStyle;
-        inherit: ButtonStyle;
-      };
-      text: {
-        primary: ButtonStyle;
-        secondary: ButtonStyle;
-        inherit: ButtonStyle;
-      };
-    };
-    textField: {
-      outlined: TextFieldStyleVariant;
-      filled: TextFieldStyleVariant;
-    };
-  }
+// Button collection interface
+interface ButtonCollection {
+  contained: {
+    primary: ButtonStyle;
+    secondary: ButtonStyle;
+    inherit: ButtonStyle;
+  };
+  outlined: {
+    primary: ButtonStyle;
+    secondary: ButtonStyle;
+    inherit: ButtonStyle;
+  };
+  text: {
+    primary: ButtonStyle;
+    secondary: ButtonStyle;
+    inherit: ButtonStyle;
+  };
+}
 
-  // Add it to ThemeOptions as well
-  interface ThemeOptions {
-    font?: {
-      default?: string;
-      title?: string;
-      body?: string;
-    };
-    color?: {
-      blue?: string;
-      green?: string;
-      yellow?: string;
-      pink?: string;
-      error?: string;
-    };
-    button?: {
-      contained?: {
-        primary?: Partial<ButtonStyle>;
-        secondary?: Partial<ButtonStyle>;
-        inherit?: Partial<ButtonStyle>;
-      };
-      outlined?: {
-        primary?: Partial<ButtonStyle>;
-        secondary?: Partial<ButtonStyle>;
-        inherit?: Partial<ButtonStyle>;
-      };
-      text?: {
-        primary?: Partial<ButtonStyle>;
-        secondary?: Partial<ButtonStyle>;
-        inherit?: Partial<ButtonStyle>;
-      };
-    };
-    textField?: {
-      outlined?: Partial<TextFieldStyleVariant>;
-      filled?: Partial<TextFieldStyleVariant>;
-    };
-  }
+// TextField collection interface
+interface TextFieldCollection {
+  outlined: TextFieldStyleVariant;
+  filled: TextFieldStyleVariant;
 }
 
 export interface BaseThemeExtension {
@@ -127,21 +73,11 @@ export interface BaseThemeExtension {
     body: string;
   };
   color: ColorType;
-  button: ButtonStyle;
-  textField: {
-    colors: {
-      background: string;
-      placeholder: string;
-      text: string;
-      label: string;
-      border: string;
-      errorBg?: string;
-      errorBorder?: string;
-      error: string;
-    };
-  };
+  button: ButtonCollection;  // Fixed: was ButtonStyle, should be ButtonCollection
+  textField: TextFieldCollection;  
 }
 
+// Single module declaration - no duplicates
 declare module "@mui/material/styles" {
   interface Theme extends BaseThemeExtension {
     /**
