@@ -28,9 +28,7 @@ export const AppFullPageModal = ({
   ...rest
 }: AppFullPageModalProps) => {
   const handleDialogClose = (
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _event: React.SyntheticEvent,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _reason: "backdropClick" | "escapeKeyDown",
   ) => {
     onClose();
