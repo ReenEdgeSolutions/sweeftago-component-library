@@ -2,7 +2,7 @@
 
 import { createTheme, ThemeOptions } from "@mui/material/styles";
 import { Theme } from "@mui/material";
-// import { mergeDeep } from "../../../common";
+import { mergeDeep } from "../../../common";
 
 // Import the theme declarations from above or include them here
 
@@ -24,12 +24,12 @@ export const baseLightTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Inter, Nunito-Sans, Arial, sans-serif",
+    fontFamily: "Inter, Nunito-Sans, sans-serif",
   },
   font: {
-    default: "Inter, Nunito-Sans, Arial, sans-serif",
-    title: "Nunito-Sans, Inter, Arial, sans-serif",
-    body: "Inter, Manrope, Arial, sans-serif",
+    default: "Inter, Nunito-Sans, sans-serif",
+    title: "Nunito-Sans, Inter, sans-serif",
+    body: "Inter, Nunito-Sans, sans-serif",
   },
   color: {
     blue: '#37ACFA',
@@ -181,5 +181,6 @@ export const baseLightTheme = createTheme({
 });
 
 export const createAppTheme = (overrides: ThemeOptions): Theme => {
-  return createTheme(baseLightTheme, overrides);
+  const mergedTheme = mergeDeep(baseLightTheme, overrides);
+  return createTheme(mergedTheme);
 };
