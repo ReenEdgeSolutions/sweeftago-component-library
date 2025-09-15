@@ -1,4 +1,4 @@
-import { alpha, AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
+import { alpha, AppBar, Badge, Box, IconButton, Toolbar, Typography } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import { RowStack } from "../../../../RowStack";
 import { Profile, ProfileProps } from "./ui/components";
@@ -9,6 +9,8 @@ import { pxToRem, useResponsive } from "../../../../../common";
 import { ReactNode } from "react";
 import { AppLogo } from "../../../../AppLogo";
 import { AppSearchField } from "../../../../TextField";
+import { Centered } from "../../../../Centered";
+import { NotificationsNone } from "@mui/icons-material";
 
 export type AppDashboardHeaderProps = {
   profileProps: ProfileProps;
@@ -22,6 +24,9 @@ export type AppDashboardHeaderProps = {
   handleSearchClick?: () => void;
   handleSearchChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   showWhatsappChat?: boolean;
+  ShowNotification?: boolean;
+  notificationsCount?: number;
+  notificationClick?: () => void;
 };
 
 export function AppDashboardHeader({
@@ -36,147 +41,144 @@ export function AppDashboardHeader({
   handleSearchClick,
   handleSearchChange,
   showWhatsappChat = true,
+  ShowNotification = false,
+  notificationsCount,
+  notificationClick,
 }: AppDashboardHeaderProps) {
-  const { isMobile, hasMounted } = useResponsive();
+  const { isMobile, isHydrating } = useResponsive();
 
-  // During SSR, render a neutral layout that works for both mobile and desktop
-  if (!hasMounted) {
-    return (
-      <AppBar
-        elevation={0}
-        position={"relative"}
-        sx={{
-          background: "#F9F9F9",
-          borderBottom: "1px solid #E1E1E1",
-          p: 0
-        }}
-      >
-        {/* Use CSS media queries to show appropriate layout during SSR */}
-        <Toolbar
-          disableGutters
-          sx={{
-            padding: 0,
-            width: "100%",
-            background: "#F9F9F9",
-            // Mobile styles
-            height: { xs: "56px", md: "101px" },
-            minHeight: { xs: "56px !important", md: "101px !important" },
-          }}
-        >
-          <RowStack
-            justifyContent={"space-between"}
+  // Common toolbar content to avoid duplication
+  const renderToolbarContent = (isMobileLayout: boolean) => (
+    <RowStack
+      justifyContent={"space-between"}
+      sx={{
+        width: "100%",
+        padding: isMobileLayout ? "12px 16px" : "0",
+        paddingX: isMobileLayout ? "12px 16px" : "35px",
+      }}
+    >
+      <RowStack spacing={isMobileLayout ? "20px" : 0} flex={isMobileLayout ? 1 : "unset"}>
+        {/* Mobile menu button */}
+        {isMobileLayout && (
+          <IconButton
+            onClick={onMobileMenuToggle}
             sx={{
-              width: "100%",
-              padding: { xs: "12px 16px", md: "0" },
-              paddingX: { xs: "12px 16px", md: "35px" },
+              padding: '8px',
+              color: '#615D5D',
             }}
           >
-            <RowStack spacing={{ xs: "20px", md: 0 }} flex={{ xs: 1, md: "unset" }}>
-              {/* Mobile menu button - only show on mobile */}
+            <MenuIcon />
+          </IconButton>
+        )}
+
+        {/* Desktop logo */}
+        {!isMobileLayout && showHeaderLogo && (
+          <Box mr="30px" borderRight="1px solid #D6D4D1">
+            <AppLogo sx={{width: "148px", height: "49.33px"}}/>
+          </Box>
+        )}
+
+        {showHome && (
+          <Typography
+            sx={{
+              fontWeight: 400,
+              fontSize: isMobileLayout ? pxToRem(16) : "16px",
+              lineHeight: '24px',
+              color: "#615D5D",
+              variant: isMobileLayout ? undefined : "h6",
+              display: isMobileLayout ? { xs: "block", sm: "none" } : { xs: "none", sm: "block" },
+            }}
+          >
+            Home
+          </Typography>
+        )}
+        {!showHome && children}
+      </RowStack>
+
+      <RowStack spacing={isMobileLayout ? 0 : "19px"} alignItems="center">
+        {/* Search - Desktop only */}
+        {!isMobileLayout && showSearch && (
+          <Box maxWidth={"466px"} width="100%">
+            <AppSearchField
+              iconPosition="start"
+              placeholder="Search"
+              onClick={handleSearchClick}
+              onChange={handleSearchChange}
+              fullWidth
+            />
+          </Box>
+        )}
+
+        {/* WhatsApp Chat */}
+        {showWhatsappChat && (
+          <>
+            {isMobileLayout ? (
+              <IconButton onClick={onChatToggle}>
+                <StyledImage
+                  src={whatsApp}
+                  alt="whatsapp icon"
+                  sx={{
+                    width: "24px",
+                    height: "24px",
+                  }}
+                />
+              </IconButton>
+            ) : (
               <IconButton
-                onClick={onMobileMenuToggle}
+                onClick={onChatToggle}
                 sx={{
-                  padding: '8px',
-                  color: '#615D5D',
-                  display: { xs: "block", md: "none" }
+                  backgroundColor: "#CFFFD2",
+                  borderRadius: "10px",
+                  padding: "14px 16px",
+                  "&:hover": {
+                    backgroundColor: alpha("#CFFFD2", .8),
+                  },
                 }}
               >
-                <MenuIcon />
-              </IconButton>
-
-              {showHeaderLogo && (
-                <Box mr="30px" borderRight="1px solid #D6D4D1" sx={{ display: { xs: "none", md: "block" } }}>
-                  <AppLogo sx={{width: "148px", height: "49.33px"}}/>
-                </Box>
-              )}
-
-              {showHome && (
-                <Typography
-                  sx={{
-                    fontWeight: 400,
-                    fontSize: { xs: pxToRem(16), md: "16px" },
-                    lineHeight: '24px',
-                    color: "#615D5D",
-                    variant: { md: "h6" }
-                  }}
-                >
-                  Home
-                </Typography>
-              )}
-              {!showHome && children}
-            </RowStack>
-
-            <RowStack spacing={{ xs: 0, md: "19px" }} alignItems="center">
-              {showSearch && (
-                <Box maxWidth={"466px"} width="100%" sx={{ display: { xs: "none", md: "block" } }}>
-                  <AppSearchField
-                    iconPosition="start"
-                    placeholder="Search"
-                    onClick={handleSearchClick}
-                    onChange={handleSearchChange}
-                    fullWidth
-                  />
-                </Box>
-              )}
-
-              {showWhatsappChat && (
-                <>
-                  {/* Mobile WhatsApp button */}
-                  <IconButton
-                    onClick={onChatToggle}
-                    sx={{ display: { xs: "block", md: "none" } }}
-                  >
-                    <StyledImage
-                      src={whatsApp}
-                      alt="whatsapp icon"
-                      sx={{
-                        width: "24px",
-                        height: "24px",
-                      }}
-                    />
-                  </IconButton>
-
-                  {/* Desktop WhatsApp button */}
-                  <IconButton
-                    onClick={onChatToggle}
+                <RowStack spacing={1} alignItems="center">
+                  <WhatsAppIcon />
+                  <Typography
                     sx={{
-                      backgroundColor: "#CFFFD2",
-                      borderRadius: "10px",
-                      padding: "14px 16px",
-                      display: { xs: "none", md: "block" },
-                      "&:hover": {
-                        backgroundColor: alpha("#CFFFD2", .8),
-                      },
+                      color: "#252423",
+                      fontSize: "16px",
+                      fontWeight: 500,
+                      display: { xs: "none", sm: "block" },
                     }}
                   >
-                    <RowStack spacing={1} alignItems="center">
-                      <WhatsAppIcon />
-                      <Typography
-                        sx={{
-                          color: "#252423",
-                          fontSize: "16px",
-                          fontWeight: 500,
-                        }}
-                      >
-                        Switch to chat
-                      </Typography>
-                    </RowStack>
-                  </IconButton>
-                </>
-              )}
+                    Switch to chat
+                  </Typography>
+                </RowStack>
+              </IconButton>
+            )}
+          </>
+        )}
 
-              {/* Profile - only show on desktop */}
-              {showProfile && (
-                <Box sx={{ display: { xs: "none", md: "block" } }}>
-                  <Profile {...profileProps} />
-                </Box>
-              )}
-            </RowStack>
+        {/* Notifications and Profile - Desktop only */}
+        {!isMobileLayout && (
+          <RowStack spacing={"15px"} alignItems={"center"}>
+            {ShowNotification && (
+              <Centered
+                sx={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "100%",
+                  background: "#E8E8E8",
+                }}
+              >
+                <Badge badgeContent={notificationsCount || 0} color="error">
+                  <IconButton onClick={notificationClick}>
+                    <NotificationsNone />
+                  </IconButton>
+                </Badge>
+              </Centered>
+            )}
+
+            {showProfile && <Profile {...profileProps} />}
           </RowStack>
-        </Toolbar>
-      </AppBar>
-    );
-  }
+        )}
+      </RowStack>
+    </RowStack>
+  );
 
   return (
     <AppBar
@@ -188,152 +190,19 @@ export function AppDashboardHeader({
         p: 0
       }}
     >
-      {isMobile ? (
-        <Toolbar
-          disableGutters
-          sx={{
-            padding: 0,
-            width: "100%",
-            height: "56px",
-            background: "#F9F9F9",
-            minHeight: "56px !important",
-          }}
-        >
-          <RowStack
-            justifyContent={"space-between"}
-            sx={{
-              width: "100%",
-              padding: "12px 16px",
-            }}
-          >
-            <RowStack spacing="20px" flex={1}>
-              <IconButton
-                onClick={onMobileMenuToggle}
-                sx={{
-                  padding: '8px',
-                  color: '#615D5D',
-                }}
-              >
-                <MenuIcon />
-              </IconButton>
-              {showHome && (
-                <Typography
-                  sx={{
-                    fontWeight: 400,
-                    fontSize: pxToRem(16),
-                    display: { xs: "block", sm: "none" },
-                    lineHeight: '24px',
-                    color: "#615D5D"
-                  }}
-                >
-                  Home
-                </Typography>
-              )}
-              {!showHome && children}
-            </RowStack>
-
-            {showWhatsappChat && (
-              <IconButton onClick={onChatToggle}>
-                <StyledImage
-                  src={whatsApp}
-                  alt="whatsapp icon"
-                  sx={{
-                    width: "24px",
-                    height: "24px",
-                  }}
-                />
-              </IconButton>
-            )}
-          </RowStack>
-        </Toolbar>
-      ) : (
-        <Toolbar
-          disableGutters
-          sx={{
-            padding: 0,
-            width: "100%",
-            height: "101px",
-            background: "#F9F9F9",
-          }}
-        >
-          <RowStack
-            justifyContent={"space-between"}
-            sx={{
-              width: "100%",
-              paddingX: { xs: "16px", sm: "20px", md: "35px" },
-            }}
-          >
-            <RowStack>
-              {showHeaderLogo && (
-                <Box mr="30px" borderRight="1px solid #D6D4D1">
-                  <AppLogo sx={{width: "148px", height: "49.33px"}}/>
-                </Box>
-              )}
-
-              {showHome && (
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: 400,
-                    fontSize: "16px",
-                    display: { xs: "none", sm: "block" },
-                    color: "#615D5D"
-                  }}
-                >
-                  Home
-                </Typography>
-              )}
-              {!showHome && children}
-            </RowStack>
-
-            <RowStack spacing={"19px"} alignItems="center">
-              {showSearch && (
-                <Box maxWidth={"466px"} width="100%">
-                  <AppSearchField
-                    iconPosition="start"
-                    placeholder="Search"
-                    onClick={handleSearchClick}
-                    onChange={handleSearchChange}
-                    fullWidth
-                  />
-                </Box>
-              )}
-
-              {showWhatsappChat && (
-                <IconButton
-                  onClick={onChatToggle}
-                  sx={{
-                    backgroundColor: "#CFFFD2",
-                    borderRadius: "10px",
-                    padding: "14px 16px",
-                    "&:hover": {
-                      backgroundColor: alpha("#CFFFD2", .8),
-                    },
-                  }}
-                >
-                  <RowStack spacing={1} alignItems="center">
-                    <WhatsAppIcon />
-                    <Typography
-                      sx={{
-                        color: "#252423",
-                        fontSize: "16px",
-                        fontWeight: 500,
-                        display: { xs: "none", sm: "block" },
-                      }}
-                    >
-                      Switch to chat
-                    </Typography>
-                  </RowStack>
-                </IconButton>
-              )}
-
-              {showProfile && (
-                <Profile {...profileProps} />
-              )}
-            </RowStack>
-          </RowStack>
-        </Toolbar>
-      )}
+      <Toolbar
+        disableGutters
+        sx={{
+          padding: 0,
+          width: "100%",
+          background: "#F9F9F9",
+          height: isMobile ? "56px" : "101px",
+          minHeight: isMobile ? "56px !important" : "101px !important",
+          transition: isHydrating ? 'none' : 'all 0.3s ease',
+        }}
+      >
+        {renderToolbarContent(isMobile)}
+      </Toolbar>
     </AppBar>
   );
 }

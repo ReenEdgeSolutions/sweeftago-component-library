@@ -24,17 +24,23 @@ export function AppDashboardLayout({
   sidebarProps,
   showSideBar = true,
 }: AppDashboardLayoutProps) {
-  const { isMobile, isBelowLg, hasMounted } = useResponsive();
+  const { isMobile, isBelowLg, hasMounted, isHydrating } = useResponsive();
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(() => {
+    // Initialize sidebar state based on initial screen size
+    if (typeof window === 'undefined') return true; // SSR default
+    return window.innerWidth >= 1200; // lg breakpoint
+  });
+
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
+  // Update sidebar state when screen size changes
   useEffect(() => {
-    if (hasMounted) {
+    if (hasMounted && !isHydrating) {
       setSidebarOpen(!isBelowLg);
       setMobileDrawerOpen(false);
     }
-  }, [isBelowLg, hasMounted]);
+  }, [isBelowLg, hasMounted, isHydrating]);
 
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
@@ -45,44 +51,14 @@ export function AppDashboardLayout({
   };
 
   const getMainContentWidth = () => {
-    if (!hasMounted || isMobile) return "100%";
+    if (isMobile) return "100%";
     return sidebarOpen
       ? `calc(100% - ${SIDEBAR_WIDTH}px)`
       : `calc(100% - ${COLLAPSED_WIDTH}px)`;
   };
 
-  // Show loading state or mobile-first layout during hydration
-  if (!hasMounted) {
-    return (
-      <Stack
-        sx={{
-          width: "100%",
-          height: "100vh",
-          flexDirection: "row",
-        }}
-      >
-        <Stack sx={{ flexGrow: 1, width: "100%" }}>
-          <AppDashboardHeader
-            {...headerProps}
-            onMobileMenuToggle={handleMobileDrawerToggle}
-          />
-          <Box
-            sx={{
-              paddingX: { xs: "16px", sm: "20px", md: "35px" },
-              overflowY: "auto",
-              paddingTop: "30px",
-              paddingBottom: "70px",
-              height: "100%",
-            }}
-          >
-            {children}
-          </Box>
-        </Stack>
-      </Stack>
-    );
-  }
-
-  return (
+  // During hydration, show a stable layout that matches the expected final state
+  const renderContent = () => (
     <Stack
       sx={{
         width: "100%",
@@ -90,7 +66,7 @@ export function AppDashboardLayout({
         flexDirection: "row",
       }}
     >
-      {/* Desktop Sidebar */}
+      {/* Desktop Sidebar - Show based on initial responsive state */}
       {!isMobile && showSideBar && (
         <AppDashboardSidebar {...sidebarProps} open={sidebarOpen} />
       )}
@@ -146,6 +122,8 @@ export function AppDashboardLayout({
         sx={{
           flexGrow: 1,
           width: getMainContentWidth(),
+          // Prevent layout shift during hydration
+          transition: isHydrating ? 'none' : 'width 0.3s ease',
         }}
       >
         <AppDashboardHeader
@@ -167,4 +145,6 @@ export function AppDashboardLayout({
       </Stack>
     </Stack>
   );
+
+  return renderContent();
 }

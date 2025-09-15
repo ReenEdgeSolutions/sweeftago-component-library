@@ -1,4 +1,4 @@
-import { CSSObject, Stack, Theme, useTheme, useMediaQuery, Box } from "@mui/material";
+import { CSSObject, Stack, Theme, useTheme, Box } from "@mui/material";
 import { AppLogo } from "../../../../AppLogo";
 import { RowStack } from "../../../../RowStack";
 import logoIcon from "./ui/assets/icons/logo-icon.png";
@@ -8,13 +8,13 @@ import { StyledLink } from "../../../../StyledLink";
 import { MobileLogoutAndDeactivate, MobileProfileHeader, ProfileRating } from "./ui/components";
 import RateReviewIcon from '@mui/icons-material/RateReview';
 import { StaticImageData } from "next/image";
+import { useResponsive } from "../../../../../common";
 
 export type AppDashboardSidebarProps = {
   links?: SideLinksProps[];
   open: boolean;
   hrefLink: string;
   rateIcon?: string | React.ElementType | StaticImageData;
-  // Mobile drawer mode
   isMobileDrawer?: boolean;
   onMobileClose?: () => void;
   mobileProfileProps?: {
@@ -72,7 +72,7 @@ export function AppDashboardSidebar({
   rateIcon = () => <RateReviewIcon sx={{width: "24px", height: "24px"}}/>
 }: AppDashboardSidebarProps) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const { isMobile, isHydrating } = useResponsive();
 
   const sidebarLinks = links || [];
 
@@ -88,13 +88,17 @@ export function AppDashboardSidebar({
         width: "100%",
         mb: "20px",
         zIndex: theme.zIndex.appBar + 1,
-        // Apply desktop transitions only when not mobile drawer
+        // Apply desktop transitions only when not mobile drawer and not hydrating
         ...(!isMobileDrawer && !isMobile && {
           ...(open && {
             ...openedMixin(theme),
+            // Disable transition during hydration
+            ...(isHydrating && { transition: 'none' }),
           }),
           ...(!open && {
             ...closedMixin(theme),
+            // Disable transition during hydration
+            ...(isHydrating && { transition: 'none' }),
           }),
         }),
         // Mobile styles - hide on mobile unless it's a drawer
@@ -118,6 +122,7 @@ export function AppDashboardSidebar({
           </Box>
         )}
 
+        {/* Desktop Logo */}
         {(!isMobile) && (
           <StyledLink href={hrefLink || "#"}>
             <RowStack
@@ -180,6 +185,7 @@ export function AppDashboardSidebar({
         )}
       </Box>
 
+      {/* Mobile Actions */}
       {isMobileDrawer && mobileProfileProps && (
         <MobileLogoutAndDeactivate
           handleLogout={handleLogout}

@@ -20,6 +20,7 @@ export interface AppModalProps {
   label: string;
   sx?: SxProps;
   minHeight?: string;
+  enableFixed?: boolean;
 }
 
 export const AppModal = ({
@@ -29,11 +30,12 @@ export const AppModal = ({
   children,
   sx,
   minHeight = "auto",
+  enableFixed = false,
 }: AppModalProps) => {
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      onClose={enableFixed ? undefined : handleClose}
       aria-labelledby={label}
       // TransitionComponent={Transition}
       slots={{
