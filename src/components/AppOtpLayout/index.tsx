@@ -5,8 +5,11 @@ import { LayoutHeader } from "../LayoutHeader";
 interface OtpVerificationProps {
   phoneNumber: string;
   showHeader?: boolean;
-  onDesktopHelpClick: () => void;
-  onMobileHelpClick: () => void;
+  onDesktopHelpClick?: () => void;
+  onMobileHelpClick?: () => void;
+  handleSignInClick?: () => void;
+  showHelpCenter?: boolean;
+  showSignIn?: boolean;
   sx?: object;
   title?: string;
   subtitle?: string;
@@ -17,6 +20,9 @@ export const AppOtpLayout = ({
   showHeader = true,
   onDesktopHelpClick,
   onMobileHelpClick,
+  handleSignInClick,
+  showSignIn = false,
+  showHelpCenter = true,
   sx,
   title,
   subtitle,
@@ -36,6 +42,9 @@ export const AppOtpLayout = ({
         <LayoutHeader
           handleDesktopHelpClick={onDesktopHelpClick}
           handleMobileHelpClick={onMobileHelpClick}
+          showSignIn={showSignIn}
+          handleSignInClick={handleSignInClick}
+          showHelpCenter= {showHelpCenter}
         />
       )}
 
