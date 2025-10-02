@@ -30,7 +30,6 @@ export const AppAuthLayout = ({
         { ...HeaderProps}
       />
 
-
       <Grid container
         spacing="40px"
         sx={{

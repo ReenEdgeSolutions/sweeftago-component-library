@@ -24,23 +24,18 @@ export function AppDashboardLayout({
   sidebarProps,
   showSideBar = true,
 }: AppDashboardLayoutProps) {
-  const { isMobile, isBelowLg, hasMounted, isHydrating } = useResponsive();
+  const { isMobile, isBelowLg, isDesktop, hasMounted } = useResponsive();
 
-  const [sidebarOpen, setSidebarOpen] = useState(() => {
-    // Initialize sidebar state based on initial screen size
-    if (typeof window === 'undefined') return true; // SSR default
-    return window.innerWidth >= 1200; // lg breakpoint
-  });
-
+  // Desktop sidebar starts open, collapses below lg breakpoint
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
-  // Update sidebar state when screen size changes
+  // Sync sidebar state with screen size after mount
   useEffect(() => {
-    if (hasMounted && !isHydrating) {
+    if (hasMounted) {
       setSidebarOpen(!isBelowLg);
-      setMobileDrawerOpen(false);
     }
-  }, [isBelowLg, hasMounted, isHydrating]);
+  }, [isBelowLg, hasMounted]);
 
   const handleSidebarToggle = () => {
     setSidebarOpen(!sidebarOpen);
@@ -57,8 +52,33 @@ export function AppDashboardLayout({
       : `calc(100% - ${COLLAPSED_WIDTH}px)`;
   };
 
-  // During hydration, show a stable layout that matches the expected final state
-  const renderContent = () => (
+  // Prevent flash of wrong layout - hide until mounted
+  if (!hasMounted) {
+    return (
+      <Stack
+        sx={{
+          width: "100%",
+          height: "100vh",
+          flexDirection: "row",
+          visibility: "hidden",
+        }}
+      >
+        {/* Render structure but hide it */}
+        {showSideBar && <AppDashboardSidebar {...sidebarProps} open={true} />}
+        <Stack sx={{ flexGrow: 1 }}>
+          <AppDashboardHeader
+            {...headerProps}
+            onMobileMenuToggle={handleMobileDrawerToggle}
+          />
+          <Box sx={{ paddingX: "35px", paddingTop: "30px" }}>
+            {children}
+          </Box>
+        </Stack>
+      </Stack>
+    );
+  }
+
+  return (
     <Stack
       sx={{
         width: "100%",
@@ -66,55 +86,51 @@ export function AppDashboardLayout({
         flexDirection: "row",
       }}
     >
-      {/* Desktop Sidebar - Show based on initial responsive state */}
-      {!isMobile && showSideBar && (
+      {/* Desktop Sidebar */}
+      {isDesktop && showSideBar && (
         <AppDashboardSidebar {...sidebarProps} open={sidebarOpen} />
       )}
 
       {/* Mobile Drawer Sidebar */}
-      <Drawer
-        anchor="left"
-        open={mobileDrawerOpen}
-        onClose={handleMobileDrawerToggle}
-        sx={{
-          display: { xs: "block", md: "none" },
-          "& .MuiDrawer-paper": {
-            boxSizing: "border-box",
-            width: 280,
-            border: "none",
-            zIndex: 1500,
-          },
-          "& .MuiBackdrop-root": {
-            zIndex: 1499,
-          },
-        }}
-      >
-        <AppDashboardSidebar
-          {...sidebarProps}
-          open={sidebarOpen}
-          isMobileDrawer={true}
-          onMobileClose={handleMobileDrawerToggle}
-          mobileProfileProps={
-            headerProps.profileProps
-              ? {
-                  firstName: headerProps.profileProps.firstName,
-                  lastName: headerProps.profileProps.lastName,
-                  userMail: headerProps.profileProps.userMail,
-                  profileClick: headerProps.profileProps.profileClick,
-                }
-              : undefined
-          }
-        />
-      </Drawer>
-
-      {/* Menu Toggle Button (Only for Desktop) */}
-      {!isMobile && showSideBar && (
-        <Box sx={{ display: { xs: "none", md: !showSideBar ? "none" : "block" } }}>
-          <MenuButton
-            onClick={handleSidebarToggle}
-            isMenuOpen={sidebarOpen}
+      {isMobile && (
+        <Drawer
+          anchor="left"
+          open={mobileDrawerOpen}
+          onClose={handleMobileDrawerToggle}
+          sx={{
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
+              width: 280,
+              border: "none",
+              zIndex: 1500,
+            },
+            "& .MuiBackdrop-root": {
+              zIndex: 1499,
+            },
+          }}
+        >
+          <AppDashboardSidebar
+            {...sidebarProps}
+            open={true}
+            isMobileDrawer={true}
+            onMobileClose={handleMobileDrawerToggle}
+            mobileProfileProps={
+              headerProps.profileProps
+                ? {
+                    firstName: headerProps.profileProps.firstName,
+                    lastName: headerProps.profileProps.lastName,
+                    userMail: headerProps.profileProps.userMail,
+                    profileClick: headerProps.profileProps.profileClick,
+                  }
+                : undefined
+            }
           />
-        </Box>
+        </Drawer>
+      )}
+
+      {/* Menu Toggle Button (Desktop Only) */}
+      {isDesktop && showSideBar && (
+        <MenuButton onClick={handleSidebarToggle} isMenuOpen={sidebarOpen} />
       )}
 
       {/* Main Section: Header + Content */}
@@ -122,8 +138,7 @@ export function AppDashboardLayout({
         sx={{
           flexGrow: 1,
           width: getMainContentWidth(),
-          // Prevent layout shift during hydration
-          transition: isHydrating ? 'none' : 'width 0.3s ease',
+          transition: "width 0.3s ease",
         }}
       >
         <AppDashboardHeader
@@ -145,6 +160,4 @@ export function AppDashboardLayout({
       </Stack>
     </Stack>
   );
-
-  return renderContent();
 }
