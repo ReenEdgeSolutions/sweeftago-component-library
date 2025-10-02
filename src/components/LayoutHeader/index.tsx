@@ -1,7 +1,6 @@
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import logo from "./ui/assets/icon/sweeftago-logo.svg"
 import helpIcon from "./ui/assets/icon/Vector.svg"
@@ -9,6 +8,7 @@ import { AppButton } from '../AppButton';
 import { useMediaQuery, useTheme } from '@mui/material';
 import { StyledImage } from '../../components/StyledImage';
 import { pxToRem } from '../../common';
+import { StyledLink } from '../StyledLink';
 
 export interface LayoutHeaderProps {
   handleDesktopHelpClick?: () => void;
@@ -57,24 +57,22 @@ export const LayoutHeader = ({
         }}
       >
         {/* Left Logo */}
-        <Box display="flex" alignItems="center" gap={1}>
-          <IconButton edge="start" disableRipple disableFocusRipple>
-            <StyledImage
-              src={logo}
-              alt="SweetfaGo Logo"
-              sx={{
-                width: {
-                  xs: "106px",
-                  md: "214px",
-                },
-                height: {
-                  xs: "35px",
-                  md: "71.33px"
-                }
-              }}
-            />
-          </IconButton>
-        </Box>
+        <StyledLink href={"/"}>
+          <StyledImage
+            src={logo}
+            alt="SweetfaGo Logo"
+            sx={{
+              width: {
+                xs: "106px",
+                md: "214px",
+              },
+              height: {
+                xs: "35px",
+                md: "71.33px"
+              }
+            }}
+          />
+        </StyledLink>
 
         {showHelpCenter && (
           <Box>

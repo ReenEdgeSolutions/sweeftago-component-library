@@ -27,6 +27,7 @@ interface AppTransactionPaginationProps {
   statusFilterData: FilterSortData[];
   dateSortData: FilterSortData[];
   handleFilterChange: (values: { statusFilter: string; dateSort: string }) => void;
+  pageIndex?: number[]
 }
 
 export const AppTransactionPagination = ({
@@ -39,7 +40,8 @@ export const AppTransactionPagination = ({
   totalPages,
   statusFilterData,
   dateSortData,
-  handleFilterChange
+  handleFilterChange,
+  pageIndex
 }: AppTransactionPaginationProps) => {
 
   const theme = useTheme();
@@ -146,6 +148,7 @@ export const AppTransactionPagination = ({
             handlePageChange={handlePageChange}
             totalItems={totalItems}
             totalPages={totalPages}
+            pageIndex={pageIndex}
           />
         ): (
           <MobilePaginationDrawer>

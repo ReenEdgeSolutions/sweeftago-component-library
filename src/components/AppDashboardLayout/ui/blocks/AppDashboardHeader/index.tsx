@@ -45,7 +45,7 @@ export function AppDashboardHeader({
   notificationsCount,
   notificationClick,
 }: AppDashboardHeaderProps) {
-  const { isMobile, isHydrating } = useResponsive();
+  const { isMobile } = useResponsive();
 
   // Common toolbar content to avoid duplication
   const renderToolbarContent = (isMobileLayout: boolean) => (
@@ -198,7 +198,7 @@ export function AppDashboardHeader({
           background: "#F9F9F9",
           height: isMobile ? "56px" : "101px",
           minHeight: isMobile ? "56px !important" : "101px !important",
-          transition: isHydrating ? 'none' : 'all 0.3s ease',
+          transition: 'all 0.3s ease',
         }}
       >
         {renderToolbarContent(isMobile)}

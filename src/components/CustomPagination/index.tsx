@@ -137,7 +137,7 @@ export const CustomPagination = ({
               lineHeight: '140%',
             }}
           >
-            {startIndex + 1}-{endIndex} of {totalItems} items
+            {endIndex} of {totalItems} items
           </Typography>
         )}
       </Stack>

@@ -1,10 +1,10 @@
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import logo from "./ui/assets/icon/sweeftago-logo.png"
+import logo from "./ui/assets/icon/sweeftago-logo.svg"
 import { AppButton } from '../../../../AppButton';
 import { StyledImage } from '../../../../StyledImage';
+import { StyledLink } from '../../../../StyledLink';
 
 export interface HeaderProps {
   handleSignUpClick: () => void;
@@ -44,7 +44,7 @@ export const Header = ({
       >
         {/* Left Logo */}
         <Box display="flex" alignItems="center" gap={1}>
-          <IconButton edge="start" disableRipple disableFocusRipple>
+         <StyledLink href="/" passHref>
             <StyledImage
               src={logo}
               alt="SweetfaGo Logo"
@@ -59,7 +59,7 @@ export const Header = ({
                 }
               }}
             />
-          </IconButton>
+          </StyledLink>
         </Box>
 
         <AppButton

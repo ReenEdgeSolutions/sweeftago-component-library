@@ -72,7 +72,7 @@ export function AppDashboardSidebar({
   rateIcon = () => <RateReviewIcon sx={{width: "24px", height: "24px"}}/>
 }: AppDashboardSidebarProps) {
   const theme = useTheme();
-  const { isMobile, isHydrating } = useResponsive();
+  const { isMobile } = useResponsive();
 
   const sidebarLinks = links || [];
 
@@ -92,13 +92,9 @@ export function AppDashboardSidebar({
         ...(!isMobileDrawer && !isMobile && {
           ...(open && {
             ...openedMixin(theme),
-            // Disable transition during hydration
-            ...(isHydrating && { transition: 'none' }),
           }),
           ...(!open && {
             ...closedMixin(theme),
-            // Disable transition during hydration
-            ...(isHydrating && { transition: 'none' }),
           }),
         }),
         // Mobile styles - hide on mobile unless it's a drawer
